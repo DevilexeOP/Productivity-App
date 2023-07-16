@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import axios from 'axios';
 export const updateNotesTitle = notesTitle => {
   return dispatch => {
     dispatch({
@@ -32,6 +31,51 @@ export const updateAllNotes = allNotes => {
     dispatch({
       type: 'updateAllNotes',
       payload: allNotes,
+    });
+  };
+};
+
+export const updateTodoTitle = todoTitle => {
+  return dispatch => {
+    dispatch({
+      type: 'updateTodoTitle',
+      payload: todoTitle,
+    });
+  };
+};
+
+export const updateTodoDescription = toDoDescription => {
+  return dispatch => {
+    dispatch({
+      type: 'updateTodoDescription',
+      payload: toDoDescription,
+    });
+  };
+};
+
+export const updateTodoPriority = toDoPriority => {
+  return dispatch => {
+    dispatch({
+      type: 'updateTodoPriority',
+      payload: toDoPriority,
+    });
+  };
+};
+
+export const updateTodoStatus = toDoStatus => {
+  return dispatch => {
+    dispatch({
+      type: 'updateTodoStatus',
+      payload: toDoStatus,
+    });
+  };
+};
+
+export const updateAllTodos = allTodos => {
+  return dispatch => {
+    dispatch({
+      type: 'updateAllTodos',
+      payload: allTodos,
     });
   };
 };

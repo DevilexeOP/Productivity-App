@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from './src/Components/Home';
 import {NavigationContainer} from '@react-navigation/native';
-import NotesScreen from './src/Components/Notes';
-import TodoScreen from './src/Components/Todo';
-import AddNotes from './src/Components/AddNotes';
 import {Immersive} from 'react-native-immersive';
 import {Provider} from 'react-redux';
 import store from './src/Redux/store';
 import Toast from 'react-native-toast-message';
+
+// Screens
+import HomeScreen from './src/Components/Home';
+import TodoScreen from './src/Components/Todo';
+import AddNotes from './src/Components/AddNotes';
+import NotesScreen from './src/Components/Notes';
+import AddTodos from './src/Components/AddTodos';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +42,11 @@ export default class App extends Component {
             <Stack.Screen
               name="AddNotes"
               component={AddNotes}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="AddTodo"
+              component={AddTodos}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

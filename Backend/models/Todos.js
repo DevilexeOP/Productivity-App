@@ -11,8 +11,12 @@ const todoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  priority: {
+    type: String,
+    required: true,
+  },
   completeStatus: {
-    type: Boolean,
+    type: String,
   },
   createdAt: {
     type: Date,

@@ -14,13 +14,14 @@ todo_router.route('/').get((req, res) => {
 
 // Add new todo
 todo_router.route('/add').post((req, res) => {
-  const {toDoTitle, toDoInfo, completeStatus, createdAt} = req.body;
+  const {toDoTitle, toDoInfo, priority, completeStatus, createdAt} = req.body;
 
   // new obj
   const todo = new toDos({
     toDoTitle,
     toDoInfo,
     completeStatus,
+    priority,
     createdAt,
   });
 
