@@ -74,11 +74,11 @@ class AddNotes extends Component {
     const {notesTitle, notesDescription, actions} = this.props;
     return (
       <SafeAreaView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Create a Note </Text>
+        </View>
         <ScrollView>
           <View>
-            <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>Create a Note </Text>
-            </View>
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="Note Title"

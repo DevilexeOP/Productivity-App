@@ -3,25 +3,27 @@ const mongoose = require('mongoose');
 
 // schema
 const todoSchema = new mongoose.Schema({
-  toDoTitle: {
+  todoTitle: {
     type: String,
     required: true,
   },
-  toDoInfo: {
+  todoDescription: {
     type: String,
     required: true,
   },
-  priority: {
+  todoPriority: {
     type: String,
-    required: true,
   },
-  completeStatus: {
+  todoStatus: {
     type: String,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  // __v 32 is
+  // Object-Document Mapper
+  // to keep a track of doc when its updated and saved
 });
 
 // Creating model

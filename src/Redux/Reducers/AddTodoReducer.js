@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 const initialState = {
   todoTitle: '',
-  toDoDescription: '',
-  toDoPriority: '',
-  toDoStatus: '',
+  todoDescription: '',
+  todoPriority: '',
+  todoStatus: '',
   allTodos: [],
 };
 
@@ -12,11 +12,11 @@ const reducer = (state = initialState, action) => {
     case 'updateTodoTitle':
       return {...state, todoTitle: action.payload};
     case 'updateTodoDescription':
-      return {...state, toDoDescription: action.payload};
+      return {...state, todoDescription: action.payload};
     case 'updateTodoPriority':
-      return {...state, toDoPriority: action.payload};
+      return {...state, todoPriority: action.payload};
     case 'updateTodoStatus':
-      return {...state, toDoStatus: action.payload};
+      return {...state, todoStatus: action.payload};
     case 'updateAllTodos':
       return {...state, allTodos: action.payload};
     default:

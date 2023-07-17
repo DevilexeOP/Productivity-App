@@ -75,14 +75,24 @@ class TodoScreen extends Component {
             {allTodos &&
               allTodos.map(todo => (
                 <View style={styles.todoContainer} key={todo._id}>
-                  <Text style={styles.todoTitle}>{todo.toDoTitle}</Text>
-                  <Text style={styles.todoDescription}>{todo.toDoInfo}</Text>
-                  <Text style={styles.todoStatus}>
-                    Completed : {todo.completeStatus}
+                  <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
+                  <Text style={styles.todoDescription}>
+                    {todo.todoDescription}
                   </Text>
-                  <Text style={styles.todoPriortiy}>
-                    Priority : {todo.priority}
-                  </Text>
+                  {todo.completeStatus ? (
+                    <Text style={styles.todoStatus}>
+                      Completed : {todo.completeStatus}
+                    </Text>
+                  ) : (
+                    <Text style={styles.todoStatus}>Completed : No</Text>
+                  )}
+                  {todo.priority ? (
+                    <Text style={styles.todoPriortiy}>
+                      Priority : {todo.priority}
+                    </Text>
+                  ) : (
+                    <Text style={styles.todoPriortiy}>Priority : None</Text>
+                  )}
                 </View>
               ))}
           </View>
