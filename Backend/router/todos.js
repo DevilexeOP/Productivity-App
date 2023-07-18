@@ -6,7 +6,7 @@ const toDos = require('../models/Todos');
 todo_router.route('/').get((req, res) => {
   toDos
     .find()
-    .then(todos => res.json(todos))
+    .then(todos => res.status(201).json(todos))
     .catch(error => {
       res.status(400).json('Error' + error);
     });
@@ -14,21 +14,22 @@ todo_router.route('/').get((req, res) => {
 
 // Add new todo
 todo_router.route('/add').post((req, res) => {
-  const {todoTitle, todoDescription, todopriority, todoStatus, createdAt} =
+  const {_id, todoTitle, todoDescription, todoPriority, todoStatus, createdAt} =
     req.body;
 
   // new obj
   const todo = new toDos({
+    _id,
     todoTitle,
     todoDescription,
     todoStatus,
-    todopriority,
+    todoPriority,
     createdAt,
   });
 
   todo
     .save()
-    .then(() => res.status(200).json('Todo Added'))
+    .then(() => res.status(201).json('Todo Added'))
     .catch(err => res.status(400).json('Error adding todo' + err));
 });
 

@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {Component} from 'react';
 import {updateAllTodos} from '../Redux/Action-Creators';
@@ -32,13 +33,13 @@ class TodoScreen extends Component {
       const response = await fetch('http://192.168.29.154:3000/todos', {
         method: 'GET',
       });
-      if (response.status === 200) {
-        const todos = await response.json();
-        this.props.dispatch(updateAllTodos(todos));
-        this.successToast();
-      } else if (response.status === 404) {
+      const todos = await response.json();
+      if (todos.length === 0) {
         this.notFoundToast();
         console.log('Todos not found');
+      } else if (response.status === 201) {
+        this.props.dispatch(updateAllTodos(todos));
+        this.successToast();
       }
     } catch (error) {
       this.errorToast();
@@ -72,29 +73,38 @@ class TodoScreen extends Component {
         </View>
         <ScrollView>
           <View>
-            {allTodos &&
-              allTodos.map(todo => (
-                <View style={styles.todoContainer} key={todo._id}>
+            {allTodos.map(todo => (
+              <View style={styles.todoContainer} key={todo._id}>
+                <View style={{flexDirection: 'row'}}>
                   <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
-                  <Text style={styles.todoDescription}>
-                    {todo.todoDescription}
-                  </Text>
-                  {todo.completeStatus ? (
-                    <Text style={styles.todoStatus}>
-                      Completed : {todo.completeStatus}
-                    </Text>
-                  ) : (
-                    <Text style={styles.todoStatus}>Completed : No</Text>
-                  )}
-                  {todo.priority ? (
-                    <Text style={styles.todoPriortiy}>
-                      Priority : {todo.priority}
-                    </Text>
-                  ) : (
-                    <Text style={styles.todoPriortiy}>Priority : None</Text>
-                  )}
+                  <View>
+                    <TouchableOpacity>
+                      <Image
+                        style={styles.icon}
+                        source={require('../Assets/edit.png')}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              ))}
+                <Text style={styles.todoDescription}>
+                  {todo.todoDescription}
+                </Text>
+                {todo.todoStatus ? (
+                  <Text style={styles.todoStatus}>
+                    Completed : {todo.todoStatus}
+                  </Text>
+                ) : (
+                  <Text style={styles.todoStatus}>Completed : No</Text>
+                )}
+                {todo.todoPriority ? (
+                  <Text style={styles.todoPriortiy}>
+                    Priority : {todo.todoPriority}
+                  </Text>
+                ) : (
+                  <Text style={styles.todoPriortiy}>Priority : None</Text>
+                )}
+              </View>
+            ))}
           </View>
         </ScrollView>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -168,6 +178,12 @@ const styles = StyleSheet.create({
     marginVertical: hp('.5%'),
     fontSize: wp('2.5%'),
     marginHorizontal: hp('2%'),
+  },
+  icon: {
+    width: wp('3%'),
+    height: hp('3%'),
+    marginHorizontal: hp('40%'),
+    marginVertical: hp('1%'),
   },
 });
 

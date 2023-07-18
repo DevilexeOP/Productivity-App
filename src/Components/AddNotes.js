@@ -47,6 +47,7 @@ class AddNotes extends Component {
       const data = await res.json();
       if (res.status === 200) {
         this.successToast();
+        this.props.navigation.goBack();
         console.log(data);
       }
     } catch (error) {

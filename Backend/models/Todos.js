@@ -1,8 +1,12 @@
 /* eslint-disable prettier/prettier */
 const mongoose = require('mongoose');
-
+const shortid = require('shortid');
 // schema
 const todoSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    default: shortid.generate,
+  },
   todoTitle: {
     type: String,
     required: true,

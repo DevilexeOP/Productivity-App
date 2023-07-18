@@ -32,13 +32,13 @@ class NotesScreen extends Component {
       const response = await fetch('http://192.168.29.154:3000/notes', {
         method: 'GET',
       });
-      if (response.status === 200) {
-        const notes = await response.json();
-        this.props.dispatch(updateAllNotes(notes));
-        this.successToast();
-      } else if (response.status === 404) {
+      const notes = await response.json();
+      if (notes.length === 0) {
         this.notFoundToast();
         console.log('No Data found');
+      } else if (response.status === 200) {
+        this.props.dispatch(updateAllNotes(notes));
+        this.successToast();
       }
     } catch (error) {
       this.errorToast();

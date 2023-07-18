@@ -48,8 +48,9 @@ class AddTodos extends Component {
         }),
       });
       const data = await res.json();
-      if (res.status === 200) {
+      if (res.status === 201) {
         this.successToast();
+        this.props.navigation.goBack();
         console.log(data);
       }
     } catch (error) {
@@ -110,13 +111,38 @@ class AddTodos extends Component {
                 />
               </View>
             </View>
-            <TouchableOpacity
-              style={styles.notesButton}
-              onPress={this.handleAddTodo}>
-              <Text style={styles.notesText}>Save Note </Text>
-            </TouchableOpacity>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={todoStatus}
+                onValueChange={item => {
+                  actions.updateTodoStatus(item);
+                }}>
+                <Picker.Item label="Select Progress" value="" />
+                <Picker.Item label="Completed" value="Completed" />
+                <Picker.Item label="In-Progress" value="In-Progress" />
+                <Picker.Item label="In-Complete" value="InComplete" />
+              </Picker>
+            </View>
+            <View style={styles.pickerContainer2}>
+              <Picker
+                selectedValue={todoPriority}
+                onValueChange={item => {
+                  actions.updateTodoPriority(item);
+                }}>
+                <Picker.Item label="Select Priority" value="" />
+                <Picker.Item label="High" value="High" />
+                <Picker.Item label="Medium" value="Medium" />
+                <Picker.Item label="Low" value="Low" />
+                <Picker.Item label="None" value="None" />
+              </Picker>
+            </View>
           </View>
         </ScrollView>
+        <TouchableOpacity
+          style={styles.notesButton}
+          onPress={this.handleAddTodo}>
+          <Text style={styles.notesText}>Save Todo</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }
@@ -142,7 +168,7 @@ const styles = StyleSheet.create({
     width: width / 2,
     height: height / 20,
     borderRadius: 10,
-    marginVertical: hp('30%'),
+    marginVertical: hp('10%'),
     backgroundColor: '#dbac00',
     alignSelf: 'center',
     alignItems: 'center',
@@ -176,6 +202,15 @@ const styles = StyleSheet.create({
   inputText2: {
     marginHorizontal: wp('2%'),
     fontSize: wp('3%'),
+  },
+  pickerContainer: {
+    width: wp('80%'),
+    marginVertical: hp('8%'),
+    marginHorizontal: wp('8%'),
+  },
+  pickerContainer2: {
+    width: wp('80%'),
+    marginHorizontal: wp('8%'),
   },
 });
 
