@@ -10,8 +10,9 @@ import Toast from 'react-native-toast-message';
 import HomeScreen from './src/Components/Home';
 import TodoScreen from './src/Components/Todo';
 import AddNotes from './src/Components/AddNotes';
-import NotesScreen from './src/Components/Notes';
+import NotesScreen from './src/Components/Notes.js';
 import AddTodos from './src/Components/AddTodos';
+import UpdateTodos from './src/Components/UpdateTodos';
 
 const Stack = createStackNavigator();
 
@@ -47,6 +48,11 @@ export default class App extends Component {
             <Stack.Screen
               name="AddTodo"
               component={AddTodos}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="UpdateTodo"
+              component={UpdateTodos}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

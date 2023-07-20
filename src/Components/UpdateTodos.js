@@ -10,60 +10,81 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import React,{useEffect} from 'react';
-import { updateAllTodos, updateTodoDescription, updateTodoTitle, updateTodoStatus, updateTodoPriority } from '../Redux/Action-Creators';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { connect } from 'react-redux';
+import React, {useState} from 'react';
+import {bindActionCreators} from 'redux';
+import {
+  updateAllTodos,
+  updateTodoDescription,
+  updateTodoTitle,
+  updateTodoStatus,
+  updateTodoPriority,
+} from '../Redux/Action-Creators';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { Picker } from '@react-native-picker/picker';
-  import { bindActionCreators } from 'redux';
+import {Picker} from '@react-native-picker/picker';
+import {useRoute} from '@react-navigation/native';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
+const UpdateTodos = ({
+  todoTitle,
+  todoDescription,
+  todoStatus,
+  todoPriority,
+  actions,
+  navigation,
+}) => {
+  const route = useRoute();
+  const _id = route.params.id;
 
-const AddTodos = ({ todoTitle, todoDescription, todoStatus, todoPriority, actions, navigation }) => {
-  useEffect(()=>{
-    resetTodo()
-  },[])
-  const handleAddTodo = async () => {
+  const handleUpdateTodo = async () => {
     try {
-      const res = await fetch('http://192.168.29.154:3000/todos/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetch(
+        `http://192.168.29.154:3000/todos/update/${_id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            todoTitle: todoTitle,
+            todoDescription: todoDescription,
+            todoPriority: todoPriority,
+            todoStatus: todoStatus,
+          }),
         },
-        body: JSON.stringify({
-          todoTitle: todoTitle,
-          todoDescription: todoDescription,
-          todoPriority: todoPriority,
-          todoStatus: todoStatus,
-        }),
-      });
-      const data = await res.json();
-      if (res.status === 201) {
+      );
+      const updatedData = await res.json();
+      if (res.status === 200) {
         successToast();
         navigation.goBack();
-        console.log(data);
+        resetTodo();
+        console.log(updatedData);
+      } else {
+        console.log('Error ');
       }
     } catch (error) {
       errorToast();
-      console.log('Error ' + error);
+      console.log('Error' + error);
     }
   };
 
   const successToast = () => {
     Toast.show({
       type: 'success',
-      text1: 'Successfully added your Todo ',
+      text1: 'Successfully updated your Todo ',
     });
   };
 
   const errorToast = () => {
     Toast.show({
       type: 'error',
-      text1: 'Error adding your Todo',
+      text1: 'Error updating your Todo',
     });
   };
-
   const resetTodo = () => {
     actions.updateTodoTitle('');
     actions.updateTodoDescription('');
@@ -89,7 +110,7 @@ const AddTodos = ({ todoTitle, todoDescription, todoStatus, todoPriority, action
               }}
             />
           </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <View style={styles.inputContainer2}>
               <TextInput
                 multiline={true}
@@ -130,8 +151,8 @@ const AddTodos = ({ todoTitle, todoDescription, todoStatus, todoPriority, action
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.notesButton} onPress={handleAddTodo}>
-        <Text style={styles.notesText}>Save Todo</Text>
+      <TouchableOpacity style={styles.notesButton} onPress={handleUpdateTodo}>
+        <Text style={styles.notesText}>Update Todo</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -224,4 +245,4 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddTodos);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateTodos);
