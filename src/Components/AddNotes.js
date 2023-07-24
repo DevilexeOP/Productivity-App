@@ -34,7 +34,7 @@ class AddNotes extends Component {
   }
   handleSaveNote = async () => {
     try {
-      const res = await fetch('http://192.168.29.154:3000/notes/add', {
+      const res = await fetch('http://192.168.29.209:3000/notes/add', { // 209 for linux , 154 pc
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
