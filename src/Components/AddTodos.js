@@ -26,7 +26,7 @@ const AddTodos = ({ todoTitle, todoDescription, todoStatus, todoPriority, action
   },[])
   const handleAddTodo = async () => {
     try {
-      const res = await fetch('http://192.168.29.154:3000/todos/add', {
+      const res = await fetch('http://192.168.29.209:3000/todos/add', { // 209 for linux , 154 pc
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -13,6 +13,7 @@ import AddNotes from './src/Components/AddNotes';
 import NotesScreen from './src/Components/Notes.js';
 import AddTodos from './src/Components/AddTodos';
 import UpdateTodos from './src/Components/UpdateTodos';
+import UpdateNotes from './src/Components/UpdateNotes';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +54,11 @@ export default class App extends Component {
             <Stack.Screen
               name="UpdateTodo"
               component={UpdateTodos}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="UpdateNotes"
+              component={UpdateNotes}
               options={{headerShown: false}}
             />
           </Stack.Navigator>
