@@ -41,7 +41,6 @@ const NotesScreen = ({navigation}) => {
       });
       const notes = await response.json();
       if (notes.length === 0) {
-        notFoundToast();
         console.log('No Data found');
       } else if (response.status === 200) {
         dispatch(updateAllNotes(notes));
@@ -50,6 +49,26 @@ const NotesScreen = ({navigation}) => {
     } catch (error) {
       errorToast();
       console.log("Couldn't Fetch Notes" + error);
+    }
+  };
+
+  const deleteNote = async _id => {
+    try {
+      const res = await fetch(
+        `http://192.168.29.209:3000/notes/delete/${_id}`,
+        {
+          method: 'DELETE',
+        },
+      );
+      const data = await res.json();
+      if (res.status === 200) {
+        dispatch(updateAllNotes(allNotes.filter(note => note._id !== _id)));
+        console.log(data);
+      } else {
+        console.log('Error couldnt remove note');
+      }
+    } catch (error) {
+      console.log('ERROR : ' + error);
     }
   };
 
@@ -75,13 +94,6 @@ const NotesScreen = ({navigation}) => {
     });
   };
 
-  const notFoundToast = () => {
-    Toast.show({
-      type: 'error',
-      text1: 'No Notes Found',
-    });
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -89,29 +101,63 @@ const NotesScreen = ({navigation}) => {
       </View>
       <ScrollView>
         <View>
-          {allNotes.map(note => (
-            <View key={note._id}>
-              <View style={styles.notesContainer}>
-                <Text style={styles.notesTitle}>{note.title}</Text>
-                <Text style={styles.noteDescription}>{note.description}</Text>
-                <View style={{flex: 1, alignItems: 'flex-end'}}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigateToUpdateNotes(
-                        note._id,
-                        note.title,
-                        note.description,
-                      )
-                    }>
-                    <Image
-                      style={styles.icon}
-                      source={require('../Assets/edit.png')}
-                    />
-                  </TouchableOpacity>
-                </View>
+          {allNotes.length === 0 ? (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white', fontSize: wp('4%')}}>
+                  No Notes Found
+                </Text>
               </View>
-            </View>
-          ))}
+            </>
+          ) : (
+            <>
+              {allNotes.map(note => (
+                <View key={note._id}>
+                  <View style={styles.notesContainer}>
+                    <Text style={styles.notesTitle}>{note.title}</Text>
+                    <Text style={styles.noteDescription}>
+                      {note.description}
+                    </Text>
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-end',
+                        flexDirection: 'row-reverse',
+                      }}>
+                      <View>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigateToUpdateNotes(
+                              note._id,
+                              note.title,
+                              note.description,
+                            )
+                          }>
+                          <Image
+                            style={styles.icon}
+                            source={require('../Assets/edit.png')}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                      <View>
+                        <TouchableOpacity onPress={() => deleteNote(note._id)}>
+                          <Image
+                            style={styles.icon2}
+                            source={require('../Assets/bin.png')}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </>
+          )}
         </View>
       </ScrollView>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -179,6 +225,11 @@ const styles = StyleSheet.create({
     width: wp('3%'),
     height: hp('3%'),
     marginHorizontal: hp('3%'),
+    marginVertical: hp('1%'),
+  },
+  icon2: {
+    width: wp('3%'),
+    height: hp('3%'),
     marginVertical: hp('1%'),
   },
 });
