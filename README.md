@@ -8,9 +8,10 @@ Tech Stack <br>
   - Database (Mongo)
 <br>
 Features <br>
-  - Add Notes & Todos <br>
-  - The notes & todos are saved in DB and fetched from there <br>
-  - I'll add more features in future to this app <br>
+ - Add Notes & Todo's <br>
+ - Update and Delete your Notes & Todos as well <br> 
+ - The notes & todo's are saved in DB and fetched from there <br>
+ - I'll add more features in future to this app <br>
 <br>
 
 To Preview / Add Features to this app 
