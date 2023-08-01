@@ -10,20 +10,36 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import React,{useEffect} from 'react';
-import { updateAllTodos, updateTodoDescription, updateTodoTitle, updateTodoStatus, updateTodoPriority } from '../Redux/Action-Creators';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { connect } from 'react-redux';
+import React, {useEffect} from 'react';
+import {
+  updateAllTodos,
+  updateTodoDescription,
+  updateTodoTitle,
+  updateTodoStatus,
+  updateTodoPriority,
+} from '../Redux/Action-Creators';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { Picker } from '@react-native-picker/picker';
-  import { bindActionCreators } from 'redux';
+import {Picker} from '@react-native-picker/picker';
+import {bindActionCreators} from 'redux';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const AddTodos = ({ todoTitle, todoDescription, todoStatus, todoPriority, actions, navigation }) => {
-  useEffect(()=>{
-    resetTodo()
-  },[])
+const AddTodos = ({
+  todoTitle,
+  todoDescription,
+  todoStatus,
+  todoPriority,
+  actions,
+  navigation,
+}) => {
+  useEffect(() => {
+    resetTodo();
+  }, []);
   const handleAddTodo = async () => {
     try {
       const res = await fetch('http://192.168.29.154:3000/todos/add', {
@@ -89,7 +105,7 @@ const AddTodos = ({ todoTitle, todoDescription, todoStatus, todoPriority, action
               }}
             />
           </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <View style={styles.inputContainer2}>
               <TextInput
                 multiline={true}
