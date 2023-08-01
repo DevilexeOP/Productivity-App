@@ -9,18 +9,18 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, { useEffect } from 'react';
-import { updateAllTodos } from '../Redux/Action-Creators';
+import React, {useEffect} from 'react';
+import {updateAllTodos} from '../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
-const TodoScreen = ({ navigation }) => {
+const TodoScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const allTodos = useSelector((state) => state.addTodo.allTodos);
+  const allTodos = useSelector(state => state.addTodo.allTodos);
 
   useEffect(() => {
     getTodos();
@@ -31,12 +31,12 @@ const TodoScreen = ({ navigation }) => {
 
   const getTodos = async () => {
     try {
-      const response = await fetch('http://192.168.29.154:3000/todos', {
+      const response = await fetch('http://192.168.29.209:3000/todos', {
+        // 209 for linux , 154 pc
         method: 'GET',
       });
       const todos = await response.json();
       if (todos.length === 0) {
-        notFoundToast();
         console.log('Todos not found');
       } else if (response.status === 201) {
         dispatch(updateAllTodos(todos));
@@ -48,17 +48,37 @@ const TodoScreen = ({ navigation }) => {
     }
   };
 
+  const deleteTodo = async _id => {
+    try {
+      const res = await fetch(
+        `http://192.168.29.209:3000/todos/delete/${_id}`,
+        {
+          method: 'DELETE',
+        },
+      );
+      const data = await res.json();
+      if (res.status === 200) {
+        dispatch(updateAllTodos(allTodos.filter(todo => todo._id !== _id)));
+        console.log(data);
+      } else {
+        console.log('Error couldnt remove todo');
+      }
+    } catch (error) {
+      console.log('ERROR : ' + error);
+    }
+  };
+
   const navigateToAddTodo = () => {
     navigation.navigate('AddTodo');
   };
 
-  const navigateToUpdateTodo = (_id,title,description,status,priority) => {
+  const navigateToUpdateTodo = (_id, title, description, status, priority) => {
     navigation.navigate('UpdateTodo', {
       id: _id,
-      title:title,
-      description:description,
-      status:status,
-      priority:priority
+      title: title,
+      description: description,
+      status: status,
+      priority: priority,
     });
   };
 
@@ -76,13 +96,6 @@ const TodoScreen = ({ navigation }) => {
     });
   };
 
-  const notFoundToast = () => {
-    Toast.show({
-      type: 'error',
-      text1: 'No Todos Found',
-    });
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -90,46 +103,83 @@ const TodoScreen = ({ navigation }) => {
       </View>
       <ScrollView>
         <View>
-          {allTodos.map((todo) => (
-            <View style={styles.todoContainer} key={todo._id}>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
+          {allTodos.length === 0 ? (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white', fontSize: wp('4%')}}>
+                  No To-Dos Found
+                </Text>
               </View>
-              <Text style={styles.todoDescription}>
-                {todo.todoDescription}
-              </Text>
-              {todo.todoStatus ? (
-                <Text style={styles.todoStatus}>
-                  Completed : {todo.todoStatus}
-                </Text>
-              ) : (
-                <Text style={styles.todoStatus}>Completed : No</Text>
-              )}
-              {todo.todoPriority ? (
-                <Text style={styles.todoPriortiy}>
-                  Priority : {todo.todoPriority}
-                </Text>
-              ) : (
-                <Text style={styles.todoPriortiy}>Priority : None</Text>
-              )}
-              <View>
-                  <TouchableOpacity onPress={() => navigateToUpdateTodo(
-                    todo._id,todo.todoTitle,todo.todoDescription,todo.todoPriority,todo.todoStatus
-                    )}>
-                    <Image
-                      style={styles.icon}
-                      source={require('../Assets/edit.png')}
-                    />
-                  </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              {allTodos.map(todo => (
+                <View style={styles.todoContainer} key={todo._id}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
+                  </View>
+                  <Text style={styles.todoDescription}>
+                    {todo.todoDescription}
+                  </Text>
+                  {todo.todoStatus ? (
+                    <Text style={styles.todoStatus}>
+                      Completed : {todo.todoStatus}
+                    </Text>
+                  ) : (
+                    <Text style={styles.todoStatus}>Completed : No</Text>
+                  )}
+                  {todo.todoPriority ? (
+                    <Text style={styles.todoPriortiy}>
+                      Priority : {todo.todoPriority}
+                    </Text>
+                  ) : (
+                    <Text style={styles.todoPriortiy}>Priority : None</Text>
+                  )}
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'flex-end',
+                      flexDirection: 'row-reverse',
+                    }}>
+                    <View>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigateToUpdateTodo(
+                            todo._id,
+                            todo.todoTitle,
+                            todo.todoDescription,
+                            todo.todoPriority,
+                            todo.todoStatus,
+                          )
+                        }>
+                        <Image
+                          style={styles.icon}
+                          source={require('../Assets/edit.png')}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View>
+                      <TouchableOpacity onPress={() => deleteTodo(todo._id)}>
+                        <Image
+                          style={styles.icon2}
+                          source={require('../Assets/bin.png')}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
-            </View>
-          ))}
+              ))}
+            </>
+          )}
         </View>
       </ScrollView>
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <TouchableOpacity
-          style={styles.todoButton}
-          onPress={navigateToAddTodo}>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity style={styles.todoButton} onPress={navigateToAddTodo}>
           <Text style={styles.todoText}>Add a Todo? </Text>
         </TouchableOpacity>
       </View>
@@ -203,9 +253,14 @@ const styles = StyleSheet.create({
     marginHorizontal: hp('3%'),
     marginVertical: hp('1%'),
   },
+  icon2: {
+    width: wp('3%'),
+    height: hp('3%'),
+    marginVertical: hp('1%'),
+  },
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   allTodos: state.addTodo.allTodos, // Map allNotes state to props
 });
 

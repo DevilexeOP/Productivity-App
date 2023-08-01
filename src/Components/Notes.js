@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector, connect} from 'react-redux';
 import {
   Text,
   View,
@@ -7,90 +9,167 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
-import React, {Component} from 'react';
-import {updateAllNotes} from '../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {updateAllNotes} from '../Redux/Action-Creators';
 
-class NotesScreen extends Component {
-  navigateToAddNotes = () => {
-    this.props.navigation.navigate('AddNotes');
-  };
-  componentDidMount() {
-    this.getNotes();
-    this.props.navigation.addListener('focus', () => {
-      this.getNotes();
+const NotesScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+  const allNotes = useSelector(state => state.addNote.allNotes);
+
+  useEffect(() => {
+    getNotes();
+    navigation.addListener('focus', () => {
+      getNotes();
     });
-  }
-  getNotes = async () => {
+  }, []);
+
+  const navigateToAddNotes = () => {
+    navigation.navigate('AddNotes');
+  };
+
+  const getNotes = async () => {
     try {
-      const response = await fetch('http://192.168.29.154:3000/notes', {
+      const response = await fetch('http://192.168.29.209:3000/notes', {
+        // 209 for linux , 154 pc
         method: 'GET',
       });
       const notes = await response.json();
       if (notes.length === 0) {
-        this.notFoundToast();
         console.log('No Data found');
       } else if (response.status === 200) {
-        this.props.dispatch(updateAllNotes(notes));
-        this.successToast();
+        dispatch(updateAllNotes(notes));
+        successToast();
       }
     } catch (error) {
-      this.errorToast();
-      console.log('Couldnt Fetch Notes' + error);
+      errorToast();
+      console.log("Couldn't Fetch Notes" + error);
     }
   };
-  successToast = () => {
+
+  const deleteNote = async _id => {
+    try {
+      const res = await fetch(
+        `http://192.168.29.209:3000/notes/delete/${_id}`,
+        {
+          method: 'DELETE',
+        },
+      );
+      const data = await res.json();
+      if (res.status === 200) {
+        dispatch(updateAllNotes(allNotes.filter(note => note._id !== _id)));
+        console.log(data);
+      } else {
+        console.log('Error couldnt remove note');
+      }
+    } catch (error) {
+      console.log('ERROR : ' + error);
+    }
+  };
+
+  const navigateToUpdateNotes = (_id, notesTitle, notesDescription) => {
+    navigation.navigate('UpdateNotes', {
+      id: _id,
+      notesTitle: notesTitle,
+      notesDescription: notesDescription,
+    });
+  };
+
+  const successToast = () => {
     Toast.show({
       type: 'success',
       text1: 'Fetched Notes',
     });
   };
-  errorToast = () => {
+
+  const errorToast = () => {
     Toast.show({
       type: 'error',
       text1: 'Error Fetching Notes',
     });
   };
-  notFoundToast = () => {
-    Toast.show({
-      type: 'error',
-      text1: 'No Notes Found',
-    });
-  };
-  render() {
-    const {allNotes} = this.props;
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Your Note's </Text>
-        </View>
-        <ScrollView>
-          <View>
-            {allNotes.map(note => (
-              <View style={styles.notesContainer} key={note._id}>
-                <Text style={styles.notesTitle}>{note.title}</Text>
-                <Text style={styles.noteDescription}>{note.description}</Text>
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Your Note's </Text>
+      </View>
+      <ScrollView>
+        <View>
+          {allNotes.length === 0 ? (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white', fontSize: wp('4%')}}>
+                  No Notes Found
+                </Text>
               </View>
-            ))}
-          </View>
-        </ScrollView>
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity
-            style={styles.notesButton}
-            onPress={this.navigateToAddNotes}>
-            <Text style={styles.notesText}>Add a note ? </Text>
-          </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              {allNotes.map(note => (
+                <View key={note._id}>
+                  <View style={styles.notesContainer}>
+                    <Text style={styles.notesTitle}>{note.title}</Text>
+                    <Text style={styles.noteDescription}>
+                      {note.description}
+                    </Text>
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: 'flex-end',
+                        flexDirection: 'row-reverse',
+                      }}>
+                      <View>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigateToUpdateNotes(
+                              note._id,
+                              note.title,
+                              note.description,
+                            )
+                          }>
+                          <Image
+                            style={styles.icon}
+                            source={require('../Assets/edit.png')}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                      <View>
+                        <TouchableOpacity onPress={() => deleteNote(note._id)}>
+                          <Image
+                            style={styles.icon2}
+                            source={require('../Assets/bin.png')}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </>
+          )}
         </View>
-      </SafeAreaView>
-    );
-  }
-}
+      </ScrollView>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity
+          style={styles.notesButton}
+          onPress={navigateToAddNotes}>
+          <Text style={styles.notesText}>Add a note ? </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -142,10 +221,21 @@ const styles = StyleSheet.create({
     fontSize: wp('2.5%'),
     marginHorizontal: hp('2%'),
   },
+  icon: {
+    width: wp('3%'),
+    height: hp('3%'),
+    marginHorizontal: hp('3%'),
+    marginVertical: hp('1%'),
+  },
+  icon2: {
+    width: wp('3%'),
+    height: hp('3%'),
+    marginVertical: hp('1%'),
+  },
 });
 
 const mapStateToProps = state => ({
-  allNotes: state.addNote.allNotes, // Map allNotes state to props
+  allNotes: state.addNote.allNotes,
 });
 
 export default connect(mapStateToProps)(NotesScreen);
