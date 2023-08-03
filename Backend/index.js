@@ -7,6 +7,8 @@ const cors = require('cors');
 // Import your routes
 const notesRoutes = require('./router/notes');
 const todoRoutes = require('./router/todos');
+const registerRotues = require('./router/register');
+const loginRoutes = require('./router/login');
 
 require('dotenv').config();
 const app = express();
@@ -26,6 +28,8 @@ app.use(cors());
 // Routes
 app.use('/notes', notesRoutes);
 app.use('/todos', todoRoutes);
+app.use('/', registerRotues);
+app.use('/', loginRoutes);
 
 // Start the server
 app.listen(3000, () => {
