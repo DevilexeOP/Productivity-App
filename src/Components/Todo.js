@@ -8,11 +8,11 @@ import {
   Image,
 } from 'react-native';
 import React, {useEffect} from 'react';
+import {updateAllTodos} from '../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {updateAllTodos} from '../Redux/Action-Creators';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
@@ -29,12 +29,12 @@ const TodoScreen = ({navigation}) => {
 
   const getTodos = async () => {
     try {
-      const response = await fetch('http://192.168.29.154:3000/todos', {
+      const response = await fetch('http://192.168.29.209:3000/todos', {
+        // 209 for linux , 154 pc
         method: 'GET',
       });
       const todos = await response.json();
       if (todos.length === 0) {
-        notFoundToast();
         console.log('Todos not found');
       } else if (response.status === 201) {
         dispatch(updateAllTodos(todos));
@@ -43,6 +43,26 @@ const TodoScreen = ({navigation}) => {
     } catch (error) {
       errorToast();
       console.log('Error Fetching todos' + error);
+    }
+  };
+
+  const deleteTodo = async _id => {
+    try {
+      const res = await fetch(
+        `http://192.168.29.209:3000/todos/delete/${_id}`,
+        {
+          method: 'DELETE',
+        },
+      );
+      const data = await res.json();
+      if (res.status === 200) {
+        dispatch(updateAllTodos(allTodos.filter(todo => todo._id !== _id)));
+        console.log(data);
+      } else {
+        console.log('Error couldnt remove todo');
+      }
+    } catch (error) {
+      console.log('ERROR : ' + error);
     }
   };
 
@@ -71,13 +91,6 @@ const TodoScreen = ({navigation}) => {
     Toast.show({
       type: 'error',
       text1: 'Error Fetching Todos',
-    });
-  };
-
-  const notFoundToast = () => {
-    Toast.show({
-      type: 'error',
-      text1: 'No Todos Found',
     });
   };
 
@@ -202,6 +215,11 @@ const styles = StyleSheet.create({
     width: wp('3%'),
     height: hp('3%'),
     marginHorizontal: hp('3%'),
+    marginVertical: hp('1%'),
+  },
+  icon2: {
+    width: wp('3%'),
+    height: hp('3%'),
     marginVertical: hp('1%'),
   },
 });

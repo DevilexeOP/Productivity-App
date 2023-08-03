@@ -10,14 +10,11 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {bindActionCreators} from 'redux';
 import {
-  updateAllTodos,
-  updateTodoDescription,
-  updateTodoTitle,
-  updateTodoStatus,
-  updateTodoPriority,
+  updateNotesDescription,
+  updateNotesTitle,
 } from '../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
@@ -25,37 +22,30 @@ import {
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {Picker} from '@react-native-picker/picker';
 import {useRoute} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('screen');
-const UpdateTodos = ({
-  todoTitle,
-  todoDescription,
-  todoStatus,
-  todoPriority,
-  actions,
-  navigation,
-}) => {
+
+const UpdateNotes = ({notesTitle, notesDescription, actions, navigation}) => {
   const route = useRoute();
   const _id = route.params.id;
+
   useEffect(() => {
-    resetTodo();
-  }, []);
-  const handleUpdateTodo = async () => {
+    resetNote();
+  }, [resetNote]);
+
+  const handleUpdateNote = async () => {
     try {
       const res = await fetch(
-        `http://192.168.29.209:3000/todos/update/${_id}`,
+        `http://192.168.29.209:3000/notes/update/${_id}`,
         {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            todoTitle: todoTitle,
-            todoDescription: todoDescription,
-            todoPriority: todoPriority,
-            todoStatus: todoStatus,
+            title: notesTitle,
+            description: notesDescription,
           }),
         },
       );
@@ -63,52 +53,51 @@ const UpdateTodos = ({
       if (res.status === 200) {
         successToast();
         navigation.goBack();
-        resetTodo();
+        resetNote();
         console.log(updatedData);
       } else {
-        console.log('Error ');
+        console.log('error');
       }
     } catch (error) {
       errorToast();
-      console.log('Error' + error);
+      console.log('Error updating Note ' + error);
     }
   };
 
   const successToast = () => {
     Toast.show({
       type: 'success',
-      text1: 'Successfully updated your Todo ',
+      text1: 'Successfully updated your Note ',
     });
   };
 
   const errorToast = () => {
     Toast.show({
       type: 'error',
-      text1: 'Error updating your Todo',
+      text1: 'Error updating your Note',
     });
   };
-  const resetTodo = () => {
-    actions.updateTodoTitle('');
-    actions.updateTodoDescription('');
-    actions.updateTodoStatus('');
-    actions.updateTodoPriority('');
-  };
+
+  const resetNote = useCallback(() => {
+    actions.updateNotesTitle('');
+    actions.updateNotesDescription('');
+  }, [actions]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}> Update To-Do </Text>
+        <Text style={styles.headerText}>Update Note </Text>
       </View>
       <ScrollView>
         <View>
           <View style={styles.inputContainer}>
             <TextInput
-              placeholder="Task Title"
+              placeholder="Note Title"
               placeholderTextColor={'white'}
               style={styles.inputText}
-              value={todoTitle}
+              value={notesTitle}
               onChangeText={text => {
-                actions.updateTodoTitle(text);
+                actions.updateNotesTitle(text);
               }}
             />
           </View>
@@ -116,45 +105,20 @@ const UpdateTodos = ({
             <View style={styles.inputContainer2}>
               <TextInput
                 multiline={true}
-                placeholder="Task Brief"
+                placeholder="Your Note"
                 placeholderTextColor={'grey'}
                 style={styles.inputText2}
-                value={todoDescription}
+                value={notesDescription}
                 onChangeText={text => {
-                  actions.updateTodoDescription(text);
+                  actions.updateNotesDescription(text);
                 }}
               />
             </View>
           </View>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={todoStatus}
-              onValueChange={item => {
-                actions.updateTodoStatus(item);
-              }}>
-              <Picker.Item label="Select Progress" value="" />
-              <Picker.Item label="Completed" value="Completed" />
-              <Picker.Item label="In-Progress" value="In-Progress" />
-              <Picker.Item label="In-Complete" value="InComplete" />
-            </Picker>
-          </View>
-          <View style={styles.pickerContainer2}>
-            <Picker
-              selectedValue={todoPriority}
-              onValueChange={item => {
-                actions.updateTodoPriority(item);
-              }}>
-              <Picker.Item label="Select Priority" value="" />
-              <Picker.Item label="High" value="High" />
-              <Picker.Item label="Medium" value="Medium" />
-              <Picker.Item label="Low" value="Low" />
-              <Picker.Item label="None" value="None" />
-            </Picker>
-          </View>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.notesButton} onPress={handleUpdateTodo}>
-        <Text style={styles.notesText}>Update Todo</Text>
+      <TouchableOpacity style={styles.notesButton} onPress={handleUpdateNote}>
+        <Text style={styles.notesText}>Update Note</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -228,24 +192,18 @@ const styles = StyleSheet.create({
 
 //map state to props
 const mapStateToProps = state => ({
-  todoTitle: state.addTodo.todoTitle,
-  todoDescription: state.addTodo.todoDescription,
-  todoStatus: state.addTodo.todoStatus,
-  todoPriority: state.addTodo.todoPriority,
+  notesTitle: state.addNote.notesTitle,
+  notesDescription: state.addNote.notesDescription,
 });
-
 // map dispatch to props
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      updateTodoTitle,
-      updateTodoDescription,
-      updateTodoPriority,
-      updateTodoStatus,
-      updateAllTodos,
+      updateNotesTitle,
+      updateNotesDescription,
     },
     dispatch,
   ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateTodos);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateNotes);
