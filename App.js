@@ -21,6 +21,7 @@ import Login from './src/Components/OnBoard/Login';
 
 // Animation Screens
 import RegisterSuccess from './src/Components/OnBoard/Animations/RegisterSuccess';
+import RegisterFailed from './src/Components/OnBoard/Animations/RegisterFailed';
 
 const Stack = createStackNavigator();
 export default class App extends Component {
@@ -45,6 +46,11 @@ export default class App extends Component {
             <Stack.Screen
               name="RegisterSuccess"
               component={RegisterSuccess}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RegisterFail"
+              component={RegisterFailed}
               options={{headerShown: false}}
             />
             <Stack.Screen

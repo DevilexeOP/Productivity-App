@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -17,6 +17,13 @@ import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Register = ({navigation}) => {
+  //use effect to clear values
+  useEffect(() => {
+    actions.updateName('');
+    actions.updateUserName('');
+    actions.updateEmail('');
+    actions.updatePassword('');
+  }, []);
   // state management
   const name = useSelector(state => state.user.name);
   const username = useSelector(state => state.user.username);
@@ -60,17 +67,21 @@ const Register = ({navigation}) => {
       if (res.status === 201) {
         console.log('ok' + JSON.stringify(data));
         setTimeout(() => {
-          navigation.replace('RegisterSuccess'); // using replace so they dont go back to the register page if they click back
+          navigation.replace('RegisterSuccess'); // using replace so they don't go back to the register page if they click back
         }, 1000);
       } else if (res.status === 400) {
         console.log('Error ? :', data.message);
+      } else if (res.status === 500) {
+        navigation.navigate('RegisterFail');
       } else {
         console.log('Error3' + res.status);
       }
     } catch (error) {
       console.log('Error2' + error);
+      navigation.navigate('RegisterFail'); // Navigate to 'RegisterFail' screen on any other error, including network errors
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -259,7 +270,7 @@ const styles = StyleSheet.create({
     marginLeft: wp('2%'),
   },
   loginText: {
-    color: '#DCA61B',
+    color: '#D69D0C',
     fontSize: wp('3.5%'),
   },
 });

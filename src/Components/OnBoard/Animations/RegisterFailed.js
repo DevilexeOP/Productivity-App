@@ -9,25 +9,25 @@ import {
 const RegisterFailed = ({navigation}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Login'); // using replace so they dont go back to the success page if they click back
-    }, 5000);
+      navigation.replace('Register'); // using replace so they dont go back to the success page if they click back
+    }, 10000);
     return () => clearTimeout(timer);
   }, [navigation]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Registered Successfully </Text>
+        <Text style={styles.headerText}>Registration Failed </Text>
       </View>
       <View style={styles.animationContainer}>
         <LottieView
-          source={require('../../../Assets/Animations/success.json')}
+          source={require('../../../Assets/Animations/failed.json')}
           style={styles.animation}
           autoPlay={true}
           loop={false}
         />
       </View>
       <View style={styles.redirectContainer}>
-        <Text style={styles.redirectText}>Redirecting to Login </Text>
+        <Text style={styles.redirectText}>Try Registering again </Text>
         <LottieView
           style={styles.animation2}
           autoPlay={true}
