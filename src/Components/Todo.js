@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
 import {
   Text,
   View,
@@ -101,45 +103,79 @@ const TodoScreen = ({navigation}) => {
       </View>
       <ScrollView>
         <View>
-          {allTodos.map(todo => (
-            <View style={styles.todoContainer} key={todo._id}>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
-              </View>
-              <Text style={styles.todoDescription}>{todo.todoDescription}</Text>
-              {todo.todoStatus ? (
-                <Text style={styles.todoStatus}>
-                  Completed : {todo.todoStatus}
+          {allTodos.length === 0 ? (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white', fontSize: wp('4%')}}>
+                  No To-Dos Found
                 </Text>
-              ) : (
-                <Text style={styles.todoStatus}>Completed : No</Text>
-              )}
-              {todo.todoPriority ? (
-                <Text style={styles.todoPriortiy}>
-                  Priority : {todo.todoPriority}
-                </Text>
-              ) : (
-                <Text style={styles.todoPriortiy}>Priority : None</Text>
-              )}
-              <View>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigateToUpdateTodo(
-                      todo._id,
-                      todo.todoTitle,
-                      todo.todoDescription,
-                      todo.todoPriority,
-                      todo.todoStatus,
-                    )
-                  }>
-                  <Image
-                    style={styles.icon}
-                    source={require('../Assets/edit.png')}
-                  />
-                </TouchableOpacity>
               </View>
-            </View>
-          ))}
+            </>
+          ) : (
+            <>
+              {allTodos.map(todo => (
+                <View style={styles.todoContainer} key={todo._id}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
+                  </View>
+                  <Text style={styles.todoDescription}>
+                    {todo.todoDescription}
+                  </Text>
+                  {todo.todoStatus ? (
+                    <Text style={styles.todoStatus}>
+                      Completed : {todo.todoStatus}
+                    </Text>
+                  ) : (
+                    <Text style={styles.todoStatus}>Completed : No</Text>
+                  )}
+                  {todo.todoPriority ? (
+                    <Text style={styles.todoPriortiy}>
+                      Priority : {todo.todoPriority}
+                    </Text>
+                  ) : (
+                    <Text style={styles.todoPriortiy}>Priority : None</Text>
+                  )}
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'flex-end',
+                      flexDirection: 'row-reverse',
+                    }}>
+                    <View>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigateToUpdateTodo(
+                            todo._id,
+                            todo.todoTitle,
+                            todo.todoDescription,
+                            todo.todoPriority,
+                            todo.todoStatus,
+                          )
+                        }>
+                        <Image
+                          style={styles.icon}
+                          source={require('../Assets/edit.png')}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View>
+                      <TouchableOpacity onPress={() => deleteTodo(todo._id)}>
+                        <Image
+                          style={styles.icon2}
+                          source={require('../Assets/bin.png')}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </>
+          )}
         </View>
       </ScrollView>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
