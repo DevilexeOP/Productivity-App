@@ -14,8 +14,12 @@ import NotesScreen from './src/Components/Notes.js';
 import AddTodos from './src/Components/AddTodos';
 import UpdateTodos from './src/Components/UpdateTodos';
 
-const Stack = createStackNavigator();
+// OnBoarding Screens
+import OnBoarding from './src/Components/OnBoard/OnBoarding';
+import Register from './src/Components/OnBoard/Register';
+import Login from './src/Components/OnBoard/Login';
 
+const Stack = createStackNavigator();
 export default class App extends Component {
   componentDidMount() {
     Immersive.setImmersive(true);
@@ -25,6 +29,21 @@ export default class App extends Component {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen
+              name="OnBoard"
+              component={OnBoarding}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{headerShown: false}}
+            />
             <Stack.Screen
               name="Home"
               component={HomeScreen}
