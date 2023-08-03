@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
 import {
   Text,
   View,
@@ -9,18 +7,18 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, { useEffect } from 'react';
-import { updateAllTodos } from '../Redux/Action-Creators';
+import React, {useEffect} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import {updateAllTodos} from '../Redux/Action-Creators';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
-const TodoScreen = ({ navigation }) => {
+const TodoScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const allTodos = useSelector((state) => state.addTodo.allTodos);
+  const allTodos = useSelector(state => state.addTodo.allTodos);
 
   useEffect(() => {
     getTodos();
@@ -52,13 +50,13 @@ const TodoScreen = ({ navigation }) => {
     navigation.navigate('AddTodo');
   };
 
-  const navigateToUpdateTodo = (_id,title,description,status,priority) => {
+  const navigateToUpdateTodo = (_id, title, description, status, priority) => {
     navigation.navigate('UpdateTodo', {
       id: _id,
-      title:title,
-      description:description,
-      status:status,
-      priority:priority
+      title: title,
+      description: description,
+      status: status,
+      priority: priority,
     });
   };
 
@@ -90,14 +88,12 @@ const TodoScreen = ({ navigation }) => {
       </View>
       <ScrollView>
         <View>
-          {allTodos.map((todo) => (
+          {allTodos.map(todo => (
             <View style={styles.todoContainer} key={todo._id}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{flexDirection: 'row'}}>
                 <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
               </View>
-              <Text style={styles.todoDescription}>
-                {todo.todoDescription}
-              </Text>
+              <Text style={styles.todoDescription}>{todo.todoDescription}</Text>
               {todo.todoStatus ? (
                 <Text style={styles.todoStatus}>
                   Completed : {todo.todoStatus}
@@ -113,23 +109,28 @@ const TodoScreen = ({ navigation }) => {
                 <Text style={styles.todoPriortiy}>Priority : None</Text>
               )}
               <View>
-                  <TouchableOpacity onPress={() => navigateToUpdateTodo(
-                    todo._id,todo.todoTitle,todo.todoDescription,todo.todoPriority,todo.todoStatus
-                    )}>
-                    <Image
-                      style={styles.icon}
-                      source={require('../Assets/edit.png')}
-                    />
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigateToUpdateTodo(
+                      todo._id,
+                      todo.todoTitle,
+                      todo.todoDescription,
+                      todo.todoPriority,
+                      todo.todoStatus,
+                    )
+                  }>
+                  <Image
+                    style={styles.icon}
+                    source={require('../Assets/edit.png')}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           ))}
         </View>
       </ScrollView>
-      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <TouchableOpacity
-          style={styles.todoButton}
-          onPress={navigateToAddTodo}>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity style={styles.todoButton} onPress={navigateToAddTodo}>
           <Text style={styles.todoText}>Add a Todo? </Text>
         </TouchableOpacity>
       </View>
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   allTodos: state.addTodo.allTodos, // Map allNotes state to props
 });
 

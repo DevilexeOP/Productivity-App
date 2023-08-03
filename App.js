@@ -19,6 +19,9 @@ import OnBoarding from './src/Components/OnBoard/OnBoarding';
 import Register from './src/Components/OnBoard/Register';
 import Login from './src/Components/OnBoard/Login';
 
+// Animation Screens
+import RegisterSuccess from './src/Components/OnBoard/Animations/RegisterSuccess';
+
 const Stack = createStackNavigator();
 export default class App extends Component {
   componentDidMount() {
@@ -37,6 +40,11 @@ export default class App extends Component {
             <Stack.Screen
               name="Register"
               component={Register}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RegisterSuccess"
+              component={RegisterSuccess}
               options={{headerShown: false}}
             />
             <Stack.Screen

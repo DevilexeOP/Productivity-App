@@ -12,10 +12,64 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {actionCreators} from '../../Redux/index';
+import {bindActionCreators} from 'redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Register = ({navigation}) => {
+  // state management
+  const name = useSelector(state => state.user.name);
+  const username = useSelector(state => state.user.username);
+  const email = useSelector(state => state.user.email);
+  const password = useSelector(state => state.user.password);
+  //handle states
+  const dispatch = useDispatch();
+  const actions = bindActionCreators(actionCreators, dispatch);
+  const nameHandler = name => {
+    actions.updateName(name);
+  };
+  const userNameHandler = username => {
+    actions.updateUserName(username);
+  };
+  const emailHandler = email => {
+    actions.updateEmail(email);
+  };
+  const passwordHandler = password => {
+    actions.updatePassword(password);
+  };
+  // navigation handler
   const navigateToLogin = () => {
     navigation.navigate('Login');
+  };
+  // handle creating account
+  const handleCreateAccount = async (Name, Username, Email, Password) => {
+    try {
+      const res = await fetch('http://192.168.29.154:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: Name,
+          username: Username,
+          email: Email,
+          password: Password,
+        }),
+      });
+      const data = await res.json();
+      if (res.status === 201) {
+        console.log('ok' + JSON.stringify(data));
+        setTimeout(() => {
+          navigation.replace('RegisterSuccess'); // using replace so they dont go back to the register page if they click back
+        }, 1000);
+      } else if (res.status === 400) {
+        console.log('Error ? :', data.message);
+      } else {
+        console.log('Error3' + res.status);
+      }
+    } catch (error) {
+      console.log('Error2' + error);
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -39,12 +93,16 @@ const Register = ({navigation}) => {
         <View>
           <Text style={styles.inputHeader}>Name</Text>
           <TextInput
+            value={name}
+            onChangeText={nameHandler}
             style={styles.input}
             placeholder="Your name"
             keyboardType="default"
           />
           <Text style={styles.inputHeader}>Username</Text>
           <TextInput
+            value={username}
+            onChangeText={userNameHandler}
             style={styles.input}
             placeholder="Pick a unqiue username"
             keyboardType="default"
@@ -54,6 +112,8 @@ const Register = ({navigation}) => {
             style={styles.input}
             keyboardType="email-address"
             placeholder="Abc@gmail.com"
+            value={email}
+            onChangeText={emailHandler}
           />
           <Text style={styles.inputHeader}>Password</Text>
           <TextInput
@@ -61,11 +121,17 @@ const Register = ({navigation}) => {
             placeholder="Pick a password with atleast 6 characters"
             keyboardType="default"
             secureTextEntry={true}
+            value={password}
+            onChangeText={passwordHandler}
           />
         </View>
       </View>
       <View style={styles.registerContainer}>
-        <TouchableOpacity style={styles.registerBtn}>
+        <TouchableOpacity
+          style={styles.registerBtn}
+          onPress={() => {
+            handleCreateAccount(name, username, email, password);
+          }}>
           <Text style={styles.registerText}>Create Account </Text>
         </TouchableOpacity>
       </View>

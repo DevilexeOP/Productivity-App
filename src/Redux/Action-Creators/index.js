@@ -8,11 +8,11 @@ export const updateName = name => {
   };
 };
 
-export const updateUserName = userName => {
+export const updateUserName = username => {
   return dispatch => {
     dispatch({
       type: 'updateUserName',
-      payload: userName,
+      payload: username,
     });
   };
 };

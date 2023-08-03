@@ -1,6 +1,6 @@
 const initialState = {
   name: '',
-  userName: '',
+  username: '',
   email: '',
   password: '',
 };
@@ -10,7 +10,7 @@ const reducer = (state = initialState, action) => {
     case 'updateName':
       return {...state, name: action.payload};
     case 'updateUserName':
-      return {...state, userName: action.payload};
+      return {...state, username: action.payload};
     case 'updateEmail':
       return {...state, email: action.payload};
     case 'updatePassword':

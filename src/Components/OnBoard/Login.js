@@ -17,7 +17,7 @@ const Login = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text>Register</Text>
+        <Text>Login</Text>
       </View>
     </SafeAreaView>
   );
