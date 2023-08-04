@@ -1,2 +1,2 @@
 /* eslint-disable prettier/prettier */
-export * as actionCreators from './action-creators/index';
+export * as actionCreators from './Action-Creators/index';

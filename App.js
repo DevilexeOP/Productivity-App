@@ -13,10 +13,17 @@ import AddNotes from './src/Components/AddNotes';
 import NotesScreen from './src/Components/Notes.js';
 import AddTodos from './src/Components/AddTodos';
 import UpdateTodos from './src/Components/UpdateTodos';
-import UpdateNotes from './src/Components/UpdateNotes';
+
+// OnBoarding Screens
+import OnBoarding from './src/Components/OnBoard/OnBoarding';
+import Register from './src/Components/OnBoard/Register';
+import Login from './src/Components/OnBoard/Login';
+
+// Animation Screens
+import RegisterSuccess from './src/Components/OnBoard/Animations/RegisterSuccess';
+import RegisterFailed from './src/Components/OnBoard/Animations/RegisterFailed';
 
 const Stack = createStackNavigator();
-
 export default class App extends Component {
   componentDidMount() {
     Immersive.setImmersive(true);
@@ -26,6 +33,31 @@ export default class App extends Component {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen
+              name="OnBoard"
+              component={OnBoarding}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RegisterSuccess"
+              component={RegisterSuccess}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RegisterFail"
+              component={RegisterFailed}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{headerShown: false}}
+            />
             <Stack.Screen
               name="Home"
               component={HomeScreen}
@@ -56,11 +88,6 @@ export default class App extends Component {
               component={UpdateTodos}
               options={{headerShown: false}}
             />
-            <Stack.Screen
-              name="UpdateNotes"
-              component={UpdateNotes}
-              options={{headerShown: false}}
-            />
           </Stack.Navigator>
         </NavigationContainer>
         <Toast />
@@ -68,3 +95,4 @@ export default class App extends Component {
     );
   }
 }
+

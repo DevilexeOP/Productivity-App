@@ -1,4 +1,41 @@
-/* eslint-disable prettier/prettier */
+//  register action creators
+export const updateName = name => {
+  return dispatch => {
+    dispatch({
+      type: 'updateName',
+      payload: name,
+    });
+  };
+};
+
+export const updateUserName = username => {
+  return dispatch => {
+    dispatch({
+      type: 'updateUserName',
+      payload: username,
+    });
+  };
+};
+
+export const updateEmail = email => {
+  return dispatch => {
+    dispatch({
+      type: 'updateEmail',
+      payload: email,
+    });
+  };
+};
+
+export const updatePassword = password => {
+  return dispatch => {
+    dispatch({
+      type: 'updatePassword',
+      payload: password,
+    });
+  };
+};
+
+// notes action creators
 export const updateNotesTitle = notesTitle => {
   return dispatch => {
     dispatch({
@@ -26,6 +63,7 @@ export const updateNotesMedia = notesMedia => {
   };
 };
 
+// Tod0s action creators
 export const updateAllNotes = allNotes => {
   return dispatch => {
     dispatch({

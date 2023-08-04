@@ -1,4 +1,4 @@
-package com.fullstacktodo;
+package com.devilop.beproductive;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
