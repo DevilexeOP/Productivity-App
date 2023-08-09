@@ -1,6 +1,8 @@
 # Productivity-App
 Productivity  - App which has Features like Adding Notes &amp; To-Dos 
 <br>
+!-- Still in development phase repo will be updated soon 
+<br>
 Tech Stack <br>
   - React Native (Frontend)
   - State Management (Redux)
