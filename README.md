@@ -1,7 +1,7 @@
 # Productivity-App
 Productivity  - App which has Features like Adding Notes &amp; To-Dos 
 <br>
-!-- Still in development phase repo will be updated soon 
+!-- Still in development phase repo will be updated soon --! 
 <br>
 Tech Stack <br>
   - React Native (Frontend)
@@ -9,6 +9,9 @@ Tech Stack <br>
   - Node js (Backend)
   - Database (Mongo)
 <br>
+Screenshots <br>
+<br>
+<img src="./screenshots/onBoard.jpeg"/>
 Features <br>
  - Add Notes & Todo's <br>
  - Update and Delete your Notes & Todos as well <br> 
