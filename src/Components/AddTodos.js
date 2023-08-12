@@ -26,7 +26,7 @@ import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
 import {bindActionCreators} from 'redux';
-
+import Snackbar from 'react-native-snackbar';
 const {width, height} = Dimensions.get('window');
 
 const AddTodos = ({
@@ -36,17 +36,20 @@ const AddTodos = ({
   todoPriority,
   actions,
   navigation,
+  route,
 }) => {
   useEffect(() => {
     resetTodo();
   }, []);
+  const {jwtToken} = route.params;
   const handleAddTodo = async () => {
     try {
-      const res = await fetch('http://192.168.29.209:3000/todos/add', {
+      const res = await fetch('http://13.235.13.123:8082/user/addTodos', {
         // 209 for linux , 154 pc
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
         },
         body: JSON.stringify({
           todoTitle: todoTitle,
@@ -60,10 +63,24 @@ const AddTodos = ({
         successToast();
         navigation.goBack();
         console.log(data);
+      } else if (res.status < 200 || res.status >= 300) {
+        console.log('ERROR ' + data.message);
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
       }
     } catch (error) {
       errorToast();
       console.log('Error ' + error);
+      Snackbar.show({
+        text: error,
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#FFB800',
+        textColor: 'black',
+      });
     }
   };
 

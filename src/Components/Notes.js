@@ -1,6 +1,6 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+/* eslint-disable prettier/prettier */
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector, connect} from 'react-redux';
 import {
   Text,
@@ -18,26 +18,35 @@ import {
 import Toast from 'react-native-toast-message';
 import {updateAllNotes} from '../Redux/Action-Creators';
 
-const NotesScreen = ({navigation}) => {
+const NotesScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const allNotes = useSelector(state => state.addNote.allNotes);
+  const {jwtToken} = route.params;
 
   useEffect(() => {
+    console.log('NOTES 1 ' + jwtToken);
     getNotes();
     navigation.addListener('focus', () => {
       getNotes();
+      console.log('NOTES 2 ' + jwtToken);
     });
+    console.log('NOTES 3 ' + jwtToken);
   }, []);
 
-  const navigateToAddNotes = () => {
-    navigation.navigate('AddNotes');
-  };
-
   const getNotes = async () => {
+    // Pass jwtToken as a parameter
+    if (!jwtToken) {
+      console.log(
+        'Token is not available yet. ------------------------ ' + jwtToken,
+      );
+      return;
+    }
     try {
-      const response = await fetch('http://192.168.29.209:3000/notes', {
-        // 209 for linux , 154 pc
+      const response = await fetch('http://13.235.13.123:8082/user/getNotes', {
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
       });
       const notes = await response.json();
       if (notes.length === 0) {
@@ -45,6 +54,8 @@ const NotesScreen = ({navigation}) => {
       } else if (response.status === 200) {
         dispatch(updateAllNotes(notes));
         successToast();
+      } else if (response.status < 200 || response.status >= 300) {
+        console.log('ERROR ' + response.status + ' - ' + response.statusText);
       }
     } catch (error) {
       errorToast();
@@ -52,12 +63,21 @@ const NotesScreen = ({navigation}) => {
     }
   };
 
+  const navigateToAddNotes = token => {
+    navigation.navigate('AddNotes', {
+      jwtToken: token,
+    });
+  };
+
   const deleteNote = async _id => {
     try {
       const res = await fetch(
-        `http://192.168.29.209:3000/notes/delete/${_id}`,
+        `http://13.235.13.123:8082/user/deleteNotes/${_id}`,
         {
           method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
         },
       );
       const data = await res.json();
@@ -72,8 +92,16 @@ const NotesScreen = ({navigation}) => {
     }
   };
 
-  const navigateToUpdateNotes = (_id, notesTitle, notesDescription) => {
+  const navigateToUpdateNotes = (
+    jwtToken,
+    _id,
+    notesTitle,
+    notesDescription,
+  ) => {
+    console.log('TITLE NOTES Screen  ' + notesTitle);
+    console.log('DESC  NOTES Screen ' + notesDescription);
     navigation.navigate('UpdateNotes', {
+      jwtToken: jwtToken,
       id: _id,
       notesTitle: notesTitle,
       notesDescription: notesDescription,
@@ -101,69 +129,81 @@ const NotesScreen = ({navigation}) => {
       </View>
       <ScrollView>
         <View>
-          {allNotes.length === 0 ? (
-            <>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={{color: 'white', fontSize: wp('4%')}}>
-                  No Notes Found
-                </Text>
-              </View>
-            </>
-          ) : (
-            <>
-              {allNotes.map(note => (
-                <View key={note._id}>
-                  <View style={styles.notesContainer}>
-                    <Text style={styles.notesTitle}>{note.title}</Text>
-                    <Text style={styles.noteDescription}>
-                      {note.description}
-                    </Text>
-                    <View
-                      style={{
-                        flex: 1,
-                        alignItems: 'flex-end',
-                        flexDirection: 'row-reverse',
-                      }}>
-                      <View>
-                        <TouchableOpacity
-                          onPress={() =>
-                            navigateToUpdateNotes(
-                              note._id,
-                              note.title,
-                              note.description,
-                            )
-                          }>
-                          <Image
-                            style={styles.icon}
-                            source={require('../Assets/edit.png')}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                      <View>
-                        <TouchableOpacity onPress={() => deleteNote(note._id)}>
-                          <Image
-                            style={styles.icon2}
-                            source={require('../Assets/bin.png')}
-                          />
-                        </TouchableOpacity>
-                      </View>
+          {allNotes && allNotes.length === 0 ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{color: 'white', fontSize: wp('4%')}}>
+                No Notes Found
+              </Text>
+            </View>
+          ) : allNotes ? (
+            allNotes.map(note => (
+              <View key={note._id}>
+                <View style={styles.notesContainer}>
+                  <Text style={styles.notesTitle}>{note.title}</Text>
+                  <Text style={styles.noteDescription}>{note.description}</Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'flex-end',
+                      flexDirection: 'row-reverse',
+                    }}>
+                    <View>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigateToUpdateNotes(
+                            jwtToken,
+                            note._id,
+                            note.title,
+                            note.description,
+                          )
+                        }>
+                        <Image
+                          style={styles.icon}
+                          source={require('../Assets/edit.png')}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => {
+                          deleteNote(note._id);
+                        }}>
+                        <Image
+                          style={styles.icon2}
+                          source={require('../Assets/bin.png')}
+                        />
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </View>
-              ))}
-            </>
+              </View>
+            ))
+          ) : (
+            /* ... JSX for loading state (optional) ... */
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{color: 'white', fontSize: wp('4%')}}>
+                Loading ...
+              </Text>
+            </View>
           )}
         </View>
       </ScrollView>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity
           style={styles.notesButton}
-          onPress={navigateToAddNotes}>
+          onPress={() => {
+            navigateToAddNotes(jwtToken);
+          }}>
           <Text style={styles.notesText}>Add a note ? </Text>
         </TouchableOpacity>
       </View>
@@ -222,15 +262,17 @@ const styles = StyleSheet.create({
     marginHorizontal: hp('2%'),
   },
   icon: {
-    width: wp('3%'),
-    height: hp('3%'),
-    marginHorizontal: hp('3%'),
+    width: wp('2%'),
+    height: hp('2%'),
+    marginHorizontal: hp('3.5%'),
     marginVertical: hp('1%'),
+    padding: wp('3%'),
   },
   icon2: {
-    width: wp('3%'),
-    height: hp('3%'),
+    width: wp('2.5%'),
+    height: hp('2.5%'),
     marginVertical: hp('1%'),
+    padding: wp('3%'),
   },
 });
 

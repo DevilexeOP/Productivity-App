@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,45 +11,70 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import LottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class HomeScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  navigateToNotes = () => {
-    this.props.navigation.navigate('Notes');
+const HomeScreen = ({navigation}) => {
+  const [token, setToken] = useState('');
+  useEffect(() => {
+    getToken();
+  }, []);
+  const getToken = async () => {
+    try {
+      const jwtToken = await AsyncStorage.getItem('Jwt');
+      setToken(jwtToken);
+    } catch (error) {
+      console.log('could not fetch token ' + error);
+    }
   };
 
-  navigateToToDo = () => {
-    this.props.navigation.navigate('Todo');
+  const navigateToNotes = token => {
+    navigation.navigate('Notes', {
+      jwtToken: token,
+    });
   };
 
-  render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <View>
-            <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>Be Productive !</Text>
-            </View>
+  const navigateToToDo = token => {
+    navigation.navigate('Todo', {
+      jwtToken: token,
+    });
+  };
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>Be Productive !</Text>
+          </View>
+          <View style={styles.animationContainer}>
+            <LottieView
+              source={require('../Assets/Animations/onBoardHome.json')}
+              style={styles.animation}
+              autoPlay={true}
+              loop={true}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.notesButton}
-              onPress={this.navigateToNotes}>
-              <Text style={styles.notesText}>Create a Note ! </Text>
+              onPress={() => {
+                navigateToNotes(token);
+              }}>
+              <Text style={styles.notesText}>Add a Note </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.todoButton}
-              onPress={this.navigateToToDo}>
-              <Text style={styles.todoText}>Create a To-do !</Text>
+              onPress={() => {
+                navigateToToDo(token);
+              }}>
+              <Text style={styles.todoText}>Add a To-do</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -61,20 +85,24 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: null,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: wp('30%'),
+  },
   headerText: {
-    fontSize: wp('5%'),
+    fontSize: wp('6.5%'),
     fontWeight: 'bold',
     marginVertical: hp('5%'),
     marginHorizontal: wp('5%'),
     color: '#dbac00',
   },
   notesButton: {
-    width: wp('70%'),
+    width: wp('40%'),
     height: hp('6%'),
     borderRadius: 10,
     backgroundColor: '#dbac00',
-    marginVertical: hp('3%'),
-    marginHorizontal: wp('7%'),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -85,11 +113,10 @@ const styles = StyleSheet.create({
   },
   todoButton: {
     borderRadius: 10,
-    width: wp('70%'),
+    width: wp('40%'),
     height: hp('6%'),
     backgroundColor: '#dbac00',
-    marginVertical: hp('1%'),
-    marginHorizontal: wp('7%'),
+    marginHorizontal: wp('2%'),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -98,4 +125,15 @@ const styles = StyleSheet.create({
     fontSize: wp('3%'),
     fontWeight: 'bold',
   },
+  animationContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: hp('50%'),
+  },
+  animation: {
+    width: wp('120%'),
+    height: hp('120%'),
+  },
 });
+
+export default HomeScreen;

@@ -18,27 +18,40 @@ import {
 import {connect, useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
-const TodoScreen = ({navigation}) => {
+const TodoScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const allTodos = useSelector(state => state.addTodo.allTodos);
+  const allTodo = useSelector(state => state.addTodo.allTodos);
+  const {jwtToken} = route.params;
 
   useEffect(() => {
+    console.log('TODOS 1 ' + jwtToken);
     getTodos();
     navigation.addListener('focus', () => {
       getTodos();
+      console.log('TODOS 2 ' + jwtToken);
     });
+    console.log('TODOS 3' + jwtToken);
   }, []);
 
   const getTodos = async () => {
+    if (!jwtToken) {
+      console.log(
+        'Token is not available yet. ------------------------ ' + jwtToken,
+      );
+      return;
+    }
     try {
-      const response = await fetch('http://192.168.29.209:3000/todos', {
+      const response = await fetch('http://13.235.13.123:8082/user/getTodos', {
         // 209 for linux , 154 pc
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
       });
       const todos = await response.json();
       if (todos.length === 0) {
         console.log('Todos not found');
-      } else if (response.status === 201) {
+      } else if (response.status === 200) {
         dispatch(updateAllTodos(todos));
         successToast();
       }
@@ -51,14 +64,17 @@ const TodoScreen = ({navigation}) => {
   const deleteTodo = async _id => {
     try {
       const res = await fetch(
-        `http://192.168.29.209:3000/todos/delete/${_id}`,
+        `http://13.235.13.123:8082/user/deleteTodos/${_id}`,
         {
           method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
         },
       );
       const data = await res.json();
       if (res.status === 200) {
-        dispatch(updateAllTodos(allTodos.filter(todo => todo._id !== _id)));
+        dispatch(updateAllTodos(allTodo.filter(todo => todo._id !== _id)));
         console.log(data);
       } else {
         console.log('Error couldnt remove todo');
@@ -68,17 +84,27 @@ const TodoScreen = ({navigation}) => {
     }
   };
 
-  const navigateToAddTodo = () => {
-    navigation.navigate('AddTodo');
+  const navigateToAddTodo = token => {
+    navigation.navigate('AddTodo', {
+      jwtToken: token,
+    });
   };
 
-  const navigateToUpdateTodo = (_id, title, description, status, priority) => {
+  const navigateToUpdateTodo = (
+    jwtToken,
+    _id,
+    title,
+    description,
+    status,
+    priority,
+  ) => {
     navigation.navigate('UpdateTodo', {
+      jwtToken: jwtToken,
       id: _id,
-      title: title,
-      description: description,
-      status: status,
-      priority: priority,
+      todoTitle: title,
+      todoDescription: description,
+      todoStatus: status,
+      todoPriority: priority,
     });
   };
 
@@ -103,7 +129,7 @@ const TodoScreen = ({navigation}) => {
       </View>
       <ScrollView>
         <View>
-          {allTodos.length === 0 ? (
+          {allTodo && allTodo.length === 0 ? (
             <>
               <View
                 style={{
@@ -116,9 +142,9 @@ const TodoScreen = ({navigation}) => {
                 </Text>
               </View>
             </>
-          ) : (
+          ) : allTodo ? (
             <>
-              {allTodos.map(todo => (
+              {allTodo.map(todo => (
                 <View style={styles.todoContainer} key={todo._id}>
                   <View style={{flexDirection: 'row'}}>
                     <Text style={styles.todoTitle}>{todo.todoTitle}</Text>
@@ -150,11 +176,12 @@ const TodoScreen = ({navigation}) => {
                       <TouchableOpacity
                         onPress={() =>
                           navigateToUpdateTodo(
+                            jwtToken,
                             todo._id,
                             todo.todoTitle,
                             todo.todoDescription,
-                            todo.todoPriority,
                             todo.todoStatus,
+                            todo.todoPriority,
                           )
                         }>
                         <Image
@@ -175,11 +202,28 @@ const TodoScreen = ({navigation}) => {
                 </View>
               ))}
             </>
+          ) : (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: 'white', fontSize: wp('4%')}}>
+                  Loading ...
+                </Text>
+              </View>
+            </>
           )}
         </View>
       </ScrollView>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity style={styles.todoButton} onPress={navigateToAddTodo}>
+        <TouchableOpacity
+          style={styles.todoButton}
+          onPress={() => {
+            navigateToAddTodo(jwtToken);
+          }}>
           <Text style={styles.todoText}>Add a Todo? </Text>
         </TouchableOpacity>
       </View>
@@ -248,15 +292,17 @@ const styles = StyleSheet.create({
     marginHorizontal: hp('2%'),
   },
   icon: {
-    width: wp('3%'),
-    height: hp('3%'),
-    marginHorizontal: hp('3%'),
+    width: wp('2%'),
+    height: hp('2%'),
+    marginHorizontal: hp('3.5%'),
     marginVertical: hp('1%'),
+    padding: wp('3%'),
   },
   icon2: {
-    width: wp('3%'),
-    height: hp('3%'),
+    width: wp('2.5%'),
+    height: hp('2.5%'),
     marginVertical: hp('1%'),
+    padding: wp('3%'),
   },
 });
 

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import {
   Text,
@@ -10,7 +9,7 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {bindActionCreators} from 'redux';
 import {
   updateNotesDescription,
@@ -22,41 +21,46 @@ import {
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {useRoute} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('screen');
 
-const UpdateNotes = ({notesTitle, notesDescription, actions, navigation}) => {
-  const route = useRoute();
-  const _id = route.params.id;
-
+const UpdateNotes = ({actions, navigation, route}) => {
+  const {jwtToken, id, notesTitle, notesDescription} = route.params;
   useEffect(() => {
-    resetNote();
-  }, [resetNote]);
-
+    console.log('JWTTTTTTT   ' + jwtToken);
+  }, []);
+  const [title, setTitle] = useState(notesTitle);
+  const [description, setDescription] = useState(notesDescription);
+  const handleTitleChange = newTitle => {
+    setTitle(newTitle); // Update the title in the state
+    actions.updateNotesTitle(newTitle);
+  };
+  const handleDescriptionChange = newDescription => {
+    setDescription(newDescription);
+    actions.updateNotesDescription(newDescription);
+  };
   const handleUpdateNote = async () => {
     try {
       const res = await fetch(
-        `http://192.168.29.209:3000/notes/update/${_id}`,
+        `http://13.235.13.123:8082/user/updateNotes/${id}`,
         {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
           },
           body: JSON.stringify({
-            title: notesTitle,
-            description: notesDescription,
+            title: title,
+            description: description,
           }),
         },
       );
-      const updatedData = await res.json();
+      // const updatedData = await res.json();
       if (res.status === 200) {
         successToast();
         navigation.goBack();
-        resetNote();
-        console.log(updatedData);
-      } else {
-        console.log('error');
+      } else if (res.status < 200 || res.status >= 300) {
+        console.log('ERROR ' + res.status + ' - ' + res.statusText);
       }
     } catch (error) {
       errorToast();
@@ -78,11 +82,6 @@ const UpdateNotes = ({notesTitle, notesDescription, actions, navigation}) => {
     });
   };
 
-  const resetNote = useCallback(() => {
-    actions.updateNotesTitle('');
-    actions.updateNotesDescription('');
-  }, [actions]);
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -95,9 +94,9 @@ const UpdateNotes = ({notesTitle, notesDescription, actions, navigation}) => {
               placeholder="Note Title"
               placeholderTextColor={'white'}
               style={styles.inputText}
-              value={notesTitle}
-              onChangeText={text => {
-                actions.updateNotesTitle(text);
+              value={title}
+              onChangeText={newTitle => {
+                handleTitleChange(newTitle);
               }}
             />
           </View>
@@ -108,16 +107,20 @@ const UpdateNotes = ({notesTitle, notesDescription, actions, navigation}) => {
                 placeholder="Your Note"
                 placeholderTextColor={'grey'}
                 style={styles.inputText2}
-                value={notesDescription}
+                value={description}
                 onChangeText={text => {
-                  actions.updateNotesDescription(text);
+                  handleDescriptionChange(text);
                 }}
               />
             </View>
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.notesButton} onPress={handleUpdateNote}>
+      <TouchableOpacity
+        style={styles.notesButton}
+        onPress={() => {
+          handleUpdateNote();
+        }}>
         <Text style={styles.notesText}>Update Note</Text>
       </TouchableOpacity>
     </SafeAreaView>

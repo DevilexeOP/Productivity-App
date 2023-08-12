@@ -1,7 +1,5 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   TextInput,
   SafeAreaView,
@@ -12,116 +10,124 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import {bindActionCreators} from 'redux';
 import {
   updateNotesTitle,
   updateNotesDescription,
-  updateNotesMedia,
-  updateSaveNote,
-  updateAllNotes,
 } from '../Redux/Action-Creators/index';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
+import Snackbar from 'react-native-snackbar';
 
 const {width, height} = Dimensions.get('window');
 
-class AddNotes extends Component {
-  componentDidMount() {
-    this.resetNote();
-  }
-  handleSaveNote = async () => {
+const AddNotes = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const notesTitle = useSelector(state => state.addNote.notesTitle);
+  const notesDescription = useSelector(state => state.addNote.notesDescription);
+  const {jwtToken} = route.params;
+  useEffect(() => {
+    resetNote();
+  }, []);
+  const handleSaveNote = async () => {
     try {
-      const res = await fetch('http://192.168.29.209:3000/notes/add', { // 209 for linux , 154 pc
+      const res = await fetch('http://13.235.13.123:8082/user/addNotes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
         },
         body: JSON.stringify({
-          title: this.props.notesTitle,
-          description: this.props.notesDescription,
+          title: notesTitle,
+          description: notesDescription,
         }),
       });
       const data = await res.json();
-      if (res.status === 200) {
-        this.successToast();
-        this.props.navigation.goBack();
-        console.log(data);
+      if (res.status === 201) {
+        successToast();
+        navigation.goBack();
+      } else if (res.status < 200 || res.status >= 300) {
+        console.log('ERROR ' + data.message);
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
       }
     } catch (error) {
-      this.errorToast();
+      errorToast();
       console.log('Error ' + error);
+      Snackbar.show({
+        text: error,
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#FFB800',
+        textColor: 'black',
+      });
     }
   };
-  successToast = () => {
+
+  const successToast = () => {
     Toast.show({
       type: 'success',
       text1: 'Successfully added your note ',
     });
   };
-  errorToast = () => {
+
+  const errorToast = () => {
     Toast.show({
       type: 'error',
       text1: 'Error adding your note',
     });
   };
-  resetNote = () => {
-    this.props.updateNotesTitle('');
-    this.props.updateNotesDescription('');
+
+  const resetNote = () => {
+    dispatch(updateNotesTitle(''));
+    dispatch(updateNotesDescription(''));
   };
-  render() {
-    const {notesTitle, notesDescription, actions} = this.props;
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Create a Note </Text>
-        </View>
-        <ScrollView>
-          <View>
-            <View style={styles.inputContainer}>
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Create a Note </Text>
+      </View>
+      <ScrollView>
+        <View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Note Title"
+              placeholderTextColor={'white'}
+              style={styles.inputText}
+              value={notesTitle}
+              onChangeText={text => {
+                dispatch(updateNotesTitle(text));
+              }}
+            />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <View style={styles.inputContainer2}>
               <TextInput
-                placeholder="Note Title"
-                placeholderTextColor={'white'}
-                style={styles.inputText}
-                value={notesTitle}
+                multiline={true}
+                placeholder="Your Note"
+                placeholderTextColor={'grey'}
+                style={styles.inputText2}
+                value={notesDescription}
                 onChangeText={text => {
-                  actions.updateNotesTitle(text);
+                  dispatch(updateNotesDescription(text));
                 }}
               />
             </View>
-            <View style={{flexDirection: 'row'}}>
-              <View style={styles.inputContainer2}>
-                <TextInput
-                  multiline={true}
-                  placeholder="Your Note"
-                  placeholderTextColor={'grey'}
-                  style={styles.inputText2}
-                  value={notesDescription}
-                  onChangeText={text => {
-                    actions.updateNotesDescription(text);
-                  }}
-                />
-              </View>
-              {/* <TouchableOpacity style={styles.iconButton}>
-                <Image
-                  source={require('../Assets/media.png')}
-                  style={styles.icon}
-                />
-              </TouchableOpacity> */}
-            </View>
-            <TouchableOpacity
-              style={styles.notesButton}
-              onPress={this.handleSaveNote}>
-              <Text style={styles.notesText}>Save Note </Text>
-            </TouchableOpacity>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
+          <TouchableOpacity style={styles.notesButton} onPress={handleSaveNote}>
+            <Text style={styles.notesText}>Save Note </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -193,23 +199,5 @@ const mapStateToProps = state => ({
   allNotes: state.addNote.allNotes,
 });
 
-// Map dispatch to props
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      updateNotesTitle,
-      updateNotesDescription,
-      updateNotesMedia,
-      updateSaveNote,
-      updateAllNotes,
-    },
-    dispatch,
-  ),
-  updateNotesTitle: title => dispatch(updateNotesTitle(title)),
-  updateNotesDescription: description =>
-    dispatch(updateNotesDescription(description)),
-  updateAllNotes: note => dispatch(updateAllNotes(note)),
-});
-
 // Connect the component to Redux
-export default connect(mapStateToProps, mapDispatchToProps)(AddNotes);
+export default AddNotes;
