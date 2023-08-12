@@ -15,8 +15,10 @@ import {
 import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Snackbar from 'react-native-snackbar';
 
-const Login = () => {
+const Login = ({navigation}) => {
   useEffect(() => {
     actions.updateEmail('');
     actions.updatePassword('');
@@ -33,7 +35,50 @@ const Login = () => {
     actions.updatePassword(password);
   };
   // handling login
+  const handleLogin = async (Email, Password) => {
+    try {
+      const res = await fetch('http://13.235.13.123:8082/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: Email,
+          password: Password,
+        }),
+      });
+      const data = await res.json();
+      if (res.status === 200) {
+        const token = data.token;
+        await AsyncStorage.setItem('token', token);
+        setTimeout(() => {
+          navigateToSuccess(token);
+        }, 1000);
+      } else if (res.status === 400 || 401) {
+        console.log('Error ? :', data.message);
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
+      } else if (res.status === 500) {
+        navigation.navigate('LoginFail');
+      } else {
+        console.log('Error ' + res.status);
+      }
+    } catch (error) {
+      console.log(error);
+      navigation.navigate('LoginFail');
+    }
+  };
+
   // navigations
+  const navigateToSuccess = async token => {
+    await AsyncStorage.setItem('Jwt', token);
+    console.log('TOKEN OF ASYNC STORAGE      ' + token);
+    navigation.navigate('LoginSuccess');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -72,7 +117,11 @@ const Login = () => {
         </View>
       </View>
       <View style={styles.loginContainer}>
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={() => {
+            handleLogin(email, password);
+          }}>
           <Text style={styles.loginText}>Login </Text>
         </TouchableOpacity>
       </View>
@@ -81,7 +130,11 @@ const Login = () => {
           <Text style={styles.userText}>Dont have an account ? </Text>
         </View>
         <View>
-          <TouchableOpacity style={styles.registerBtn}>
+          <TouchableOpacity
+            style={styles.registerBtn}
+            onPress={() => {
+              navigation.navigate('Register');
+            }}>
             <Text style={styles.registerText}>Register</Text>
           </TouchableOpacity>
         </View>
@@ -201,6 +254,20 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: '#D69D0C',
+    fontSize: wp('3.5%'),
+  },
+  redirectContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: hp('20%'),
+  },
+  animation2: {
+    width: wp('20%'),
+    height: hp('20%'),
+  },
+  redirectText: {
+    color: '#FFB800',
     fontSize: wp('3.5%'),
   },
 });

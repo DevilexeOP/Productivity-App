@@ -10,7 +10,7 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {bindActionCreators} from 'redux';
 import {
   updateAllTodos,
@@ -26,36 +26,53 @@ import {
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
-import {useRoute} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('screen');
-const UpdateTodos = ({
-  todoTitle,
-  todoDescription,
-  todoStatus,
-  todoPriority,
-  actions,
-  navigation,
-}) => {
-  const route = useRoute();
-  const _id = route.params.id;
+const UpdateTodos = ({actions, navigation, route}) => {
+  const {jwtToken, id, todoTitle, todoDescription, todoStatus, todoPriority} =
+    route.params;
   useEffect(() => {
-    resetTodo();
+    console.log('TODO STATUS -> ' + todoStatus);
+    console.log('TODO PRIORITY -> ' + todoPriority);
   }, []);
+  const [title, setTitle] = useState(todoTitle);
+  const [description, setDescription] = useState(todoDescription);
+  const [priority, setPriority] = useState(todoPriority);
+  const [status, setStatus] = useState(todoStatus);
+  const handleTitle = newTitle => {
+    setTitle(newTitle);
+    actions.updateTodoTitle(newTitle);
+  };
+  const handleDescription = newDescription => {
+    setDescription(newDescription);
+    actions.updateTodoDescription(newDescription);
+  };
+  const handleStatus = newStatus => {
+    setStatus(newStatus);
+    actions.updateTodoStatus(newStatus);
+    console.log(newStatus);
+  };
+  const handlePriority = newPriority => {
+    setPriority(newPriority);
+    actions.updateTodoPriority(newPriority);
+    console.log(newPriority);
+  };
+
   const handleUpdateTodo = async () => {
     try {
       const res = await fetch(
-        `http://192.168.29.209:3000/todos/update/${_id}`,
+        `http://13.235.13.123:8082/user/updateTodos/${id}`,
         {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
           },
           body: JSON.stringify({
-            todoTitle: todoTitle,
-            todoDescription: todoDescription,
-            todoPriority: todoPriority,
-            todoStatus: todoStatus,
+            todoTitle: title,
+            todoDescription: description,
+            todoPriority: priority,
+            todoStatus: status,
           }),
         },
       );
@@ -63,10 +80,9 @@ const UpdateTodos = ({
       if (res.status === 200) {
         successToast();
         navigation.goBack();
-        resetTodo();
         console.log(updatedData);
-      } else {
-        console.log('Error ');
+      } else if (res.status < 200 || res.status >= 300) {
+        console.log('ERROR ' + res.status + ' - ' + res.statusText);
       }
     } catch (error) {
       errorToast();
@@ -87,12 +103,6 @@ const UpdateTodos = ({
       text1: 'Error updating your Todo',
     });
   };
-  const resetTodo = () => {
-    actions.updateTodoTitle('');
-    actions.updateTodoDescription('');
-    actions.updateTodoStatus('');
-    actions.updateTodoPriority('');
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -106,9 +116,9 @@ const UpdateTodos = ({
               placeholder="Task Title"
               placeholderTextColor={'white'}
               style={styles.inputText}
-              value={todoTitle}
-              onChangeText={text => {
-                actions.updateTodoTitle(text);
+              value={title}
+              onChangeText={newTitle => {
+                handleTitle(newTitle);
               }}
             />
           </View>
@@ -119,18 +129,18 @@ const UpdateTodos = ({
                 placeholder="Task Brief"
                 placeholderTextColor={'grey'}
                 style={styles.inputText2}
-                value={todoDescription}
-                onChangeText={text => {
-                  actions.updateTodoDescription(text);
+                value={description}
+                onChangeText={newDescription => {
+                  handleDescription(newDescription);
                 }}
               />
             </View>
           </View>
           <View style={styles.pickerContainer}>
             <Picker
-              selectedValue={todoStatus}
-              onValueChange={item => {
-                actions.updateTodoStatus(item);
+              selectedValue={status}
+              onValueChange={newStatus => {
+                handleStatus(newStatus);
               }}>
               <Picker.Item label="Select Progress" value="" />
               <Picker.Item label="Completed" value="Completed" />
@@ -140,9 +150,9 @@ const UpdateTodos = ({
           </View>
           <View style={styles.pickerContainer2}>
             <Picker
-              selectedValue={todoPriority}
-              onValueChange={item => {
-                actions.updateTodoPriority(item);
+              selectedValue={priority}
+              onValueChange={newPriority => {
+                handlePriority(newPriority);
               }}>
               <Picker.Item label="Select Priority" value="" />
               <Picker.Item label="High" value="High" />
@@ -153,7 +163,11 @@ const UpdateTodos = ({
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.notesButton} onPress={handleUpdateTodo}>
+      <TouchableOpacity
+        style={styles.notesButton}
+        onPress={() => {
+          handleUpdateTodo();
+        }}>
         <Text style={styles.notesText}>Update Todo</Text>
       </TouchableOpacity>
     </SafeAreaView>

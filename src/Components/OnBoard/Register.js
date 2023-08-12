@@ -15,6 +15,7 @@ import {
 import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
+import Snackbar from 'react-native-snackbar';
 
 const Register = ({navigation}) => {
   //use effect to clear values
@@ -51,7 +52,7 @@ const Register = ({navigation}) => {
   // handle creating account
   const handleCreateAccount = async (Name, Username, Email, Password) => {
     try {
-      const res = await fetch('http://192.168.29.154:3000/register', {
+      const res = await fetch('http://13.235.13.123:8082/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,12 +67,25 @@ const Register = ({navigation}) => {
       const data = await res.json();
       if (res.status === 201) {
         console.log('ok' + JSON.stringify(data));
+        console.log(data.token);
         setTimeout(() => {
           navigation.replace('RegisterSuccess'); // using replace so they don't go back to the register page if they click back
         }, 1000);
-      } else if (res.status === 400) {
+      } else if (res.status === 400 || 401) {
         console.log('Error ? :', data.message);
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
       } else if (res.status === 500) {
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
         navigation.navigate('RegisterFail');
       } else {
         console.log('Error3' + res.status);

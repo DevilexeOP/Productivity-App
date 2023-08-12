@@ -3,7 +3,6 @@ import {
   Text,
   SafeAreaView,
   TouchableOpacity,
-  Image,
   StyleSheet,
 } from 'react-native';
 import React from 'react';
@@ -11,6 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import LottieView from 'lottie-react-native';
 
 const OnBoarding = ({navigation}) => {
   const navigationToRegister = () => {
@@ -25,10 +25,12 @@ const OnBoarding = ({navigation}) => {
         <Text style={styles.headerText}>Let's Start Your </Text>
         <Text style={styles.headerText}>Productive Journey</Text>
       </View>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require('../../Assets/onBoard.png')}
+      <View style={styles.animationContainer}>
+        <LottieView
+          source={require('../../Assets/Animations/onBoard3.json')}
+          style={styles.animation}
+          autoPlay={true}
+          loop={true}
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -101,6 +103,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: wp('3.5%'),
     fontWeight: 600,
+  },
+  animationContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: hp('50%'),
+  },
+  animation: {
+    width: wp('95%'),
+    height: hp('95%'),
   },
 });
 
