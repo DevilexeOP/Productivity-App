@@ -11,7 +11,9 @@ Tech Stack <br>
 <br>
 Screenshots <br>
 <br>
-<img src="./screenshots/OnBoard.jpg"/>
+<img src="./screenshots/Splash.jpg" width="500" height="300"/>
+<img src="./screenshots/OnBoard.jpg" width="500" height="300"/>
+<img src="./screenshots/Home.jpg" width="500" height="300"/>
 Features <br>
  - Add Notes & Todo's <br>
  - Update and Delete your Notes & Todos as well <br> 
