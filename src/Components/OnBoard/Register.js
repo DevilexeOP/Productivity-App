@@ -17,6 +17,7 @@ import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import Snackbar from 'react-native-snackbar';
+import {ROOT_URL} from '../../Config/constants';
 
 const Register = ({navigation}) => {
   //use effect to clear values
@@ -53,7 +54,7 @@ const Register = ({navigation}) => {
   // handle creating account
   const handleCreateAccount = async (Name, Username, Email, Password) => {
     try {
-      const res = await fetch('http://13.235.13.123:8082/auth/signup', {
+      const res = await fetch(`${ROOT_URL}/auth/api/v1/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,19 +102,6 @@ const Register = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Register</Text>
-      </View>
-      <View style={styles.subHeaderContainer}>
-        <Text style={styles.subHeaderText}>
-          Register with one of the options
-        </Text>
-      </View>
-      <View style={styles.googleContainer}>
-        <TouchableOpacity style={styles.googleBtn}>
-          <Image
-            style={styles.googleLogo}
-            source={require('../../Assets/google.png')}
-          />
-        </TouchableOpacity>
       </View>
       <View style={styles.formContainer}>
         <View>

@@ -14,13 +14,14 @@ import {bindActionCreators} from 'redux';
 import {
   updateNotesDescription,
   updateNotesTitle,
-} from '../Redux/Action-Creators';
+} from '../../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {ROOT_URL} from '../../Config/constants';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -41,20 +42,17 @@ const UpdateNotes = ({actions, navigation, route}) => {
   };
   const handleUpdateNote = async () => {
     try {
-      const res = await fetch(
-        `http://13.235.13.123:8082/user/updateNotes/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          body: JSON.stringify({
-            title: title,
-            description: description,
-          }),
+      const res = await fetch(`${ROOT_URL}/user/api/v1/notes/update/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
         },
-      );
+        body: JSON.stringify({
+          title: title,
+          description: description,
+        }),
+      });
       // const updatedData = await res.json();
       if (res.status === 200) {
         successToast();

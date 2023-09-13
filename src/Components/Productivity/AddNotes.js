@@ -13,13 +13,14 @@ import {
 import {
   updateNotesTitle,
   updateNotesDescription,
-} from '../Redux/Action-Creators/index';
+} from '../../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
 import Snackbar from 'react-native-snackbar';
+import {ROOT_URL} from '../../Config/constants';
 
 const {width, height} = Dimensions.get('window');
 
@@ -33,7 +34,7 @@ const AddNotes = ({navigation, route}) => {
   }, []);
   const handleSaveNote = async () => {
     try {
-      const res = await fetch('http://13.235.13.123:8082/user/addNotes', {
+      const res = await fetch(`${ROOT_URL}/user/api/v1/notes/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
