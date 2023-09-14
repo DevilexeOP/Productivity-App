@@ -14,6 +14,7 @@
     "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-native-picker/picker": "^2.4.10",
     "@react-navigation/bottom-tabs": "^6.5.8",
+    "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
@@ -33,7 +34,8 @@
     "react-native-toast-message": "^2.1.6",
     "react-redux": "^8.0.7",
     "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

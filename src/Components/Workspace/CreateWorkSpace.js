@@ -11,10 +11,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import LottieView from 'lottie-react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WorkSpaceHome = ({navigation}) => {
+
+const CreateWorkSpace = ({navigation}) => {
   const [token, setToken] = useState('');
   return (
     <SafeAreaView style={styles.container}>
@@ -22,10 +21,10 @@ const WorkSpaceHome = ({navigation}) => {
         <Text style={styles.headerText}>Recent Activity</Text>
       </View>
       <ScrollView>
-          {/* TODO DISPLAYING RECENT ACTIVITY */}
-          <View style={styles.activityContainer}>
+        {/* TODO DISPLAYING RECENT ACTIVITY */}
+        <View style={styles.activityContainer}>
 
-          </View>
+        </View>
       </ScrollView>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -77,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorkSpaceHome;
+export default CreateWorkSpace;
