@@ -7,7 +7,9 @@ export const DARKMODE = {
     placeholder:"#e8e6e6",
     bottomNav:"#1f1f1f",
     bottomNavText:"#FFFFFF",
-    bottomNavActive:"#313131"
+    bottomNavInActive:"#696969",
+    bottomNavActive:"#fcb40a",
+    shadowColor:"rgba(133,133,133,0.71)"
 }
 
 export const LIGHTMODE = {

@@ -45,7 +45,9 @@ const HomeScreen = ({navigation}) => {
         <View>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Be Productive !</Text>
+          {/*  TODO CHANGE HEADER TO RECENT ACTIVITY */}
           </View>
+          {/* TODO DISPLAYING RECENT ACTIVITY */}
           <View style={styles.animationContainer}>
             <LottieView
               source={require('../../Assets/Animations/onBoardHome.json')}
@@ -60,14 +62,14 @@ const HomeScreen = ({navigation}) => {
               onPress={() => {
                 navigateToNotes(token);
               }}>
-              <Text style={styles.notesText}>Add a Note </Text>
+              <Text style={styles.notesText}>Add Note </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.todoButton}
               onPress={() => {
                 navigateToToDo(token);
               }}>
-              <Text style={styles.todoText}>Add a To-do</Text>
+              <Text style={styles.todoText}>Add Todo</Text>
             </TouchableOpacity>
           </View>
         </View>
