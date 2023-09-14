@@ -16,7 +16,7 @@ const Router = () => {
     }
   };
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       {token ? <AppRoute /> : <AuthRoute />}
     </NavigationContainer>
   );

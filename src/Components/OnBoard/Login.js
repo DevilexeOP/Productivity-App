@@ -17,6 +17,7 @@ import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
+import {ROOT_URL} from '../../Config/constants';
 
 const Login = ({navigation}) => {
   useEffect(() => {
@@ -37,7 +38,7 @@ const Login = ({navigation}) => {
   // handling login
   const handleLogin = async (Email, Password) => {
     try {
-      const res = await fetch('http://13.235.13.123:8082/auth/login', {
+      const res = await fetch(`${ROOT_URL}/auth/api/v1/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ const Login = ({navigation}) => {
         const token = data.token;
         await AsyncStorage.setItem('token', token);
         setTimeout(() => {
-          navigateToSuccess(token);
+          navigateToSuccess();
         }, 1000);
       } else if (res.status === 400 || 401) {
         console.log('Error ? :', data.message);
@@ -73,27 +74,48 @@ const Login = ({navigation}) => {
     }
   };
 
+  // forgot password
+  const forgotPassword = async email => {
+    try {
+      const res = await fetch(`${ROOT_URL}/auth/api/v1/reset`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
+      } else if (res.status === 400 || 401) {
+        console.log('Error ? :', data.message);
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
+      }
+    } catch (e) {
+      console.log('error', e);
+    }
+  };
+
   // navigations
-  const navigateToSuccess = async token => {
-    await AsyncStorage.setItem('Jwt', token);
-    console.log('TOKEN OF ASYNC STORAGE      ' + token);
+  const navigateToSuccess = async () => {
     navigation.navigate('LoginSuccess');
   };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Login</Text>
-      </View>
-      <View style={styles.subHeaderContainer}>
-        <Text style={styles.subHeaderText}>Login with one of the options</Text>
-      </View>
-      <View style={styles.googleContainer}>
-        <TouchableOpacity style={styles.googleBtn}>
-          <Image
-            style={styles.googleLogo}
-            source={require('../../Assets/google.png')}
-          />
-        </TouchableOpacity>
       </View>
       <View style={styles.formContainer}>
         <View>
@@ -115,6 +137,15 @@ const Login = ({navigation}) => {
             onChangeText={passwordHandler}
           />
         </View>
+      </View>
+      <View style={styles.userContainer}>
+        <Text
+          style={styles.forgotText}
+          onPress={() => {
+            forgotPassword(email);
+          }}>
+          Forgot Password
+        </Text>
       </View>
       <View style={styles.loginContainer}>
         <TouchableOpacity
@@ -269,6 +300,12 @@ const styles = StyleSheet.create({
   redirectText: {
     color: '#FFB800',
     fontSize: wp('3.5%'),
+  },
+  forgotText: {
+    color: '#FFB800',
+    fontSize: wp('3%'),
+    marginLeft: wp('5%'),
+    marginTop: hp('2%'),
   },
 });
 

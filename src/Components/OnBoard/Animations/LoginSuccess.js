@@ -15,7 +15,7 @@ const LoginSuccess = ({navigation, route}) => {
   }, []);
   // navigation handler
   const navigationToHome = () => {
-    navigation.replace('Home');
+    navigation.replace('BottomStack');
   };
   return (
     <SafeAreaView style={styles.container}>
