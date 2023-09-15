@@ -1,6 +1,6 @@
 export const DARKMODE = {
     background:"#0a0700",
-    buttons:"#fcb40a",
+    buttons:"#ffa600",
     buttonsText:"#ffffff",
     headerText:"#ffb700",
     labelText:"#c7c7c7",
@@ -9,7 +9,10 @@ export const DARKMODE = {
     bottomNavText:"#FFFFFF",
     bottomNavInActive:"#696969",
     bottomNavActive:"#fcb40a",
-    shadowColor:"rgba(133,133,133,0.71)"
+    shadowColor:"rgba(133,133,133,0.71)",
+    inputText:"#ffb316",
+    iconColor :"#FFFFFF",
+    secondaryButtons:"#ffba1c"
 }
 
 export const LIGHTMODE = {
