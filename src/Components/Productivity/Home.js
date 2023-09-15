@@ -62,14 +62,14 @@ const HomeScreen = ({navigation}) => {
               onPress={() => {
                 navigateToNotes(token);
               }}>
-              <Text style={styles.notesText}>Add Note </Text>
+              <Text style={styles.notesText}>Notes </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.todoButton}
               onPress={() => {
                 navigateToToDo(token);
               }}>
-              <Text style={styles.todoText}>Add Todo</Text>
+              <Text style={styles.todoText}>Todos</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: wp('30%'),
+    marginTop: wp('26%'),
   },
   headerText: {
     fontSize: wp('6.5%'),

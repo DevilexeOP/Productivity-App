@@ -18,6 +18,7 @@ import {
 import Toast from 'react-native-toast-message';
 import {updateAllNotes} from '../../Redux/Action-Creators';
 import {ROOT_URL} from '../../Config/constants';
+import {DARKMODE} from "../../Config/colors";
 
 const NotesScreen = ({navigation, route}) => {
     const dispatch = useDispatch();
@@ -25,7 +26,6 @@ const NotesScreen = ({navigation, route}) => {
     const {jwtToken} = route.params;
 
     useEffect(() => {
-        console.log('NOTES 1 ' + jwtToken);
         getNotes();
         navigation.addListener('focus', () => {
             getNotes();
@@ -123,9 +123,18 @@ const NotesScreen = ({navigation, route}) => {
         });
     };
 
+    const navigateToHome = () => {
+        navigation.navigate("Home")
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
+                <TouchableOpacity onPress={()=>{
+                    navigateToHome()
+                }}>
+                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
+                </TouchableOpacity>
                 <Text style={styles.headerText}>Your Note's </Text>
             </View>
             <ScrollView>
@@ -218,24 +227,30 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     headerContainer: {
+        display: 'flex',
+        flexDirection: 'row',
         width: wp('100%'),
         height: null,
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
     headerText: {
         fontSize: wp('5%'),
-        fontWeight: 'bold',
+        fontWeight: '600',
         marginVertical: hp('5%'),
-        marginHorizontal: wp('5%'),
-        color: '#dbac00',
+        color: DARKMODE.headerText,
+        marginRight: wp('25%')
     },
     notesButton: {
-        width: wp('70%'),
-        height: hp('6%'),
+        width: wp('50%'),
+        height: wp('10%'),
         borderRadius: 10,
+        marginBottom: wp('25%'),
+        marginTop: wp('5%'),
         backgroundColor: '#dbac00',
+        alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: hp('10%'),
     },
     notesText: {
         fontSize: wp('3%'),
@@ -274,6 +289,13 @@ const styles = StyleSheet.create({
         height: hp('2.5%'),
         marginVertical: hp('1%'),
         padding: wp('3%'),
+    },
+    hamBtn: {
+        width: wp('4%'),
+        height: wp('4%'),
+        padding: wp('3%'),
+        marginHorizontal: wp('5%'),
+        tintColor:DARKMODE.iconColor
     },
 });
 

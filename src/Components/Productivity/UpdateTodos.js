@@ -8,7 +8,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     TextInput,
-    Dimensions,
+    Dimensions, Image,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {bindActionCreators} from 'redux';
@@ -27,6 +27,7 @@ import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
 import {ROOT_URL} from '../../Config/constants';
+import {DARKMODE} from "../../Config/colors";
 
 const {width, height} = Dimensions.get('screen');
 const UpdateTodos = ({actions, navigation, route}) => {
@@ -105,9 +106,20 @@ const UpdateTodos = ({actions, navigation, route}) => {
         });
     };
 
+    const navigateToHome = (token) => {
+        navigation.navigate("Todo", {
+            jwtToken: token
+        })
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.headerContainer}>
+                <TouchableOpacity onPress={() => {
+                    navigateToHome(jwtToken)
+                }}>
+                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
+                </TouchableOpacity>
                 <Text style={styles.headerText}> Update To-Do </Text>
             </View>
             <ScrollView>
@@ -165,11 +177,11 @@ const UpdateTodos = ({actions, navigation, route}) => {
                 </View>
             </ScrollView>
             <TouchableOpacity
-                style={styles.notesButton}
+                style={styles.todosButton}
                 onPress={() => {
                     handleUpdateTodo();
                 }}>
-                <Text style={styles.notesText}>Update Todo</Text>
+                <Text style={styles.todoText}>Update Todo</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -181,27 +193,32 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     headerContainer: {
+        display: 'flex',
+        flexDirection: 'row',
         width: wp('100%'),
         height: null,
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
     headerText: {
         fontSize: wp('5%'),
-        fontWeight: 'bold',
+        fontWeight: '600',
         marginVertical: hp('5%'),
-        marginHorizontal: wp('5%'),
-        color: '#dbac00',
+        color: DARKMODE.headerText,
+        marginRight: wp('25%')
     },
-    notesButton: {
-        width: width / 2,
-        height: height / 20,
+    todosButton: {
+        width: wp('50%'),
+        height: wp('10%'),
         borderRadius: 10,
-        marginVertical: hp('10%'),
+        marginBottom: wp('25%'),
+        marginTop: wp('5%'),
         backgroundColor: '#dbac00',
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    notesText: {
+    todoText: {
         fontSize: wp('3%'),
         color: 'white',
         fontWeight: 'bold',
@@ -238,6 +255,13 @@ const styles = StyleSheet.create({
     pickerContainer2: {
         width: wp('80%'),
         marginHorizontal: wp('8%'),
+    },
+    hamBtn: {
+        width: wp('4%'),
+        height: wp('4%'),
+        padding: wp('3%'),
+        marginHorizontal: wp('5%'),
+        tintColor: DARKMODE.iconColor
     },
 });
 
