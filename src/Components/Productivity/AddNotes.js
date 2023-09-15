@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
   inputText2: {
     marginHorizontal: wp('2%'),
     fontSize: wp('3%'),
+    color:DARKMODE.notesInput
   },
   icon: {
     marginVertical: hp('5%'),

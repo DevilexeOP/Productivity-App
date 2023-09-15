@@ -12,7 +12,9 @@ export const DARKMODE = {
     shadowColor:"rgba(133,133,133,0.71)",
     inputText:"#ffb316",
     iconColor :"#FFFFFF",
-    secondaryButtons:"#ffba1c"
+    secondaryButtons:"#ffba1c",
+    notesInput:"#ffffff",
+    inputTextPicker:"#ffbf00"
 }
 
 export const LIGHTMODE = {

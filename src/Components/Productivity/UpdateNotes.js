@@ -8,28 +8,28 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions, Image,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {bindActionCreators} from 'redux';
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { bindActionCreators } from "redux";
 import {
   updateNotesDescription,
   updateNotesTitle,
-} from '../../Redux/Action-Creators';
+} from "../../Redux/Action-Creators";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {connect} from 'react-redux';
-import Toast from 'react-native-toast-message';
-import {ROOT_URL} from '../../Config/constants';
-import {DARKMODE} from "../../Config/colors";
+} from "react-native-responsive-screen";
+import { connect } from "react-redux";
+import Toast from "react-native-toast-message";
+import { ROOT_URL } from "../../Config/constants";
+import { DARKMODE } from "../../Config/colors";
 
-const {width, height} = Dimensions.get('screen');
+const { width, height } = Dimensions.get("screen");
 
-const UpdateNotes = ({actions, navigation, route}) => {
-  const {jwtToken, id, notesTitle, notesDescription} = route.params;
+const UpdateNotes = ({ actions, navigation, route }) => {
+  const { jwtToken, id, notesTitle, notesDescription } = route.params;
   useEffect(() => {
-    console.log('JWTTTTTTT   ' + jwtToken);
+    console.log("JWTTTTTTT   " + jwtToken);
   }, []);
   const [title, setTitle] = useState(notesTitle);
   const [description, setDescription] = useState(notesDescription);
@@ -44,9 +44,9 @@ const UpdateNotes = ({actions, navigation, route}) => {
   const handleUpdateNote = async () => {
     try {
       const res = await fetch(`${ROOT_URL}/user/api/v1/notes/update/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${jwtToken}`,
         },
         body: JSON.stringify({
@@ -59,41 +59,41 @@ const UpdateNotes = ({actions, navigation, route}) => {
         successToast();
         navigation.goBack();
       } else if (res.status < 200 || res.status >= 300) {
-        console.log('ERROR ' + res.status + ' - ' + res.statusText);
+        console.log("ERROR " + res.status + " - " + res.statusText);
       }
     } catch (error) {
       errorToast();
-      console.log('Error updating Note ' + error);
+      console.log("Error updating Note " + error);
     }
   };
 
   const successToast = () => {
     Toast.show({
-      type: 'success',
-      text1: 'Successfully updated your Note ',
+      type: "success",
+      text1: "Successfully updated your Note ",
     });
   };
 
   const errorToast = () => {
     Toast.show({
-      type: 'error',
-      text1: 'Error updating your Note',
+      type: "error",
+      text1: "Error updating your Note",
     });
   };
 
   const navigateToNotes = (token) => {
-    navigation.navigate("Notes" , {
-      jwtToken:token
-    })
-  }
+    navigation.navigate("Notes", {
+      jwtToken: token,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={()=>{
-          navigateToNotes(jwtToken)
+        <TouchableOpacity onPress={() => {
+          navigateToNotes(jwtToken);
         }}>
-          <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
+          <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn} />
         </TouchableOpacity>
         <Text style={styles.headerText}>Update Note </Text>
       </View>
@@ -102,7 +102,7 @@ const UpdateNotes = ({actions, navigation, route}) => {
           <View style={styles.inputContainer}>
             <TextInput
               placeholder="Note Title"
-              placeholderTextColor={'white'}
+              placeholderTextColor={"white"}
               style={styles.inputText}
               value={title}
               onChangeText={newTitle => {
@@ -110,12 +110,12 @@ const UpdateNotes = ({actions, navigation, route}) => {
               }}
             />
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: "row" }}>
             <View style={styles.inputContainer2}>
               <TextInput
                 multiline={true}
                 placeholder="Your Note"
-                placeholderTextColor={'grey'}
+                placeholderTextColor={"grey"}
                 style={styles.inputText2}
                 value={description}
                 onChangeText={text => {
@@ -140,78 +140,79 @@ const UpdateNotes = ({actions, navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: "black",
   },
   notesButton: {
-    width: wp('50%'),
-    height: wp('10%'),
+    width: wp("50%"),
+    height: wp("10%"),
     borderRadius: 10,
-    marginBottom: wp('25%'),
-    marginTop: wp('5%'),
-    backgroundColor: '#dbac00',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginBottom: wp("25%"),
+    marginTop: wp("5%"),
+    backgroundColor: "#dbac00",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
   notesText: {
-    fontSize: wp('3%'),
-    color: 'white',
-    fontWeight: 'bold',
+    fontSize: wp("3%"),
+    color: "white",
+    fontWeight: "bold",
   },
   inputContainer: {
-    width: wp('90%'),
-    height: hp('7%'),
+    width: wp("90%"),
+    height: hp("7%"),
     borderRadius: 10,
-    marginHorizontal: wp('5%'),
-    justifyContent: 'center',
+    marginHorizontal: wp("5%"),
+    justifyContent: "center",
   },
   inputText: {
-    marginHorizontal: wp('2%'),
-    fontSize: wp('3%'),
-    color: '#dbac00',
+    marginHorizontal: wp("2%"),
+    fontSize: wp("3%"),
+    color: "#dbac00",
   },
   inputContainer2: {
-    width: wp('90%'),
+    width: wp("90%"),
     height: null,
     borderRadius: 10,
-    marginVertical: hp('2%'),
-    marginHorizontal: wp('5%'),
-    justifyContent: 'center',
+    marginVertical: hp("2%"),
+    marginHorizontal: wp("5%"),
+    justifyContent: "center",
   },
   inputText2: {
-    marginHorizontal: wp('2%'),
-    fontSize: wp('3%'),
+    marginHorizontal: wp("2%"),
+    fontSize: wp("3%"),
+    color: DARKMODE.notesInput,
   },
   pickerContainer: {
-    width: wp('80%'),
-    marginVertical: hp('8%'),
-    marginHorizontal: wp('8%'),
+    width: wp("80%"),
+    marginVertical: hp("8%"),
+    marginHorizontal: wp("8%"),
   },
   pickerContainer2: {
-    width: wp('80%'),
-    marginHorizontal: wp('8%'),
+    width: wp("80%"),
+    marginHorizontal: wp("8%"),
   },
   headerContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: wp('100%'),
+    display: "flex",
+    flexDirection: "row",
+    width: wp("100%"),
     height: null,
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   headerText: {
-    fontSize: wp('5%'),
-    fontWeight: '600',
-    marginVertical: hp('5%'),
+    fontSize: wp("5%"),
+    fontWeight: "600",
+    marginVertical: hp("5%"),
     color: DARKMODE.headerText,
-    marginRight: wp('25%')
+    marginRight: wp("25%"),
   },
   hamBtn: {
-    width: wp('4%'),
-    height: wp('4%'),
-    padding: wp('3%'),
-    marginHorizontal: wp('5%'),
-    tintColor:DARKMODE.iconColor
+    width: wp("4%"),
+    height: wp("4%"),
+    padding: wp("3%"),
+    marginHorizontal: wp("5%"),
+    tintColor: DARKMODE.iconColor,
   },
 });
 
