@@ -63,7 +63,7 @@ export const updateNotesMedia = notesMedia => {
   };
 };
 
-// Tod0s action creators
+// Todos action creators
 export const updateAllNotes = allNotes => {
   return dispatch => {
     dispatch({
@@ -117,3 +117,60 @@ export const updateAllTodos = allTodos => {
     });
   };
 };
+
+// Workspace action creators
+export const updateWorkspaceName = workspaceName =>{
+  return dispatch => (
+    dispatch({
+      type:"updateWorkspaceName",
+      payload:workspaceName
+    })
+  )
+}
+
+export const updateProjectName = projectName => {
+  return dispatch => (
+    dispatch({
+      type:'updateProjectName',
+      payload:projectName
+    })
+  )
+}
+
+// Channel Action creators
+export const updateChannelName = channelName => {
+  return dispatch =>{
+    dispatch({
+      type:"updateChannelName",
+      payload:channelName
+    })
+  }
+}
+
+// Message action creators
+export const updateAllMessages = allMessages =>{
+  return dispatch => {
+    dispatch({
+      type:"updateAllMessages",
+      payload:allMessages
+    })
+  }
+}
+
+export const updateSentBy = sentBy => {
+  return dispatch =>{
+    dispatch ({
+      type:"updateSentBy",
+      payload:sentBy
+    })
+  }
+}
+
+export const updateMessage = message => {
+  return dispatch =>{
+    dispatch ({
+      type:"updateMessage",
+      payload:message
+    })
+  }
+}

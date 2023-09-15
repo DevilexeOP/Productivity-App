@@ -8,18 +8,20 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
+  Dimensions, Image,
 } from 'react-native';
 import {
   updateNotesTitle,
   updateNotesDescription,
-} from '../Redux/Action-Creators/index';
+} from '../../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
 import Snackbar from 'react-native-snackbar';
+import {ROOT_URL} from '../../Config/constants';
+import {DARKMODE} from "../../Config/colors";
 
 const {width, height} = Dimensions.get('window');
 
@@ -33,7 +35,7 @@ const AddNotes = ({navigation, route}) => {
   }, []);
   const handleSaveNote = async () => {
     try {
-      const res = await fetch('http://13.235.13.123:8082/user/addNotes', {
+      const res = await fetch(`${ROOT_URL}/user/api/v1/notes/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,9 +90,21 @@ const AddNotes = ({navigation, route}) => {
     dispatch(updateNotesDescription(''));
   };
 
+  // navigation
+  const navigateToHome = (token) => {
+    navigation.navigate("Notes" , {
+      jwtToken:token
+    })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={()=>{
+          navigateToHome(jwtToken)
+        }}>
+          <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
+        </TouchableOpacity>
         <Text style={styles.headerText}>Create a Note </Text>
       </View>
       <ScrollView>
@@ -120,11 +134,11 @@ const AddNotes = ({navigation, route}) => {
               />
             </View>
           </View>
-          <TouchableOpacity style={styles.notesButton} onPress={handleSaveNote}>
-            <Text style={styles.notesText}>Save Note </Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
+      <TouchableOpacity style={styles.notesButton} onPress={handleSaveNote}>
+        <Text style={styles.notesText}>Save Note </Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -135,21 +149,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
     width: wp('100%'),
     height: null,
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
   headerText: {
     fontSize: wp('5%'),
-    fontWeight: 'bold',
+    fontWeight: '600',
     marginVertical: hp('5%'),
-    marginHorizontal: wp('5%'),
-    color: '#dbac00',
+    color: DARKMODE.headerText,
+    marginRight: wp('25%')
   },
   notesButton: {
-    width: width / 2,
-    height: height / 20,
+    width: wp('50%'),
+    height: wp('10%'),
     borderRadius: 10,
-    marginVertical: hp('30%'),
+    marginBottom: wp('25%'),
+    marginTop: wp('5%'),
     backgroundColor: '#dbac00',
     alignSelf: 'center',
     alignItems: 'center',
@@ -161,7 +180,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   inputContainer: {
-    width: wp('70%'),
+    width: wp('90%'),
     height: hp('7%'),
     borderRadius: 10,
     marginHorizontal: wp('5%'),
@@ -173,10 +192,9 @@ const styles = StyleSheet.create({
     color: '#dbac00',
   },
   inputContainer2: {
-    width: wp('70%'),
+    width: wp('90%'),
     height: null,
     borderRadius: 10,
-    marginVertical: hp('2%'),
     marginHorizontal: wp('5%'),
     justifyContent: 'center',
   },
@@ -188,6 +206,13 @@ const styles = StyleSheet.create({
     marginVertical: hp('5%'),
     width: 35,
     height: 35,
+  },
+  hamBtn: {
+    width: wp('4%'),
+    height: wp('4%'),
+    padding: wp('3%'),
+    marginHorizontal: wp('5%'),
+    tintColor:DARKMODE.iconColor
   },
 });
 

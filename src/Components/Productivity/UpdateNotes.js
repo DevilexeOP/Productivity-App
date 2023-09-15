@@ -7,20 +7,22 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Dimensions,
+  Dimensions, Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {bindActionCreators} from 'redux';
 import {
   updateNotesDescription,
   updateNotesTitle,
-} from '../Redux/Action-Creators';
+} from '../../Redux/Action-Creators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {ROOT_URL} from '../../Config/constants';
+import {DARKMODE} from "../../Config/colors";
 
 const {width, height} = Dimensions.get('screen');
 
@@ -41,20 +43,17 @@ const UpdateNotes = ({actions, navigation, route}) => {
   };
   const handleUpdateNote = async () => {
     try {
-      const res = await fetch(
-        `http://13.235.13.123:8082/user/updateNotes/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          body: JSON.stringify({
-            title: title,
-            description: description,
-          }),
+      const res = await fetch(`${ROOT_URL}/user/api/v1/notes/update/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
         },
-      );
+        body: JSON.stringify({
+          title: title,
+          description: description,
+        }),
+      });
       // const updatedData = await res.json();
       if (res.status === 200) {
         successToast();
@@ -82,9 +81,20 @@ const UpdateNotes = ({actions, navigation, route}) => {
     });
   };
 
+  const navigateToNotes = (token) => {
+    navigation.navigate("Notes" , {
+      jwtToken:token
+    })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={()=>{
+          navigateToNotes(jwtToken)
+        }}>
+          <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
+        </TouchableOpacity>
         <Text style={styles.headerText}>Update Note </Text>
       </View>
       <ScrollView>
@@ -132,22 +142,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  headerContainer: {
-    width: wp('100%'),
-    height: null,
-  },
-  headerText: {
-    fontSize: wp('5%'),
-    fontWeight: 'bold',
-    marginVertical: hp('5%'),
-    marginHorizontal: wp('5%'),
-    color: '#dbac00',
-  },
   notesButton: {
-    width: width / 2,
-    height: height / 20,
+    width: wp('50%'),
+    height: wp('10%'),
     borderRadius: 10,
-    marginVertical: hp('10%'),
+    marginBottom: wp('25%'),
+    marginTop: wp('5%'),
     backgroundColor: '#dbac00',
     alignSelf: 'center',
     alignItems: 'center',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   inputContainer: {
-    width: wp('70%'),
+    width: wp('90%'),
     height: hp('7%'),
     borderRadius: 10,
     marginHorizontal: wp('5%'),
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     color: '#dbac00',
   },
   inputContainer2: {
-    width: wp('70%'),
+    width: wp('90%'),
     height: null,
     borderRadius: 10,
     marginVertical: hp('2%'),
@@ -190,6 +190,28 @@ const styles = StyleSheet.create({
   pickerContainer2: {
     width: wp('80%'),
     marginHorizontal: wp('8%'),
+  },
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: wp('100%'),
+    height: null,
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  headerText: {
+    fontSize: wp('5%'),
+    fontWeight: '600',
+    marginVertical: hp('5%'),
+    color: DARKMODE.headerText,
+    marginRight: wp('25%')
+  },
+  hamBtn: {
+    width: wp('4%'),
+    height: wp('4%'),
+    padding: wp('3%'),
+    marginHorizontal: wp('5%'),
+    tintColor:DARKMODE.iconColor
   },
 });
 
