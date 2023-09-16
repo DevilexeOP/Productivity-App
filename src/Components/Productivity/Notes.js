@@ -268,25 +268,26 @@ const styles = StyleSheet.create({
     },
     notesTitle: {
         marginVertical: hp('1%'),
-        fontSize: wp('3.5%'),
+        fontSize: wp('4%'),
         marginHorizontal: hp('2%'),
         color: '#f0cf9c',
     },
     noteDescription: {
         marginVertical: hp('.5%'),
-        fontSize: wp('2.5%'),
+        fontSize: wp('3%'),
         marginHorizontal: hp('2%'),
+        color:DARKMODE.notesInput
     },
     icon: {
         width: wp('2%'),
-        height: hp('2%'),
+        height: wp('2%'),
         marginHorizontal: hp('3.5%'),
         marginVertical: hp('1%'),
         padding: wp('3%'),
     },
     icon2: {
         width: wp('2.5%'),
-        height: hp('2.5%'),
+        height: wp('2.5%'),
         marginVertical: hp('1%'),
         padding: wp('3%'),
     },
