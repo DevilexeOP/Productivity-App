@@ -19,12 +19,23 @@ import ViewWorkSpaces from "./ViewWorkSpaces";
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
 
+  useEffect(() => {
+    getToken()
+  }, []);
+
+  const getToken = async () => {
+    const jwt = await AsyncStorage.getItem('token')
+    setToken(jwt)
+  }
+
   // navigation
   const navigateToCreate = () =>{
     navigation.navigate("CreateWorkSpace")
   }
   const navigateToView = () =>{
-    navigation.navigate("ViewWorkSpaces")
+    navigation.navigate("ViewWorkSpaces" , {
+      jwt:token
+    })
   }
   return (
     <SafeAreaView style={styles.container}>
