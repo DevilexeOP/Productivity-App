@@ -2,6 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import WorkSpaceHome from '../../Components/Workspace/WorkSpaceHome';
 import CreateWorkSpace from "../../Components/Workspace/CreateWorkSpace";
 import ViewWorkSpaces from "../../Components/Workspace/ViewWorkSpaces";
+import WorkSpace from "../../Components/Workspace/WorkSpace";
 
 const WorkSpaceStack = createStackNavigator();
 
@@ -29,6 +30,13 @@ const WorkSpaceRoute = () => {
                     headerShown: false,
                 }}
             />
+          <WorkSpaceStack.Screen
+            name="WorkSpace"
+            component={WorkSpace}
+            options={{
+              headerShown: false,
+            }}
+          />
         </WorkSpaceStack.Navigator>
     );
 };
