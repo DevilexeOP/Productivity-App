@@ -13,33 +13,92 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {actionCreators} from '../../Redux/index';
-import {bindActionCreators} from 'redux';
-import {useDispatch, useSelector} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
+import {updateAllWorkSpaces} from "../../Redux/Action-Creators";
 import {DARKMODE} from "../../Config/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ROOT_URL } from "../../Config/constants";
+import Snackbar from "react-native-snackbar";
 
-const ViewWorkSpaces = ({navigation}) => {
+const ViewWorkSpaces = ({navigation , route}) => {
+    // fetch token when component mounts
+    const [token,setToken] = useState('')
+    const {jwt} =  route.params;
+    useEffect(() => {
+        getSpaces();
+        console.log(jwt);
+    }, []);
     // State managements
-
-    // Navigation Fnctions
+    const dispatch = useDispatch();
+    const workspaces = useSelector(state => state.spaces.allWorkSpaces)
+    // Navigation Functions
     const navigateToWorkspaceHome = () =>{
         navigation.navigate("WorkSpaceHome")
     }
     const navigateToCreateSpace = () =>{
         navigation.navigate("CreateWorkSpace")
     }
+
+    // fetching all spaces
+    const getSpaces = async () => {
+        if (!jwt) {
+            console.log("Token in get Space " + jwt)
+            return;
+        }
+        try {
+            const res = await fetch(`${ROOT_URL}/user/api/v1/workspaces`,{
+                method:"GET",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Authorization":`Bearer ${jwt}`
+                }
+            })
+            const data = await res.json();
+            if (res.status === 404) {
+                Snackbar.show({
+                    text: data.message,
+                    duration: Snackbar.LENGTH_LONG,
+                    backgroundColor: "#FFB800",
+                    textColor: "black",
+                });
+            }
+            else if (res.status === 200) {
+                dispatch(updateAllWorkSpaces(data));
+            }
+        }
+        catch (e){
+            console.log(e);
+        }
+    }
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.headerContainer}>
+            <View style={styles.outContainer}>
                 <TouchableOpacity onPress={navigateToWorkspaceHome}>
-                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
+                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn} />
                 </TouchableOpacity>
-                <Text style={styles.headerText}>Your Workspaces</Text>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>All Workspaces</Text>
+                </View>
             </View>
             <ScrollView>
                 {/* TODO ALL WORK SPACES  */}
                 <View style={styles.activityContainer}>
-
+                    {workspaces.length === 0 ? (
+                      <View>
+                      <Text style={styles.noWorkspaceText}>No Workspaces found!</Text>
+                      </View>
+                    ) :(
+                      workspaces.map(workspace => (
+                        <TouchableOpacity
+                          key={workspace._id}
+                          style={styles.workspaceItem}
+                          onPress={() => handleWorkspaceClick(workspace)}>
+                         <View>
+                             <Text>{workspace.workspace}</Text>
+                         </View>
+                        </TouchableOpacity>
+                      ))
+                    )}
                 </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
@@ -60,26 +119,28 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'black',
     },
+    outContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+    },
     headerContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: wp('100%'),
+        width: wp("80%"),
         height: null,
-        justifyContent: 'space-around',
-        alignItems: 'center'
+        justifyContent: "center",
+    },
+    headerText: {
+        fontSize: wp("4.8%"),
+        fontWeight: "600",
+        marginVertical: hp("5%"),
+        color: DARKMODE.headerText,
+        textAlign: "center",
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical:hp('13%')
-    },
-    headerText: {
-        fontSize: wp('6.5%'),
-        fontWeight: '600',
-        marginVertical: hp('5%'),
-        color: DARKMODE.headerText,
-        marginRight: wp('25%')
     },
     workSpaceButton: {
         borderRadius: 10,
@@ -95,11 +156,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     hamBtn: {
-        width: wp('4%'),
-        height: wp('4%'),
-        padding: wp('3%'),
-        marginHorizontal: wp('10%'),
-        tintColor:DARKMODE.iconColor
+        width: wp("4%"),
+        height: wp("4%"),
+        padding: wp("3%"),
+        tintColor: DARKMODE.iconColor,
+        marginHorizontal: wp("4%"),
+    },
+    noWorkspaceText: {
+        fontSize: 12,
+        color: '#FFB800', // Dark yellow color
+        textAlign: 'center',
+        marginTop: 16,
     },
 })
 
