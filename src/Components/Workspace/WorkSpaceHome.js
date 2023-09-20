@@ -39,11 +39,15 @@ const WorkSpaceHome = ({navigation}) => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <TouchableOpacity>
-          <Image source={require("../../Assets/hamdark.png")} alt="Back" style={styles.hamBtn}/>
+      <View style={styles.outContainer}>
+        <TouchableOpacity onPress={()=>{
+          return;
+        }}>
+          <Image source={require("../../Assets/hamdark.png")} alt="Back" style={styles.hamBtn} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Recent Activity</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Recent Activity</Text>
+        </View>
       </View>
       <ScrollView>
           {/* TODO DISPLAYING RECENT ACTIVITY */}
@@ -78,13 +82,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
+  outContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   headerContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: wp('100%'),
+    width: wp("80%"),
     height: null,
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    justifyContent: "center",
+  },
+  headerText: {
+    fontSize: wp("4.8%"),
+    fontWeight: "600",
+    marginVertical: hp("5%"),
+    color: DARKMODE.headerText,
+    textAlign: "center",
   },
   buttonContainer1: {
     flexDirection: 'row',
@@ -97,13 +110,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical:hp('14%')
-  },
-  headerText: {
-    fontSize: wp('6.5%'),
-    fontWeight: '600',
-    marginVertical: hp('5%'),
-    color: DARKMODE.headerText,
-    marginRight: wp('25%')
   },
   workSpaceButton: {
     borderRadius: 10,
@@ -127,11 +133,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   hamBtn: {
-    width: wp('4%'),
-    height: wp('4%'),
-    padding: wp('3%'),
-    marginHorizontal: wp('10%'),
-    tintColor:DARKMODE.iconColor
+    width: wp("4%"),
+    height: wp("4%"),
+    padding: wp("3%"),
+    tintColor: DARKMODE.iconColor,
+    marginHorizontal: wp("4%"),
   },
 });
 

@@ -65,7 +65,7 @@ const CreateWorkSpace = ({ navigation }) => {
         },
         body: JSON.stringify({
           workspace: workspaceTitle,
-          projectName,
+          projectName:projectName,
         }),
       });
       const data = await res.json();
