@@ -22,7 +22,6 @@ import Snackbar from "react-native-snackbar";
 
 const ViewWorkSpaces = ({ navigation, route }) => {
     // fetch token when component mounts
-    const [token, setToken] = useState("");
     const { jwt } = route.params;
     useEffect(() => {
         getSpaces();
@@ -38,6 +37,14 @@ const ViewWorkSpaces = ({ navigation, route }) => {
     const navigateToCreateSpace = () => {
         navigation.navigate("CreateWorkSpace");
     };
+
+    // navigate to specific space
+    const handleWorkspace = (_id , token) => {
+        navigation.navigate("WorkSpace",{
+            spaceId:_id,
+            jwtToken:token
+        })
+    }
 
     // fetching all spaces
     const getSpaces = async () => {
@@ -79,7 +86,6 @@ const ViewWorkSpaces = ({ navigation, route }) => {
                 </View>
             </View>
             <ScrollView style={{ marginBottom: wp("-17%") }}>
-                {/* TODO ALL WORK SPACES  */}
                 <View>
                     {workspaces.length === 0 ? (
                         <View>
@@ -90,7 +96,7 @@ const ViewWorkSpaces = ({ navigation, route }) => {
                             <TouchableOpacity
                                 key={workspace._id}
                                 style={styles.workspaceItem}
-                                onPress={() => handleWorkspaceClick(workspace)}>
+                                onPress={() => handleWorkspace(workspace._id , jwt)}>
                                 <View style={styles.workspaceContainer}>
                                     <Text style={styles.spaceName}>{workspace.workspace}</Text>
                                     <View style={styles.container2}>

@@ -1,18 +1,51 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { DARKMODE } from "../../Config/colors";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { ROOT_URL } from "../../Config/constants";
+import Snackbar from "react-native-snackbar";
 
 
 const WorkSpace = ({navigation,route}) => {
-  const {title,project} = route.params;
+  const {spaceId,jwtToken} = route.params;
   useEffect(() => {
-    console.log(title,project)
+    fetchData();
   }, []);
-
+  // fetch token
   // navigation
   const navigationToHome = () => {
     navigation.navigate("WorkSpaceHome")
+  }
+  // fetching space data
+  const fetchData = async () => {
+      if (!jwtToken) {
+        return;
+      }
+      try {
+        const res = await fetch(`${ROOT_URL}/user/api/v1/workspace/${spaceId}`,{
+          method:"GET",
+          headers:{
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${jwtToken}`
+          }
+        })
+        const data  = await res.json()
+        if (res.status === 404 || res.status === 403) {
+          Snackbar.show({
+            text: data.message,
+            duration: Snackbar.LENGTH_LONG,
+            backgroundColor: "#FFB800",
+            textColor: "black",
+          });
+        }
+        else {
+          console.log(data);
+          // TODO MANAGE THE STATE OF THE DATA JSON RECEIVED FROM SERVER
+        }
+      }
+      catch (e) {
+          console.log(e)
+      }
   }
   return (
     <>
@@ -22,7 +55,7 @@ const WorkSpace = ({navigation,route}) => {
           <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
         </TouchableOpacity>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>{title ? title : "My Workspace"}</Text>
+          <Text style={styles.headerText}>My Workspace</Text>
         </View>
       </View>
       <View>
