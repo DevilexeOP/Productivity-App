@@ -50,7 +50,7 @@ const WorkSpaceHome = ({navigation}) => {
         </View>
       </View>
       <ScrollView>
-          {/* TODO DISPLAYING RECENT ACTIVITY */}
+          {/* TODO DISPLAYING RECENT ACTIVITY GET-RECENT FUNCTION FOR SPACES & CHANNEL*/}
           <View style={styles.activityContainer}>
 
           </View>

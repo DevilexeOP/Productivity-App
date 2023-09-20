@@ -91,13 +91,14 @@ const CreateWorkSpace = ({ navigation }) => {
   const navigateToWorkspaceHome = () => {
     navigation.replace("WorkSpaceHome");
   };
+
+  //. TODO INSTEAD OF HARDCODED TITLE & PROJECT CHANGING IT TO GET-WORKSPACE-BY ID to FETCH THE DATA
   const navigateToWorkSpace = (workspaceTitle, projectName) => {
     addWorkSpace(workspaceTitle, projectName);
     navigation.navigate("WorkSpace", {
       title: workspaceTitle,
       project: projectName,
     });
-
   };
   return (
     <SafeAreaView style={styles.container}>
