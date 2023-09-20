@@ -19,38 +19,23 @@ import ViewWorkSpaces from "./ViewWorkSpaces";
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
 
-  useEffect(() => {
-    getToken()
-  }, []);
-
-  const getToken = async () => {
-    const jwt = await AsyncStorage.getItem('token')
-    setToken(jwt)
-  }
-
   // navigation
   const navigateToCreate = () =>{
     navigation.navigate("CreateWorkSpace")
   }
   const navigateToView = () =>{
-    navigation.navigate("ViewWorkSpaces" , {
-      jwt:token
-    })
+    navigation.navigate("ViewWorkSpaces")
   }
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.outContainer}>
-        <TouchableOpacity onPress={()=>{
-          return;
-        }}>
-          <Image source={require("../../Assets/hamdark.png")} alt="Back" style={styles.hamBtn} />
+      <View style={styles.headerContainer}>
+        <TouchableOpacity>
+          <Image source={require("../../Assets/hamdark.png")} alt="Back" style={styles.hamBtn}/>
         </TouchableOpacity>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Recent Activity</Text>
-        </View>
+        <Text style={styles.headerText}>Recent Activity</Text>
       </View>
       <ScrollView>
-          {/* TODO DISPLAYING RECENT ACTIVITY GET-RECENT FUNCTION FOR SPACES & CHANNEL*/}
+          {/* TODO DISPLAYING RECENT ACTIVITY */}
           <View style={styles.activityContainer}>
 
           </View>
@@ -82,22 +67,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  outContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
   headerContainer: {
-    width: wp("80%"),
+    display: 'flex',
+    flexDirection: 'row',
+    width: wp('100%'),
     height: null,
-    justifyContent: "center",
-  },
-  headerText: {
-    fontSize: wp("4.8%"),
-    fontWeight: "600",
-    marginVertical: hp("5%"),
-    color: DARKMODE.headerText,
-    textAlign: "center",
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
   buttonContainer1: {
     flexDirection: 'row',
@@ -110,6 +86,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical:hp('14%')
+  },
+  headerText: {
+    fontSize: wp('6.5%'),
+    fontWeight: '600',
+    marginVertical: hp('5%'),
+    color: DARKMODE.headerText,
+    marginRight: wp('25%')
   },
   workSpaceButton: {
     borderRadius: 10,
@@ -133,11 +116,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   hamBtn: {
-    width: wp("4%"),
-    height: wp("4%"),
-    padding: wp("3%"),
-    tintColor: DARKMODE.iconColor,
-    marginHorizontal: wp("4%"),
+    width: wp('4%'),
+    height: wp('4%'),
+    padding: wp('3%'),
+    marginHorizontal: wp('10%'),
+    tintColor:DARKMODE.iconColor
   },
 });
 
