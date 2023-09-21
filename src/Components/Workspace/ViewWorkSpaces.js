@@ -30,6 +30,7 @@ const ViewWorkSpaces = ({ navigation, route }) => {
     // State managements
     const dispatch = useDispatch();
     const workspaces = useSelector(state => state.spaces.allWorkSpaces);
+    const [isLoading, setIsLoading] = useState(true);
     // Navigation Functions
     const navigateToWorkspaceHome = () => {
         navigation.navigate("WorkSpaceHome");
@@ -68,11 +69,14 @@ const ViewWorkSpaces = ({ navigation, route }) => {
                     backgroundColor: "#FFB800",
                     textColor: "black",
                 });
+                setIsLoading(true);
             } else if (res.status === 200) {
                 dispatch(updateAllWorkSpaces(data));
+                setIsLoading(false);
             }
         } catch (e) {
             console.log(e);
+            setIsLoading(false);
         }
     };
     return (
@@ -87,9 +91,13 @@ const ViewWorkSpaces = ({ navigation, route }) => {
             </View>
             <ScrollView style={{ marginBottom: wp("-17%") }}>
                 <View>
-                    {workspaces.length === 0 ? (
+                    {isLoading ? ( // Display "Loading..." when isLoading is true
                         <View>
-                            <Text style={styles.noWorkspaceText}>No Workspaces found!</Text>
+                            <Text style={styles.noWorkspaceText}>Loading....</Text>
+                        </View>
+                    ) : workspaces.length === 0 ? ( // Display "No workspace found" when there are no workspaces
+                        <View>
+                            <Text style={styles.noWorkspaceText}>No workspace found</Text>
                         </View>
                     ) : (
                         workspaces.map(workspace => (
@@ -172,7 +180,7 @@ const styles = StyleSheet.create({
         height: wp("4%"),
         padding: wp("3%"),
         tintColor: DARKMODE.iconColor,
-        marginHorizontal: wp("4%"),
+        marginHorizontal: wp("3%"),
     },
     noWorkspaceText: {
         fontSize: wp("5%"),
