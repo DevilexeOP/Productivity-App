@@ -184,3 +184,13 @@ export const updateAllWorkSpaces = allWorkSpaces => {
     });
   };
 };
+
+// Space Data
+export const updateSpaceData = spaceData => {
+  return dispatch =>{
+    dispatch({
+      type:'updateSpaceData',
+      payload:spaceData
+    })
+  }
+}

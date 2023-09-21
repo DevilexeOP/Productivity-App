@@ -14,7 +14,8 @@ export const DARKMODE = {
     iconColor :"#FFFFFF",
     secondaryButtons:"#ffba1c",
     notesInput:"#ffffff",
-    inputTextPicker:"#ffbf00"
+    inputTextPicker:"#ffbf00",
+    searchBox:"#222222"
 }
 
 export const LIGHTMODE = {
