@@ -11,24 +11,53 @@ const WorkSpace = ({ navigation, route }) => {
     const { spaceId, jwtToken } = route.params;
     useEffect(() => {
         fetchData();
+        navigation.addListener('focus', () => {
+            fetchData();
+        });
     }, []);
     // state management
     const dispatch = useDispatch();
     const data = useSelector(state => state.data.spaceData);
+    const [defaultChannels, setDefaultChannels] = useState([]);
+    // search state manage
+    useEffect(() => {
+        // Initialize defaultChannels when data changes
+        setDefaultChannels(data.flatMap(workspace => workspace.channels));
+    }, [data]);
+
     // search state manage
     const [searchQuery, setSearchQuery] = useState("");
+    const [filteredChannels, setFilteredChannels] = useState(defaultChannels);
+
     const searchQueryHandler = (text) => {
-        setSearchQuery(text)
+        setSearchQuery(text);
+
+        // Filter channels based on the search query or reset to default if no query
+        const filtered = text
+            ? defaultChannels.filter(channel =>
+                channel.channelName.toLowerCase().includes(text.toLowerCase())
+            )
+            : defaultChannels;
+        setFilteredChannels(filtered);
     };
+    // loading manage
+    const [isLoading, setIsLoading] = useState(true);
     // Dropdown state manage
-    const [toggleDrop,setToggleDrop] = useState(false)
+    const [toggleDrop,setToggleDrop] = useState(true)
     const toggleDropdown = () => {
         setToggleDrop(!toggleDrop);
+        fetchData();
     };
     // navigation
     const navigationToHome = () => {
         navigation.navigate("WorkSpaceHome");
     };
+    const navigateToCreateChannel = (token,id) => {
+        navigation.navigate("CreateChannel" , {
+            jwt:token,
+            spaceId:id
+        })
+    }
     // fetching space data
     const fetchData = async () => {
         if (!jwtToken) {
@@ -50,12 +79,15 @@ const WorkSpace = ({ navigation, route }) => {
                     backgroundColor: "#FFB800",
                     textColor: "black",
                 });
+                setIsLoading(true);
             } else {
                 console.log(data);
                 dispatch(updateSpaceData([data]));
+                setIsLoading(false);
             }
         } catch (e) {
             console.log(e);
+            setIsLoading(true);
         }
     };
     return (
@@ -95,7 +127,9 @@ const WorkSpace = ({ navigation, route }) => {
                 <View style={styles.channelContainer}>
                     <Text style={styles.channelHead}>Channels</Text>
                     <View style={styles.btnsContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{
+                            navigateToCreateChannel(jwtToken,spaceId)
+                        }}>
                             <Image source={require("../../Assets/add.png")} alt="Back" style={styles.addBtn} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={toggleDropdown}>
@@ -108,21 +142,40 @@ const WorkSpace = ({ navigation, route }) => {
                     </View>
                 </View>
                 {toggleDrop && (
-                    <View>
-                        <ScrollView style={{ marginBottom: wp("-17%")  ,  backgroundColor:'white'}}>
-                            <View>
-                                {data.length === 0 ? (
+                    <ScrollView style={{ marginBottom: wp('20%') }}>
+                        <View>
+                            {isLoading ? (
+                                <View>
+                                    <Text style={styles.noWorkspaceText}>Loading....</Text>
+                                </View>
+                            ) : (
+                                ((searchQuery.trim() && filteredChannels.length === 0) || (!searchQuery.trim() && defaultChannels.length === 0)) ? (
                                     <View>
-                                        <Text style={styles.noWorkspaceText}>Loading....</Text>
+                                        <Text style={styles.noWorkspaceText}>No channel found</Text>
                                     </View>
                                 ) : (
-                                    data.map(workspace => (
-                                        <View key={workspace._id}></View>
-                                    ))
-                                )}
-                            </View>
-                        </ScrollView>
-                    </View>
+                                    (searchQuery ? filteredChannels : defaultChannels).map(channel => {
+                                        const trimmedChannelName = channel.channelName.trim();
+                                        // Check if the trimmed channel name is not empty
+                                        if (trimmedChannelName) {
+                                            return (
+                                                <TouchableOpacity
+                                                    key={channel._id}
+                                                    onPress={() => console.log('s')}
+                                                >
+                                                    <View style={styles.container2}>
+                                                        <Text style={styles.channelName}>#{trimmedChannelName}</Text>
+                                                        <View style={styles.divider2}></View>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            );
+                                        }
+                                        return null; // Exclude channels with empty names
+                                    })
+                                )
+                            )}
+                        </View>
+                    </ScrollView>
                 )}
             </SafeAreaView>
         </>
@@ -197,6 +250,12 @@ const styles = StyleSheet.create({
         height:wp('.5%'),
         marginTop:wp('12%')
     },
+    divider2:{
+        backgroundColor:DARKMODE.searchBox,
+        width:wp('100%'),
+        height:wp('.2%'),
+        marginTop:wp('2.5%')
+    },
     btnContainer:{
         display:'flex',
         justifyContent:'flex-end',
@@ -234,13 +293,29 @@ const styles = StyleSheet.create({
         transform: [{ rotate: '180deg'}]
     },
     channelHead:{
-        color:DARKMODE.iconColor,
+        color:DARKMODE.headerText,
         fontSize:wp('3.6%'),
         margin:wp('3%'),
     },
     btnsContainer:{
         display:'flex',
         flexDirection:'row',
+    },
+    noWorkspaceText: {
+        fontSize: wp("4%"),
+        color: DARKMODE.headerText, // Dark yellow color
+        textAlign: "center",
+        marginTop: wp("4%"),
+    },
+    channelName:{
+        fontSize: wp("4%"),
+        color: DARKMODE.iconColor, // Dark yellow color
+        margin: wp("2.5%"),
+    },
+    container2:{
+        display:'flex',
+        justifyContent:'flex-start',
+        alignItems:'flex-start',
     }
 });
 
