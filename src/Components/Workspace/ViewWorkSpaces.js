@@ -112,7 +112,7 @@ const ViewWorkSpaces = ({ navigation, route }) => {
                                             <Image style={styles.membersIcon} source={require("../../Assets/members.png")} />
                                             <Text style={styles.members}>{workspace.members.length}</Text>
                                         </View>
-                                        <Text style={styles.channelText}>Channels: {workspace.channels.length}</Text>
+                                        <Text style={styles.channelText}>Channels {workspace.channels.length}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>

@@ -21,7 +21,6 @@ import { ROOT_URL } from "../../Config/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Snackbar from "react-native-snackbar";
 
-
 const CreateWorkSpace = ({ navigation }) => {
   const [token, setToken] = useState("");
   // State Management

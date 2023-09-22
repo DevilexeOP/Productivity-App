@@ -53,7 +53,7 @@ const Login = ({navigation}) => {
         const token = data.token;
         await AsyncStorage.setItem('token', token);
         setTimeout(() => {
-          navigateToSuccess();
+          navigateToSuccess(token);
         }, 1000);
       } else if (res.status === 400 || 401) {
         console.log('Error ? :', data.message);
@@ -109,8 +109,10 @@ const Login = ({navigation}) => {
   };
 
   // navigations
-  const navigateToSuccess = async () => {
-    navigation.navigate('LoginSuccess');
+  const navigateToSuccess = (token) => {
+    navigation.navigate('LoginSuccess',{
+      jwt:token
+    });
   };
   return (
     <SafeAreaView style={styles.container}>

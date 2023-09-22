@@ -15,7 +15,9 @@ export const DARKMODE = {
     secondaryButtons:"#ffba1c",
     notesInput:"#ffffff",
     inputTextPicker:"#ffbf00",
-    searchBox:"#222222"
+    searchBox:"#222222",
+    placeHolder:"#848484",
+    infoText:"#A9A9A9"
 }
 
 export const LIGHTMODE = {
