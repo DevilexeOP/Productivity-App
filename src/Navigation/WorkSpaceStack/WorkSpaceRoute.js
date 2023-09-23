@@ -4,6 +4,7 @@ import CreateWorkSpace from "../../Components/Workspace/CreateWorkSpace";
 import ViewWorkSpaces from "../../Components/Workspace/ViewWorkSpaces";
 import WorkSpace from "../../Components/Workspace/WorkSpace";
 import CreateChannel from "../../Components/Workspace/CreateChannel";
+import Channel from "../../Components/Workspace/Channel";
 
 const WorkSpaceStack = createStackNavigator();
 
@@ -41,6 +42,13 @@ const WorkSpaceRoute = () => {
       <WorkSpaceStack.Screen
         name="CreateChannel"
         component={CreateChannel}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <WorkSpaceStack.Screen
+        name="Channel"
+        component={Channel}
         options={{
           headerShown: false,
         }}

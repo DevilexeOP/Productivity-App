@@ -1,5 +1,6 @@
 export const DARKMODE = {
-    background:"#0a0700",
+    // background:"#000310",
+    background: "#000000",
     buttons:"#ffa600",
     buttonsText:"#ffffff",
     headerText:"#ffb700",
