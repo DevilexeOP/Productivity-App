@@ -90,6 +90,13 @@ const WorkSpace = ({ navigation, route }) => {
             setIsLoading(true);
         }
     };
+    // navigate to Chat in Channel
+    const navigateToChat = (_id,jwt) => {
+        navigation.navigate("Channel",{
+            channelId:_id,
+            jwtToken:jwt
+        })
+    }
     return (
         <>
             <SafeAreaView style={styles.container}>
@@ -161,7 +168,7 @@ const WorkSpace = ({ navigation, route }) => {
                                             return (
                                                 <TouchableOpacity
                                                     key={channel._id}
-                                                    onPress={() => console.log('s')}
+                                                    onPress={() =>navigateToChat(channel._id,jwtToken)}
                                                 >
                                                     <View style={styles.container2}>
                                                         <Text style={styles.channelName}>#{trimmedChannelName}</Text>
