@@ -49,8 +49,10 @@ const WorkSpace = ({ navigation, route }) => {
         fetchData();
     };
     // navigation
-    const navigationToHome = () => {
-        navigation.navigate("WorkSpaceHome");
+    const navigationToHome = (token) => {
+        navigation.navigate("ViewWorkSpaces",{
+            jwtToken:token
+        });
     };
     const navigateToCreateChannel = (token,id) => {
         navigation.navigate("CreateChannel" , {
@@ -101,7 +103,7 @@ const WorkSpace = ({ navigation, route }) => {
         <>
             <SafeAreaView style={styles.container}>
                 <View style={styles.outContainer}>
-                    <TouchableOpacity onPress={navigationToHome}>
+                    <TouchableOpacity onPress={()=>navigationToHome(jwtToken)}>
                         <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.backBtn} />
                     </TouchableOpacity>
                     {data.map(info => (

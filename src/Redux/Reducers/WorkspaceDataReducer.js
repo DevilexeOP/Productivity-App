@@ -1,5 +1,6 @@
 const initialState = {
   spaceData :[],
+  channelData:[]
 }
 
 const reducer = (state = initialState , action) => {
@@ -8,6 +9,11 @@ const reducer = (state = initialState , action) => {
       return {
         ...state,
         spaceData: action.payload,
+      }
+    case 'updateChannelData':
+      return {
+        ...state,
+        channelData: action.payload
       }
     default:
       return state;

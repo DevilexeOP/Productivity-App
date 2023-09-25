@@ -1,4 +1,6 @@
 //  register action creators
+import channel from "../../Components/Workspace/Channel";
+
 export const updateName = name => {
   return dispatch => {
     dispatch({
@@ -191,6 +193,15 @@ export const updateSpaceData = spaceData => {
     dispatch({
       type:'updateSpaceData',
       payload:spaceData
+    })
+  }
+}
+
+export const updateChannelData = channelData => {
+  return dispatch => {
+    dispatch({
+      type:'updateChannelData',
+      payload:channelData
     })
   }
 }

@@ -18,7 +18,8 @@ export const DARKMODE = {
     inputTextPicker:"#ffbf00",
     searchBox:"#222222",
     placeHolder:"#848484",
-    infoText:"#A9A9A9"
+    infoText:"#A9A9A9",
+    chatContainer:"#222222"
 }
 
 export const LIGHTMODE = {
