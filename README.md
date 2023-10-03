@@ -4,6 +4,7 @@ Features<br>
 1- <b> Productive Space </b><br>
   i  - Create Notes <br>
   ii - Create Todos <br>
+  <hr>
 2- <b> Work Space </b> <br>
   i   - Create Workspaces to collab with people  <br> 
   ii  - Create channels in it and interact on various topics [Implementation of Real-Time Chatting is Under Development ]  <br>
@@ -19,6 +20,7 @@ Tech Stack <br>
 <h3><a href="./CONTRIBUTING.md"># For Collaborating in this Project </a></h3>
 <hr>
 <b> Screenshots </b> <br>
+<hr>
 <br>
 <p float="left">
   <img src="./screenshots/Splash.jpg" height="700" />
