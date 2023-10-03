@@ -1,5 +1,7 @@
-Features <br>
-1- Productive Space <br>
+# Be Productivity App
+<br>
+Features<br>
+1- <b>Productive Space<b><br>
   i  - Create Notes <br>
   ii - Create Todos <br>
 2- Work Space <br>
@@ -9,7 +11,14 @@ Features <br>
 <br>
 Tech Stack <br>
   - React Native (Frontend)
-	@@ -16,22 +21,7 @@ Screenshots <br>
+  - State Management (Redux)
+  - Node js (Backend)
+  - Database (Mongo)
+<br>
+Screenshots <br>
+<br>
+<p float="left">
+  <img src="./screenshots/Splash.jpg" height="700" />
   <img src="./screenshots/OnBoard.jpg" height="700" />
   <img src="./screenshots/Home.jpg" height="700" />
 </p>
