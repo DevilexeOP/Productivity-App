@@ -15,12 +15,13 @@ Tech Stack <br>
   - Node js (Backend)
   - Database (Mongo)
 <br>
-Screenshots <br>
+<hr>
+<h3><a href="">For Collaborating in this Project </a></h3>
+<hr>
+<b> Screenshots </b> <br>
 <br>
 <p float="left">
   <img src="./screenshots/Splash.jpg" height="700" />
   <img src="./screenshots/OnBoard.jpg" height="700" />
   <img src="./screenshots/Home.jpg" height="700" />
 </p>
-<hr>
-<h3><a href="">For Collaborating in this Project </a></h3>
