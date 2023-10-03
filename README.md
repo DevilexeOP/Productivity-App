@@ -24,5 +24,5 @@ Features<br>
 <p float="left">
   <img src="./screenshots/Splash.jpg" height="700" />
   <img src="./screenshots/OnBoard.jpg" height="700" />
-  <img src="./screenshots/Home.jpg" height="700" />
+  <img src="./screenshots/Home .jpg" height="700" />
 </p>
