@@ -11,10 +11,10 @@ Features<br>
   iii - Quick Note & Todo Access SO YOU DONT MISS OUT anything while discussing about something important [Implementation of Quick Notes is Under Development ] <br>
 <br>
 Tech Stack <br>
-  - React Native (Frontend)
-  - State Management (Redux)
-  - Node js (Backend)
-  - Database (Mongo)
+  - React Native (Frontend) <br>
+  - State Management (Redux) <br>
+  - Node js (Backend) <br>
+  - Database (Mongo)<br>
 <br>
 <hr>
 <h3><a href="./CONTRIBUTING.md"># For Collaborating in this Project </a></h3>
