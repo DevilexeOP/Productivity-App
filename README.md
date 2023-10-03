@@ -20,7 +20,6 @@ Features<br>
 <h3><a href="./CONTRIBUTING.md"># For Collaborating in this Project </a></h3>
 <hr>
 <b> Screenshots </b> <br>
-<hr>
 <br>
 <p float="left">
   <img src="./screenshots/Splash.jpg" height="700" />
