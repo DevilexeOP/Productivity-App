@@ -18,7 +18,8 @@ const reducers = combineReducers({
   channel:ChannelReducer,
   message:MessageReducer,
   spaces:WorkSpaces,
-  data:SpaceDatas
+  data:SpaceDatas,
+  message:MessageReducer
 });
 
 export default reducers;

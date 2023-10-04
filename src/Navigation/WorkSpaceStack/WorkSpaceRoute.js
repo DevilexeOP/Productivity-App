@@ -55,6 +55,31 @@ const WorkSpaceRoute = () => {
       />
     </WorkSpaceStack.Navigator>
   );
+    return (
+        <WorkSpaceStack.Navigator>
+            <WorkSpaceStack.Screen
+                name="WorkSpaceHome"
+                component={WorkSpaceHome}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <WorkSpaceStack.Screen
+                name="CreateWorkSpace"
+                component={CreateWorkSpace}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <WorkSpaceStack.Screen
+                name="ViewWorkSpaces"
+                component={ViewWorkSpaces}
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </WorkSpaceStack.Navigator>
+    );
 };
 
 export default WorkSpaceRoute;

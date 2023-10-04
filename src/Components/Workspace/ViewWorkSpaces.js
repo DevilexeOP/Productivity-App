@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
     View,
     Text,
@@ -7,27 +7,20 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    Image,
-} from "react-native";
+    Image
+} from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { updateAllWorkSpaces } from "../../Redux/Action-Creators";
-import { DARKMODE } from "../../Config/colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ROOT_URL } from "../../Config/constants";
-import Snackbar from "react-native-snackbar";
+} from 'react-native-responsive-screen';
+import {actionCreators} from '../../Redux/index';
+import {bindActionCreators} from 'redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {DARKMODE} from "../../Config/colors";
 
-const ViewWorkSpaces = ({ navigation, route }) => {
-    // fetch token when component mounts
-    const { jwt } = route.params;
-    useEffect(() => {
-        getSpaces();
-        console.log(jwt);
-    }, []);
+const ViewWorkSpaces = ({navigation}) => {
     // State managements
+
     const dispatch = useDispatch();
     const workspaces = useSelector(state => state.spaces.allWorkSpaces);
     const [isLoading, setIsLoading] = useState(true);
@@ -39,13 +32,14 @@ const ViewWorkSpaces = ({ navigation, route }) => {
         navigation.navigate("CreateWorkSpace");
     };
 
-    // navigate to specific space
-    const handleWorkspace = (_id , token) => {
-        navigation.navigate("WorkSpace",{
-            spaceId:_id,
-            jwtToken:token
-        })
+    // Navigation Fnctions
+    const navigateToWorkspaceHome = () =>{
+        navigation.navigate("WorkSpaceHome")
     }
+    const navigateToCreateSpace = () =>{
+        navigation.navigate("CreateWorkSpace")
+    }
+
 
     // fetching all spaces
     const getSpaces = async () => {
@@ -79,16 +73,16 @@ const ViewWorkSpaces = ({ navigation, route }) => {
             setIsLoading(false);
         }
     };
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.outContainer}>
+            <View style={styles.headerContainer}>
                 <TouchableOpacity onPress={navigateToWorkspaceHome}>
-                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn} />
+                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
                 </TouchableOpacity>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>All Workspaces</Text>
-                </View>
+                <Text style={styles.headerText}>Your Workspaces</Text>
             </View>
+
             <ScrollView style={{ marginBottom: wp("-17%") }}>
                 <View>
                     {isLoading ? ( // Display "Loading..." when isLoading is true
@@ -118,6 +112,11 @@ const ViewWorkSpaces = ({ navigation, route }) => {
                             </TouchableOpacity>
                         ))
                     )}
+
+            <ScrollView>
+                {/* TODO ALL WORK SPACES  */}
+                <View style={styles.activityContainer}>
+
                 </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
@@ -130,50 +129,47 @@ const ViewWorkSpaces = ({ navigation, route }) => {
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "black",
-    },
-    outContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
+        backgroundColor: 'black',
     },
     headerContainer: {
-        width: wp("80%"),
+        display: 'flex',
+        flexDirection: 'row',
+        width: wp('100%'),
         height: null,
-        justifyContent: "center",
-    },
-    headerText: {
-        fontSize: wp("4.8%"),
-        fontWeight: "600",
-        marginVertical: hp("5%"),
-        color: DARKMODE.headerText,
-        textAlign: "center",
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
     buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginVertical: hp("13%"),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical:hp('13%')
+    },
+    headerText: {
+        fontSize: wp('6.5%'),
+        fontWeight: '600',
+        marginVertical: hp('5%'),
+        color: DARKMODE.headerText,
+        marginRight: wp('25%')
     },
     workSpaceButton: {
-        borderRadius: wp("2%"),
-        width: wp("60%"),
-        height: hp("6%"),
-        marginBottom: wp("-1%"),
-        backgroundColor: DARKMODE.buttons,
-        justifyContent: "center",
-        alignItems: "center",
+        borderRadius: 10,
+        width: wp('60%'),
+        height: hp('6%'),
+        backgroundColor:DARKMODE.buttons,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     todoText: {
-        color: "white",
-        fontSize: wp("3%"),
-        fontWeight: "bold",
+        color: 'white',
+        fontSize: wp('3%'),
+        fontWeight: 'bold',
     },
     hamBtn: {
         width: wp("4%"),
@@ -241,7 +237,12 @@ const styles = StyleSheet.create({
         color: DARKMODE.iconColor,
         textAlign: "center",
         fontWeight:'700'
+        width: wp('4%'),
+        height: wp('4%'),
+        padding: wp('3%'),
+        marginHorizontal: wp('10%'),
+        tintColor:DARKMODE.iconColor
     },
-});
+})
 
-export default ViewWorkSpaces;
+export default ViewWorkSpaces
