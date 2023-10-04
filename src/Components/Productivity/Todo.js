@@ -37,9 +37,6 @@ const TodoScreen = ({navigation, route}) => {
 
     const getTodos = async () => {
         if (!jwtToken) {
-            console.log(
-                'Token is not available yet. ------------------------ ' + jwtToken,
-            );
             return;
         }
         try {
@@ -140,6 +137,7 @@ const TodoScreen = ({navigation, route}) => {
                 </TouchableOpacity>
                 <Text style={styles.headerText}>Your To-Do's </Text>
             </View>
+            {/*TODO LOADING TEXT INSTEAD OF NO TODOS FOUND WHEN FETCHING */}
             <ScrollView>
                 <View>
                     {allTodo && allTodo.length === 0 ? (
