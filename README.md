@@ -18,7 +18,7 @@ Features<br>
 <hr>
 <h3><a href="https://join.slack.com/t/be-productive-world/shared_invite/zt-22xf2o5va-vZl19htTM3rR1ioEJzl2Cg">Join the Slack Community </a></h3>
 <hr>
-<h3><a href="./CONTRIBUTING.md"># For Collaborating in this Project </a></h3>
+<h3><a href="./CONTRIBUTING.md">For Collaborating in this Project </a></h3>
 <hr>
 <b> Screenshots </b> <br>
 <br>
