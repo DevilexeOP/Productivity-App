@@ -7,6 +7,8 @@ import UserReducer from '../Reducers/UserReducer';
 import WorkSpaceReducer from "../Reducers/AddWorkSpaceReducer"
 import ChannelReducer from "../Reducers/AddChannelReducer"
 import MessageReducer from "../Reducers/SendMessageReducer"
+import WorkSpaces from "../Reducers/AllSpacesReducer"
+import SpaceDatas from "../Reducers/WorkspaceDataReducer"
 
 const reducers = combineReducers({
   addNote: AddNoteReducer,
@@ -14,7 +16,9 @@ const reducers = combineReducers({
   user: UserReducer,
   workspace:WorkSpaceReducer,
   channel:ChannelReducer,
-  message:MessageReducer
+  message:MessageReducer,
+  spaces:WorkSpaces,
+  data:SpaceDatas
 });
 
 export default reducers;

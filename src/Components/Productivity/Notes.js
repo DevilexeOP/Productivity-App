@@ -138,6 +138,7 @@ const NotesScreen = ({navigation, route}) => {
                 <Text style={styles.headerText}>Your Note's </Text>
             </View>
             <ScrollView>
+                {/*TODO LOADING TEXT INSTEAD OF NO NOTES FOUND WHEN FETCHING */}
                 <View>
                     {allNotes && allNotes.length === 0 ? (
                         <View
