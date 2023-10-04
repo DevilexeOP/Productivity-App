@@ -10,7 +10,7 @@ Features<br>
   ii  - Create channels in it and interact on various topics [Implementation of Real-Time Chatting is Under Development ]  <br>
   iii - Quick Note & Todo Access SO YOU DONT MISS OUT anything while discussing about something important [Implementation of Quick Notes is Under Development ] <br>
 <br>
-<b> Features </b> <br/>
+<b> Tech Stack </b> <br/>
   - React Native (Frontend) <br>
   - State Management (Redux) <br>
   - Node js (Backend) <br>
