@@ -37,6 +37,9 @@ const TodoScreen = ({navigation, route}) => {
 
     const getTodos = async () => {
         if (!jwtToken) {
+            console.log(
+                'Token is not available yet. ------------------------ ' + jwtToken,
+            );
             return;
         }
         try {
