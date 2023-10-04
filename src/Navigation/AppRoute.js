@@ -3,7 +3,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 // navigator
 // Components
 import BottomRoute from './BottomRouter/BottomRoute';
-import SplashScreen from "../Components/OnBoard/Splash";
 
 const AppStack = createStackNavigator();
 

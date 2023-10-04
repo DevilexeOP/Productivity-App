@@ -19,6 +19,70 @@ import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from "../../Config/colors";
 
 
+const CreateWorkSpace = ({ navigation }) => {
+  const [token, setToken] = useState("");
+  // State Management
+  const dispatch = useDispatch();
+  const actions = bindActionCreators(actionCreators, dispatch);
+  const workspaceTitle = useSelector(state => state.workspace.workspaceName);
+  const projectName = useSelector(state => state.workspace.projectName);
+  // getting token
+  useEffect(() => {
+    getToken();
+    resetSpace();
+  }, []);
+  // handlers
+  const handleWorkSpaceTitle = workspaceTitle => {
+    actions.updateWorkspaceName(workspaceTitle);
+  };
+  const handleProjectName = projectName => {
+    actions.updateProjectName(projectName);
+  };
+
+  // reset space
+  const resetSpace = () => {
+    actions.updateWorkspaceName("");
+    actions.updateProjectName("");
+  };
+
+  // token
+  const getToken = async () => {
+    const jwtToken = await AsyncStorage.getItem("token");
+    setToken(jwtToken);
+  };
+
+  // handling api reqs
+  const addWorkSpace = async () => {
+    try {
+      const res = await fetch(`${ROOT_URL}/user/api/v1/workspace/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          workspace: workspaceTitle,
+          projectName:projectName,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        actions.updateWorkspaceName(data.workspace);
+        actions.updateProjectName(data.projectName);
+        navigateToWorkSpace(data.workspace, data.projectName);
+      } else if (res.status === 400) {
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: "#FFB800",
+          textColor: "black",
+        });
+        return ;
+      }
+    } catch (e) {
+      console.log(e);
+      
+
 const CreateWorkSpace = ({navigation}) => {
     const [token, setToken] = useState('');
     // State Management

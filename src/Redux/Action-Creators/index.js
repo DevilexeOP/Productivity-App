@@ -1,4 +1,6 @@
 //  register action creators
+import channel from "../../Components/Workspace/Channel";
+
 export const updateName = name => {
   return dispatch => {
     dispatch({
@@ -167,6 +169,39 @@ export const updateSentBy = sentBy => {
 }
 
 export const updateMessage = message => {
+  return dispatch => {
+    dispatch({
+      type: "updateMessage",
+      payload: message,
+    });
+  };
+};
+
+// Rendering all work spaces
+export const updateAllWorkSpaces = allWorkSpaces => {
+  return dispatch => {
+    dispatch({
+      type: "updateAllWorkSpaces",
+      payload: allWorkSpaces,
+    });
+  };
+};
+
+// Space Data
+export const updateSpaceData = spaceData => {
+  return dispatch =>{
+    dispatch({
+      type:'updateSpaceData',
+      payload:spaceData
+    })
+  }
+}
+
+export const updateChannelData = channelData => {
+  return dispatch => {
+    dispatch({
+      type:'updateChannelData',
+      payload:channelData
   return dispatch =>{
     dispatch ({
       type:"updateMessage",
