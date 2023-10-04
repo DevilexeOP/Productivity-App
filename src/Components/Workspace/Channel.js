@@ -96,7 +96,8 @@ const Channel = ({ navigation, route }) => {
             message: sendMsg,     // Replace with your message content
             sentBy: data.admin,  // Replace with the actual user ID
             channelId: channelId,  // Replace with the actual channel ID
-        }); // Emit the message
+        });
+        socket.emit('chat message', messageData);
         handleSendMessage(''); // Clear the message input
     };
      const scrollViewRef = useRef();
@@ -121,7 +122,7 @@ const Channel = ({ navigation, route }) => {
             <View style={styles.chatContainer}>
                 <ScrollView>
                     <View style={styles.chattingSection}>
-                        <Text style={styles.messageLabel}>GAYYY</Text>
+                        <Text style={styles.messageLabel}></Text>
                     </View>
                 </ScrollView>
                 <View style={styles.sendingContainer}>
