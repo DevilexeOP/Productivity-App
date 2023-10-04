@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     View,
     Text,
@@ -13,16 +13,16 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { updateAllWorkSpaces } from "../../Redux/Action-Creators";
-import { DARKMODE } from "../../Config/colors";
+import {connect, useDispatch, useSelector} from "react-redux";
+import {updateAllWorkSpaces} from "../../Redux/Action-Creators";
+import {DARKMODE} from "../../Config/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ROOT_URL } from "../../Config/constants";
+import {ROOT_URL} from "../../Config/constants";
 import Snackbar from "react-native-snackbar";
 
-const ViewWorkSpaces = ({ navigation, route }) => {
+const ViewWorkSpaces = ({navigation, route}) => {
     // fetch token when component mounts
-    const { jwt } = route.params;
+    const {jwt} = route.params;
     useEffect(() => {
         getSpaces();
         console.log(jwt);
@@ -40,10 +40,10 @@ const ViewWorkSpaces = ({ navigation, route }) => {
     };
 
     // navigate to specific space
-    const handleWorkspace = (_id , token) => {
-        navigation.navigate("WorkSpace",{
-            spaceId:_id,
-            jwtToken:token
+    const handleWorkspace = (_id, token) => {
+        navigation.navigate("WorkSpace", {
+            spaceId: _id,
+            jwtToken: token
         })
     }
 
@@ -83,13 +83,13 @@ const ViewWorkSpaces = ({ navigation, route }) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.outContainer}>
                 <TouchableOpacity onPress={navigateToWorkspaceHome}>
-                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn} />
+                    <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
                 </TouchableOpacity>
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerText}>All Workspaces</Text>
                 </View>
             </View>
-            <ScrollView style={{ marginBottom: wp("-17%") }}>
+            <ScrollView style={{marginBottom: wp("-17%")}}>
                 <View>
                     {isLoading ? ( // Display "Loading..." when isLoading is true
                         <View>
@@ -104,12 +104,13 @@ const ViewWorkSpaces = ({ navigation, route }) => {
                             <TouchableOpacity
                                 key={workspace._id}
                                 style={styles.workspaceItem}
-                                onPress={() => handleWorkspace(workspace._id , jwt)}>
+                                onPress={() => handleWorkspace(workspace._id, jwt)}>
                                 <View style={styles.workspaceContainer}>
                                     <Text style={styles.spaceName}>{workspace.workspace}</Text>
                                     <View style={styles.container2}>
                                         <View style={styles.rowContainer}>
-                                            <Image style={styles.membersIcon} source={require("../../Assets/members.png")} />
+                                            <Image style={styles.membersIcon}
+                                                   source={require("../../Assets/members.png")}/>
                                             <Text style={styles.members}>{workspace.members.length}</Text>
                                         </View>
                                         <Text style={styles.channelText}>Channels {workspace.channels.length}</Text>
@@ -201,7 +202,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         flexWrap: "wrap",
-        padding:wp('2%')
+        padding: wp('2%')
     },
     spaceName: {
         fontSize: wp("4%"),
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
         fontSize: wp("3.2%"),
         color: DARKMODE.iconColor,
         textAlign: "center",
-        fontWeight:'700'
+        fontWeight: '700'
     },
 });
 
