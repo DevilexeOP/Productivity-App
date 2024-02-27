@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, Image, ScrollView, TextInput } from "react-native";
-import { DARKMODE } from "../../Config/colors";
+import { DARKMODE } from "../../Config/Colors";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { ROOT_URL } from "../../Config/constants";
+import { ROOT_URL } from "../../Config/Constants";
 import Snackbar from "react-native-snackbar";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { updateSpaceData } from "../../Redux/Action-Creators";

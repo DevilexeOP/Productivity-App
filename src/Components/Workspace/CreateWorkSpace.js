@@ -16,8 +16,8 @@ import {
 import { actionCreators } from "../../Redux/index";
 import { bindActionCreators } from "redux";
 import { useDispatch, useSelector } from "react-redux";
-import { DARKMODE } from "../../Config/colors";
-import { ROOT_URL } from "../../Config/constants";
+import { DARKMODE } from "../../Config/Colors";
+import { ROOT_URL } from "../../Config/Constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Snackbar from "react-native-snackbar";
 

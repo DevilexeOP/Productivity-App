@@ -20,8 +20,8 @@ import {
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL} from '../../Config/constants';
-import {DARKMODE} from "../../Config/colors";
+import {ROOT_URL} from '../../Config/Constants';
+import {DARKMODE} from "../../Config/Colors";
 
 const {width, height} = Dimensions.get('window');
 

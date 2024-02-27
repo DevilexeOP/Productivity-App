@@ -5,7 +5,7 @@ import WorkSpaceRoute from "../WorkSpaceStack/WorkSpaceRoute";
 import {
   widthPercentageToDP as wp, heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { DARKMODE } from "../../Config/colors";
+import { DARKMODE } from "../../Config/Colors";
 import ProfileRoute from "../ProfileStack/ProfileRoute";
 
 const BottomRouter = createBottomTabNavigator();

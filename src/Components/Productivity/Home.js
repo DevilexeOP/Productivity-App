@@ -28,6 +28,7 @@ const HomeScreen = ({navigation}) => {
     }
   };
 
+
   const navigateToNotes = token => {
     navigation.navigate('Notes', {
       jwtToken: token,
@@ -45,7 +46,7 @@ const HomeScreen = ({navigation}) => {
         <View>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Be Productive !</Text>
-          {/*  TODO CHANGE HEADER TO RECENT ACTIVITY */}
+            {/*  TODO CHANGE HEADER TO RECENT ACTIVITY */}
           </View>
           {/* TODO DISPLAYING RECENT ACTIVITY */}
           <View style={styles.animationContainer}>

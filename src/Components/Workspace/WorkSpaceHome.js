@@ -13,7 +13,7 @@ import {
 } from "react-native-responsive-screen";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { DARKMODE } from "../../Config/colors";
+import { DARKMODE } from "../../Config/Colors";
 import ViewWorkSpaces from "./ViewWorkSpaces";
 
 const WorkSpaceHome = ({ navigation }) => {

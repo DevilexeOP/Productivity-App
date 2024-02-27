@@ -17,7 +17,8 @@ import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL} from '../../Config/constants';
+import {ROOT_URL} from '../../Config/Constants';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Register = ({navigation}) => {
   //use effect to clear values
@@ -68,8 +69,9 @@ const Register = ({navigation}) => {
       });
       const data = await res.json();
       if (res.status === 201) {
-        console.log('ok' + JSON.stringify(data));
-        console.log(data.token);
+        await AsyncStorage.setItem('email', email);
+        await AsyncStorage.setItem('name', name);
+        await AsyncStorage.setItem('username', username);
         setTimeout(() => {
           navigation.replace('RegisterSuccess'); // using replace so they don't go back to the register page if they click back
         }, 1000);

@@ -1,10 +1,10 @@
 //  register action creators
-import channel from "../../Components/Workspace/Channel";
+import channel from '../../Components/Workspace/Channel';
 
 export const updateName = name => {
   return dispatch => {
     dispatch({
-      type: "updateName",
+      type: 'updateName',
       payload: name,
     });
   };
@@ -13,7 +13,7 @@ export const updateName = name => {
 export const updateUserName = username => {
   return dispatch => {
     dispatch({
-      type: "updateUserName",
+      type: 'updateUserName',
       payload: username,
     });
   };
@@ -22,7 +22,7 @@ export const updateUserName = username => {
 export const updateEmail = email => {
   return dispatch => {
     dispatch({
-      type: "updateEmail",
+      type: 'updateEmail',
       payload: email,
     });
   };
@@ -31,7 +31,7 @@ export const updateEmail = email => {
 export const updatePassword = password => {
   return dispatch => {
     dispatch({
-      type: "updatePassword",
+      type: 'updatePassword',
       payload: password,
     });
   };
@@ -41,7 +41,7 @@ export const updatePassword = password => {
 export const updateNotesTitle = notesTitle => {
   return dispatch => {
     dispatch({
-      type: "updateNotesTitle",
+      type: 'updateNotesTitle',
       payload: notesTitle,
     });
   };
@@ -50,7 +50,7 @@ export const updateNotesTitle = notesTitle => {
 export const updateNotesDescription = notesDescription => {
   return dispatch => {
     dispatch({
-      type: "updateNotesDescription",
+      type: 'updateNotesDescription',
       payload: notesDescription,
     });
   };
@@ -59,7 +59,7 @@ export const updateNotesDescription = notesDescription => {
 export const updateNotesMedia = notesMedia => {
   return dispatch => {
     dispatch({
-      type: "updateNotesMedia",
+      type: 'updateNotesMedia',
       payload: notesMedia,
     });
   };
@@ -69,7 +69,7 @@ export const updateNotesMedia = notesMedia => {
 export const updateAllNotes = allNotes => {
   return dispatch => {
     dispatch({
-      type: "updateAllNotes",
+      type: 'updateAllNotes',
       payload: allNotes,
     });
   };
@@ -78,7 +78,7 @@ export const updateAllNotes = allNotes => {
 export const updateTodoTitle = todoTitle => {
   return dispatch => {
     dispatch({
-      type: "updateTodoTitle",
+      type: 'updateTodoTitle',
       payload: todoTitle,
     });
   };
@@ -87,7 +87,7 @@ export const updateTodoTitle = todoTitle => {
 export const updateTodoDescription = toDoDescription => {
   return dispatch => {
     dispatch({
-      type: "updateTodoDescription",
+      type: 'updateTodoDescription',
       payload: toDoDescription,
     });
   };
@@ -96,7 +96,7 @@ export const updateTodoDescription = toDoDescription => {
 export const updateTodoPriority = toDoPriority => {
   return dispatch => {
     dispatch({
-      type: "updateTodoPriority",
+      type: 'updateTodoPriority',
       payload: toDoPriority,
     });
   };
@@ -105,7 +105,7 @@ export const updateTodoPriority = toDoPriority => {
 export const updateTodoStatus = toDoStatus => {
   return dispatch => {
     dispatch({
-      type: "updateTodoStatus",
+      type: 'updateTodoStatus',
       payload: toDoStatus,
     });
   };
@@ -114,7 +114,7 @@ export const updateTodoStatus = toDoStatus => {
 export const updateAllTodos = allTodos => {
   return dispatch => {
     dispatch({
-      type: "updateAllTodos",
+      type: 'updateAllTodos',
       payload: allTodos,
     });
   };
@@ -122,28 +122,26 @@ export const updateAllTodos = allTodos => {
 
 // Workspace action creators
 export const updateWorkspaceName = workspaceName => {
-  return dispatch => (
+  return dispatch =>
     dispatch({
-      type: "updateWorkspaceName",
+      type: 'updateWorkspaceName',
       payload: workspaceName,
-    })
-  );
+    });
 };
 
 export const updateProjectName = projectName => {
-  return dispatch => (
+  return dispatch =>
     dispatch({
-      type: "updateProjectName",
+      type: 'updateProjectName',
       payload: projectName,
-    })
-  );
+    });
 };
 
 // Channel Action creators
 export const updateChannelName = channelName => {
   return dispatch => {
     dispatch({
-      type: "updateChannelName",
+      type: 'updateChannelName',
       payload: channelName,
     });
   };
@@ -153,7 +151,7 @@ export const updateChannelName = channelName => {
 export const updateAllMessages = allMessages => {
   return dispatch => {
     dispatch({
-      type: "updateAllMessages",
+      type: 'updateAllMessages',
       payload: allMessages,
     });
   };
@@ -162,7 +160,7 @@ export const updateAllMessages = allMessages => {
 export const updateSentBy = sentBy => {
   return dispatch => {
     dispatch({
-      type: "updateSentBy",
+      type: 'updateSentBy',
       payload: sentBy,
     });
   };
@@ -171,7 +169,7 @@ export const updateSentBy = sentBy => {
 export const updateMessage = message => {
   return dispatch => {
     dispatch({
-      type: "updateMessage",
+      type: 'updateMessage',
       payload: message,
     });
   };
@@ -181,7 +179,7 @@ export const updateMessage = message => {
 export const updateAllWorkSpaces = allWorkSpaces => {
   return dispatch => {
     dispatch({
-      type: "updateAllWorkSpaces",
+      type: 'updateAllWorkSpaces',
       payload: allWorkSpaces,
     });
   };
@@ -189,19 +187,19 @@ export const updateAllWorkSpaces = allWorkSpaces => {
 
 // Space Data
 export const updateSpaceData = spaceData => {
-  return dispatch =>{
+  return dispatch => {
     dispatch({
-      type:'updateSpaceData',
-      payload:spaceData
-    })
-  }
-}
+      type: 'updateSpaceData',
+      payload: spaceData,
+    });
+  };
+};
 
 export const updateChannelData = channelData => {
   return dispatch => {
     dispatch({
-      type:'updateChannelData',
-      payload:channelData
-    })
-  }
-}
+      type: 'updateChannelData',
+      payload: channelData,
+    });
+  };
+};

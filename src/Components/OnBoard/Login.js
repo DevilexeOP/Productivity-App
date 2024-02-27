@@ -17,7 +17,7 @@ import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL} from '../../Config/constants';
+import {ROOT_URL} from '../../Config/Constants';
 
 const Login = ({navigation}) => {
   useEffect(() => {
