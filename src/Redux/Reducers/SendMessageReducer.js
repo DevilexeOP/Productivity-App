@@ -1,29 +1,29 @@
 const initialState = {
-  allMessages:[],
-  sentBy:"",
-  message:""
-}
+  allMessages: [],
+  sentBy: '',
+  message: '',
+};
 
-const reducer = (state= initialState, action) => {
-  switch (action.type){
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
     case 'updateAllMessages':
-      return  {
+      return {
         ...state,
-        allMessages: action.payload
-      }
+        allMessages: action.payload,
+      };
     case 'updateSentBy':
       return {
         ...state,
-        sentBy: action.payload
-      }
+        sentBy: action.payload,
+      };
     case 'updateMessage':
       return {
         ...state,
-        message: action.payload
-      }
+        message: action.payload,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default reducer
+export default reducer;

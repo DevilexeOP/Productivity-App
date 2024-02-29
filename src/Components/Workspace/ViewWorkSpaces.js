@@ -19,18 +19,24 @@ import {DARKMODE} from '../../Config/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ROOT_URL} from '../../Config/Constants';
 import Snackbar from 'react-native-snackbar';
+import socket from '../../Config/Socket';
+import {bindActionCreators} from 'redux';
+import {actionCreators} from '../../Redux/index';
+import {updateAllMessages} from '../../Redux/Action-Creators';
+import {all} from 'axios';
 
 const ViewWorkSpaces = ({navigation, route}) => {
   // fetch token when component mounts
   const {jwt} = route.params;
-  useEffect(() => {
-    getSpaces();
-    console.log(jwt);
-  }, []);
   // State managements
   const dispatch = useDispatch();
   const workspaces = useSelector(state => state.spaces.allWorkSpaces);
   const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    getSpaces();
+    console.log(jwt);
+  }, []);
+
   // Navigation Functions
   const navigateToWorkspaceHome = () => {
     navigation.navigate('WorkSpaceHome');
@@ -62,7 +68,10 @@ const ViewWorkSpaces = ({navigation, route}) => {
         },
       });
       const data = await res.json();
-      if (res.status === 404) {
+      if (res.status === 200) {
+        dispatch(updateAllWorkSpaces(data));
+        setIsLoading(false);
+      } else if (res.status === 404) {
         Snackbar.show({
           text: data.message,
           duration: Snackbar.LENGTH_LONG,
@@ -70,9 +79,6 @@ const ViewWorkSpaces = ({navigation, route}) => {
           textColor: 'black',
         });
         setIsLoading(true);
-      } else if (res.status === 200) {
-        dispatch(updateAllWorkSpaces(data));
-        setIsLoading(false);
       }
     } catch (e) {
       console.log(e);

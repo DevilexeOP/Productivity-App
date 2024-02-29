@@ -28,6 +28,7 @@ import KeyboardAvoidView from '../../Config/KeyboardAvoidView';
 import socket from '../../Config/Socket';
 import {act} from 'react-test-renderer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {all} from 'axios';
 // import io from 'socket.io-client';
 
 // sentMessage - >  message sent by user
@@ -38,28 +39,28 @@ const Channel = ({navigation, route}) => {
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
   const data = useSelector(state => state.data.channelData);
-  const allMessages = useSelector(state => state.message.allMessages);
   // loading manage
   const [isLoading, setIsLoading] = useState(true);
+  // msg manage
+  const allMessages = useSelector(state => state.message.allMessages);
+
   useEffect(() => {
     fetchData();
-    getData();
   }, []);
+
   useEffect(() => {
-    socket.on('messageRes', data => {
-      actions.updateAllMessages(res => [...res, data]);
-    });
-    return () => socket.off('messageRes');
-  }, [allMessages]);
-  // getting user data
-  let name, email, userName;
-  const getData = async () => {
-    name = await AsyncStorage.getItem('name');
-    email = await AsyncStorage.getItem('email');
-    userName = await AsyncStorage.getItem('username');
-    console.log(name, email, userName);
-    return {name, email, userName};
-  };
+    const handleMessageResponse = data => {
+      dispatch(updateAllMessages(data)); // Dispatching action to update messages
+    };
+
+    // Add event listener for 'messageResponse' event
+    socket.on('messageResponse', handleMessageResponse);
+    // Cleanup function to remove event listener
+    return () => {
+      socket.off('messageResponse', handleMessageResponse);
+    };
+  }, [socket, sentMessage]);
+
   // fetching channel data
   const fetchData = async () => {
     if (!jwtToken) {
@@ -103,9 +104,28 @@ const Channel = ({navigation, route}) => {
   const handleSentMessage = val => {
     actions.updateMessage(val);
   };
-  const sendMessageToSocket = () => {
+  // getting user data
+  let name, email, userName;
+  const getData = async () => {
+    name = await AsyncStorage.getItem('name');
+    email = await AsyncStorage.getItem('email');
+    userName = await AsyncStorage.getItem('username');
+    console.log(name, email, userName);
+    return {name, email, userName};
+  };
+  const sendMessageToSocket = async () => {
     if (sentMessage) {
-      socket.emit('message', {message: sentMessage});
+      const userData = await getData();
+      const {name, userName,email} = userData;
+      const messageData = {
+        message: sentMessage,
+        name: name,
+        email: email,
+        userName: userName,
+        socketID: socket.id,
+        timeStamp: new Date().toLocaleTimeString(),
+      };
+      socket.emit('message', messageData);
       actions.updateMessage('');
     }
   };
