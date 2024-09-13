@@ -157,6 +157,15 @@ export const updateAllMessages = allMessages => {
   };
 };
 
+export const updateAddMessage = addMessage => {
+  return dispatch => {
+    dispatch({
+      type: 'updateAddMessage',
+      payload: addMessage,
+    });
+  };
+};
+
 export const updateSentBy = sentBy => {
   return dispatch => {
     dispatch({

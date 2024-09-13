@@ -16,6 +16,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         sentBy: action.payload,
       };
+    case 'updateAddMessage':
+      return {
+        ...state,
+        allMessages: [...state.allMessages, action.payload],
+      };
+    case 'removeMessage':
     case 'updateMessage':
       return {
         ...state,

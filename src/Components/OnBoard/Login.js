@@ -36,6 +36,46 @@ const Login = ({navigation}) => {
     actions.updatePassword(password);
   };
   // handling login
+  // const handleLogin = async (Email, Password) => {
+  //   try {
+  //     const res = await fetch(`${ROOT_URL}/auth/api/v1/login`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         email: Email,
+  //         password: Password,
+  //       }),
+  //     });
+  //     const data = await res.json();
+  //     console.log(JSON.stringify(data))
+  //     if (res.status === 200) {
+  //       const token = data.token;
+  //       const id  = data.userId;
+  //       await AsyncStorage.setItem('token', token);
+  //       await AsyncStorage.setItem('userId',id);
+  //       setTimeout(() => {
+  //         navigateToSuccess(token);
+  //       }, 1000);
+  //     } else if (res.status === 400 || 401) {
+  //       console.log('Error ? :', data.message);
+  //       Snackbar.show({
+  //         text: data.message,
+  //         duration: Snackbar.LENGTH_LONG,
+  //         backgroundColor: '#FFB800',
+  //         textColor: 'black',
+  //       });
+  //     } else if (res.status === 500) {
+  //       navigation.navigate('LoginFail');
+  //     } else {
+  //       console.log('Error ' + res.status);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     navigation.navigate('LoginFail');
+  //   }
+  // };
   const handleLogin = async (Email, Password) => {
     try {
       const res = await fetch(`${ROOT_URL}/auth/api/v1/login`, {
@@ -48,18 +88,28 @@ const Login = ({navigation}) => {
           password: Password,
         }),
       });
+
       const data = await res.json();
-      console.log(JSON.stringify(data))
+      console.log(JSON.stringify(data)); // Log the full response for debugging
+
       if (res.status === 200) {
         const token = data.token;
-        const id  = data.userId;
-        await AsyncStorage.setItem('token', token);
-        await AsyncStorage.setItem('userId',id);
-        setTimeout(() => {
-          navigateToSuccess(token);
-        }, 1000);
-      } else if (res.status === 400 || 401) {
-        console.log('Error ? :', data.message);
+        const id = data.userId;
+
+        // Log User ID to verify it's not undefined or null
+        console.log('User ID:', id);
+
+        if (token && id) {
+          await AsyncStorage.setItem('token', token);
+          await AsyncStorage.setItem('userId', id);
+          setTimeout(() => {
+            navigateToSuccess(token);
+          }, 1000);
+        } else {
+          console.log('Login response missing token or userId.');
+        }
+      } else if (res.status === 400 || res.status === 401) {
+        console.log('Error:', data.message);
         Snackbar.show({
           text: data.message,
           duration: Snackbar.LENGTH_LONG,
@@ -69,10 +119,10 @@ const Login = ({navigation}) => {
       } else if (res.status === 500) {
         navigation.navigate('LoginFail');
       } else {
-        console.log('Error ' + res.status);
+        console.log('Unexpected status:', res.status);
       }
     } catch (error) {
-      console.log(error);
+      console.log('Login error:', error);
       navigation.navigate('LoginFail');
     }
   };
@@ -112,9 +162,9 @@ const Login = ({navigation}) => {
   };
 
   // navigations
-  const navigateToSuccess = (token) => {
-    navigation.navigate('LoginSuccess',{
-      jwt:token
+  const navigateToSuccess = token => {
+    navigation.navigate('LoginSuccess', {
+      jwt: token,
     });
   };
   return (

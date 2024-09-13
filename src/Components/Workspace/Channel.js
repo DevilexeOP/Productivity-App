@@ -23,6 +23,7 @@ import {
   updateChannelData,
   updateMessage,
   updateAllMessages,
+  updateAddMessage,
 } from '../../Redux/Action-Creators';
 import KeyboardAvoidView from '../../Config/KeyboardAvoidView';
 import socket from '../../Config/Socket';
@@ -46,20 +47,21 @@ const Channel = ({navigation, route}) => {
 
   useEffect(() => {
     fetchData();
+    console.log('All Messages', allMessages);
   }, []);
 
   useEffect(() => {
     const handleMessageResponse = data => {
-      dispatch(updateAllMessages(data)); // Dispatching action to update messages
+      dispatch(updateAddMessage(data)); // Dispatching action to add new message
     };
 
-    // Add event listener for 'messageResponse' event
-    socket.on('messageResponse', handleMessageResponse);
+    socket.on('chat message', handleMessageResponse);
+
     // Cleanup function to remove event listener
     return () => {
-      socket.off('messageResponse', handleMessageResponse);
+      socket.off('chat message', handleMessageResponse);
     };
-  }, [socket, sentMessage]);
+  }, [dispatch]);
 
   // fetching channel data
   const fetchData = async () => {
@@ -110,28 +112,39 @@ const Channel = ({navigation, route}) => {
     name = await AsyncStorage.getItem('name');
     email = await AsyncStorage.getItem('email');
     userName = await AsyncStorage.getItem('username');
-    console.log(name, email, userName);
+    console.log(
+      'DATA???????????????????????????????????????????????' + name,
+      email,
+      userName,
+    );
     return {name, email, userName};
   };
+
   const sendMessageToSocket = async () => {
     if (sentMessage) {
-      const userData = await getData();
-      console.log('Users Data ' + JSON.stringify(userData));
-      const {name, userName,email} = userData;
+      // const userData = await getData();
+      // console.log('Users Data ' + JSON.stringify(userData));
+      // const {name, userName, email} = userData;
       const messageData = {
         message: sentMessage,
-        name: name,
-        email: email,
-        userName: userName,
+        // name: name,
+        // email: email,
+        // userName: userName,
         socketID: socket.id,
         timeStamp: new Date().toLocaleTimeString(),
       };
-      socket.emit('message', messageData);
+      socket.emit('chat message', messageData);
+
+      // dispatch action to redux
+      dispatch(updateAddMessage(messageData));
+
+      // set to default state
       actions.updateMessage('');
     }
   };
 
   const scrollViewRef = useRef();
+
   return (
     <KeyboardAvoidView>
       <View style={styles.outContainer}>
@@ -160,11 +173,16 @@ const Channel = ({navigation, route}) => {
       </View>
       {/*Chatting Section */}
       <View style={styles.chatContainer}>
-        <ScrollView>
-          <View style={styles.chattingSection}>
-            <Text style={styles.messageLabel} />
-          </View>
+        {/* All Chat */}
+        <ScrollView style={styles.scrollView}>
+          {allMessages.map((msg, index) => (
+            <View key={index} style={styles.messageContainer}>
+              <Text style={styles.chatMessageTime}>{msg.timeStamp}</Text>
+              <Text style={styles.chatMessage}>{msg.message}</Text>
+            </View>
+          ))}
         </ScrollView>
+        {/* Chat Input Box */}
         <View style={styles.sendingContainer}>
           <View style={styles.inputContainer}>
             <TextInput
@@ -253,6 +271,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: wp('80%'),
     height: hp('7.5%'),
+    marginTop: wp('5%'),
     backgroundColor: DARKMODE.iconColor,
     alignItems: 'center',
     marginLeft: wp('5%'),
@@ -277,6 +296,27 @@ const styles = StyleSheet.create({
   messageLabel: {
     color: DARKMODE.iconColor,
     fontSize: wp('3%'),
+  },
+  messageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: wp('5%'),
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    position: 'relative',
+  },
+  chatMessage: {
+    fontSize: wp('4%'),
+    color: DARKMODE.headerText,
+    flex: 1,
+    top: wp('2%'),
+  },
+  chatMessageTime: {
+    fontSize: wp('3%'),
+    color: '#a0a0a0', // Lighter color for the timestamp
+    position: 'absolute', // Position absolutely within the message container
+    right: wp('2%'), // Space from the right
+    top: wp('1%'), // Space from the top
   },
 });
 
