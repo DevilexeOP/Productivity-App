@@ -19,7 +19,10 @@ export const DARKMODE = {
     searchBox:"#222222",
     placeHolder:"#848484",
     infoText:"#A9A9A9",
-    chatContainer:"#222222"
+    chatContainer:"#222222",
+    profileTextColor:"#ffffff",
+    profileTextColorSecondary:"#c6c6c6",
+    signOutTextColor:"#ffa600",
 }
 
 export const LIGHTMODE = {

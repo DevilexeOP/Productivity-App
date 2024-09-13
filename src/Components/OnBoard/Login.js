@@ -49,9 +49,12 @@ const Login = ({navigation}) => {
         }),
       });
       const data = await res.json();
+      console.log(JSON.stringify(data))
       if (res.status === 200) {
         const token = data.token;
+        const id  = data.userId;
         await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('userId',id);
         setTimeout(() => {
           navigateToSuccess(token);
         }, 1000);

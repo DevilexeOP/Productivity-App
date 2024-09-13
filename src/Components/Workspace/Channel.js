@@ -116,6 +116,7 @@ const Channel = ({navigation, route}) => {
   const sendMessageToSocket = async () => {
     if (sentMessage) {
       const userData = await getData();
+      console.log('Users Data ' + JSON.stringify(userData));
       const {name, userName,email} = userData;
       const messageData = {
         message: sentMessage,

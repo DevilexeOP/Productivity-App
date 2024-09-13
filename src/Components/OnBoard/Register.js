@@ -69,9 +69,9 @@ const Register = ({navigation}) => {
       });
       const data = await res.json();
       if (res.status === 201) {
-        await AsyncStorage.setItem('email', email);
-        await AsyncStorage.setItem('name', name);
-        await AsyncStorage.setItem('username', username);
+        await AsyncStorage.setItem('email', Email);
+        await AsyncStorage.setItem('name', Name);
+        await AsyncStorage.setItem('username', Username);
         setTimeout(() => {
           navigation.replace('RegisterSuccess'); // using replace so they don't go back to the register page if they click back
         }, 1000);
