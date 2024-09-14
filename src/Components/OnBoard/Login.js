@@ -90,18 +90,18 @@ const Login = ({navigation}) => {
       });
 
       const data = await res.json();
-      console.log(JSON.stringify(data)); // Log the full response for debugging
+      console.log('Login Data ? ' + JSON.stringify(data)); // returns message Login Success and token 
 
       if (res.status === 200) {
         const token = data.token;
-        const id = data.userId;
+        // const id = data.userId;
 
         // Log User ID to verify it's not undefined or null
-        console.log('User ID:', id);
+        // console.log('User ID:', id);
 
-        if (token && id) {
+        if (token) {
           await AsyncStorage.setItem('token', token);
-          await AsyncStorage.setItem('userId', id);
+          // await AsyncStorage.setItem('userId', id);
           setTimeout(() => {
             navigateToSuccess(token);
           }, 1000);

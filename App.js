@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import Router from './src/Navigation/Router';
-import store from './src/Redux/store';
+import {store, persistor} from './src/Redux/store';
 import {Immersive} from 'react-native-immersive';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const App = () => {
   useEffect(() => {
@@ -11,7 +12,9 @@ const App = () => {
   return (
     <>
       <Provider store={store}>
-        <Router />
+        <PersistGate loading={null} persistor={persistor}>
+          <Router />
+        </PersistGate>
       </Provider>
     </>
   );

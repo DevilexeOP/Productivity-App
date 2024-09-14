@@ -72,6 +72,10 @@ const Register = ({navigation}) => {
         await AsyncStorage.setItem('email', Email);
         await AsyncStorage.setItem('name', Name);
         await AsyncStorage.setItem('username', Username);
+        // Dispatch the Redux action to update user info globally
+        actions.updateName(Name);
+        actions.updateUserName(Username);
+        actions.updateEmail(Email);
         setTimeout(() => {
           navigation.replace('RegisterSuccess'); // using replace so they don't go back to the register page if they click back
         }, 1000);

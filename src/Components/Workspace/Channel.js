@@ -37,14 +37,20 @@ import {all} from 'axios';
 
 const Channel = ({navigation, route}) => {
   const {channelId, jwtToken} = route.params;
+  const name = useSelector(state => state.user.name);
+  const email = useSelector(state => state.user.email);
+  const username = useSelector(state => state.user.username);
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
   const data = useSelector(state => state.data.channelData);
+
   // loading manage
   const [isLoading, setIsLoading] = useState(true);
   // msg manage
   const allMessages = useSelector(state => state.message.allMessages);
-
+  console.log('Name:', name);
+  console.log('Email:', email);
+  console.log('Username:', username);
   useEffect(() => {
     fetchData();
     console.log('All Messages', allMessages);
@@ -52,16 +58,19 @@ const Channel = ({navigation, route}) => {
 
   useEffect(() => {
     const handleMessageResponse = data => {
-      dispatch(updateAddMessage(data)); // Dispatching action to add new message
+      // dispatch(updateAddMessage(data)); // Dispatching action to add new message
     };
-
     socket.on('chat message', handleMessageResponse);
-
-    // Cleanup function to remove event listener
     return () => {
       socket.off('chat message', handleMessageResponse);
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({animated: true});
+    }
+  }, [allMessages]);
 
   // fetching channel data
   const fetchData = async () => {
@@ -105,19 +114,6 @@ const Channel = ({navigation, route}) => {
   const sentMessage = useSelector(state => state.message.message);
   const handleSentMessage = val => {
     actions.updateMessage(val);
-  };
-  // getting user data
-  let name, email, userName;
-  const getData = async () => {
-    name = await AsyncStorage.getItem('name');
-    email = await AsyncStorage.getItem('email');
-    userName = await AsyncStorage.getItem('username');
-    console.log(
-      'DATA???????????????????????????????????????????????' + name,
-      email,
-      userName,
-    );
-    return {name, email, userName};
   };
 
   const sendMessageToSocket = async () => {
@@ -174,14 +170,18 @@ const Channel = ({navigation, route}) => {
       {/*Chatting Section */}
       <View style={styles.chatContainer}>
         {/* All Chat */}
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={styles.scrollView} ref={scrollViewRef}>
           {allMessages.map((msg, index) => (
             <View key={index} style={styles.messageContainer}>
-              <Text style={styles.chatMessageTime}>{msg.timeStamp}</Text>
-              <Text style={styles.chatMessage}>{msg.message}</Text>
+              <Text style={styles.senderName}>{name}</Text>
+              <View style={styles.messageContent}>
+                <Text style={styles.chatMessage}>{msg.message}</Text>
+                <Text style={styles.chatMessageTime}>{msg.timeStamp}</Text>
+              </View>
             </View>
           ))}
         </ScrollView>
+
         {/* Chat Input Box */}
         <View style={styles.sendingContainer}>
           <View style={styles.inputContainer}>
@@ -214,7 +214,7 @@ const Channel = ({navigation, route}) => {
 
 // height
 const screenHeight = Dimensions.get('window').height;
-const chatContainerHeight = screenHeight * 0.76;
+const chatContainerHeight = screenHeight * 0.8;
 
 const styles = StyleSheet.create({
   container: {
@@ -269,13 +269,10 @@ const styles = StyleSheet.create({
   sendingContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: wp('80%'),
     height: hp('7.5%'),
     marginTop: wp('5%'),
     backgroundColor: DARKMODE.iconColor,
     alignItems: 'center',
-    marginLeft: wp('5%'),
-    marginBottom: wp('5%'),
     borderRadius: wp('1%'),
   },
   sendTxt: {
@@ -298,25 +295,34 @@ const styles = StyleSheet.create({
     fontSize: wp('3%'),
   },
   messageContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginVertical: wp('2%'),
+    paddingHorizontal: wp('3%'),
+  },
+  messageContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: wp('5%'),
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    position: 'relative',
+    alignItems: 'flex-end',
+    maxWidth: '80%',
   },
   chatMessage: {
     fontSize: wp('4%'),
     color: DARKMODE.headerText,
-    flex: 1,
-    top: wp('2%'),
+    padding: wp('3%'),
+    borderRadius: wp('2%'),
+    backgroundColor: '#000000',
+    maxWidth: '100%',
+  },
+  senderName: {
+    fontSize: wp('4%'),
+    color: DARKMODE.senderTextColor,
+    marginBottom: wp('1%'),
+    alignSelf: 'flex-start',
   },
   chatMessageTime: {
-    fontSize: wp('3%'),
-    color: '#a0a0a0', // Lighter color for the timestamp
-    position: 'absolute', // Position absolutely within the message container
-    right: wp('2%'), // Space from the right
-    top: wp('1%'), // Space from the top
+    fontSize: wp('3.2%'),
+    color: '#a0a0a0',
+    marginLeft: wp('3%'), 
   },
 });
 

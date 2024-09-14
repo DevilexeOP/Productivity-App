@@ -212,3 +212,31 @@ export const updateChannelData = channelData => {
     });
   };
 };
+
+// User Data
+export const updateRetrievedName = retrievedName => {
+  return dispatch => {
+    dispatch({
+      type: 'updateRetrievedName',
+      payload: retrievedName,
+    });
+  };
+};
+
+export const updateRetrievedUsername = retrievedUsername => {
+  return dispatch => {
+    dispatch({
+      type: 'updateRetrievedUsername',
+      payload: retrievedUsername,
+    });
+  };
+};
+
+export const updateRetrievedEmail = retrievedEmail => {
+  return dispatch => {
+    dispatch({
+      type: 'updateRetrievedEmail',
+      payload: retrievedEmail,
+    });
+  };
+};
