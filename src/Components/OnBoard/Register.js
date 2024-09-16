@@ -17,7 +17,7 @@ import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register = ({navigation}) => {
@@ -55,7 +55,7 @@ const Register = ({navigation}) => {
   // handle creating account
   const handleCreateAccount = async (Name, Username, Email, Password) => {
     try {
-      const res = await fetch(`${ROOT_URL}/auth/api/v1/signup`, {
+      const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

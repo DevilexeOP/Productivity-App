@@ -17,7 +17,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import {updateAllWorkSpaces} from '../../Redux/Action-Creators';
 import {DARKMODE} from '../../Config/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ROOT_URL} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 import socket from '../../Config/Socket';
 import {bindActionCreators} from 'redux';
@@ -60,7 +60,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
       return;
     }
     try {
-      const res = await fetch(`${ROOT_URL}/user/api/v1/workspaces`, {
+      const res = await fetch(`${ROOT_URI_DEV}/user/api/v1/workspaces`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

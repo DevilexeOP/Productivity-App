@@ -14,7 +14,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {ROOT_URL} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {updateSpaceData} from '../../Redux/Action-Creators';
@@ -78,13 +78,16 @@ const WorkSpace = ({navigation, route}) => {
       return;
     }
     try {
-      const res = await fetch(`${ROOT_URL}/user/api/v1/workspace/${spaceId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
+      const res = await fetch(
+        `${ROOT_URI_DEV}/user/api/v1/workspace/${spaceId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
         },
-      });
+      );
       const data = await res.json();
       if (res.status === 404 || res.status === 403) {
         Snackbar.show({

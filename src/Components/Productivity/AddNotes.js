@@ -8,7 +8,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions, Image,
+  Dimensions,
+  Image,
 } from 'react-native';
 import {
   updateNotesTitle,
@@ -20,8 +21,8 @@ import {
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL} from '../../Config/Constants';
-import {DARKMODE} from "../../Config/Colors";
+import {ROOT_URI_DEV} from '@env';
+import {DARKMODE} from '../../Config/Colors';
 
 const {width, height} = Dimensions.get('window');
 
@@ -35,7 +36,7 @@ const AddNotes = ({navigation, route}) => {
   }, []);
   const handleSaveNote = async () => {
     try {
-      const res = await fetch(`${ROOT_URL}/user/api/v1/notes/add`, {
+      const res = await fetch(`${ROOT_URI_DEV}/user/api/v1/notes/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,19 +92,24 @@ const AddNotes = ({navigation, route}) => {
   };
 
   // navigation
-  const navigateToHome = (token) => {
-    navigation.navigate("Notes" , {
-      jwtToken:token
-    })
-  }
+  const navigateToHome = token => {
+    navigation.navigate('Notes', {
+      jwtToken: token,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={()=>{
-          navigateToHome(jwtToken)
-        }}>
-          <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn}/>
+        <TouchableOpacity
+          onPress={() => {
+            navigateToHome(jwtToken);
+          }}>
+          <Image
+            source={require('../../Assets/backlight.png')}
+            alt="Back"
+            style={styles.hamBtn}
+          />
         </TouchableOpacity>
         <Text style={styles.headerText}>Create a Note </Text>
       </View>
@@ -154,14 +160,14 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: null,
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerText: {
     fontSize: wp('5%'),
     fontWeight: '600',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
-    marginRight: wp('25%')
+    marginRight: wp('25%'),
   },
   notesButton: {
     width: wp('50%'),
@@ -201,7 +207,7 @@ const styles = StyleSheet.create({
   inputText2: {
     marginHorizontal: wp('2%'),
     fontSize: wp('3%'),
-    color:DARKMODE.notesInput
+    color: DARKMODE.notesInput,
   },
   icon: {
     marginVertical: hp('5%'),
@@ -213,7 +219,7 @@ const styles = StyleSheet.create({
     height: wp('4%'),
     padding: wp('3%'),
     marginHorizontal: wp('5%'),
-    tintColor:DARKMODE.iconColor
+    tintColor: DARKMODE.iconColor,
   },
 });
 

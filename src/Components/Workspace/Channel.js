@@ -17,7 +17,7 @@ import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../Config/Colors';
-import {ROOT_URL} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {
   updateChannelData,
@@ -27,9 +27,7 @@ import {
 } from '../../Redux/Action-Creators';
 import KeyboardAvoidView from '../../Config/KeyboardAvoidView';
 import socket from '../../Config/Socket';
-import {act} from 'react-test-renderer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {all} from 'axios';
+
 // import io from 'socket.io-client';
 
 // sentMessage - >  message sent by user
@@ -78,13 +76,16 @@ const Channel = ({navigation, route}) => {
       return;
     }
     try {
-      const res = await fetch(`${ROOT_URL}/user/api/v1/channel/${channelId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
+      const res = await fetch(
+        `${ROOT_URI_DEV}/user/api/v1/channel/${channelId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
         },
-      });
+      );
       const data = await res.json();
       if (res.status === 404 || res.status === 403) {
         Snackbar.show({
@@ -200,7 +201,7 @@ const Channel = ({navigation, route}) => {
               style={{padding: wp('2%')}}
               onPress={sendMessageToSocket}>
               <Image
-                style={styles.sendMessage}
+                style={styles.sendIcon}
                 source={require('../../Assets/send.png')}
                 alt={'Send'}
               />
@@ -246,14 +247,15 @@ const styles = StyleSheet.create({
     marginHorizontal: wp('3.5%'),
   },
   quickBtn: {
-    width: wp('4%'),
-    height: wp('4%'),
-    padding: wp('3.5%'),
+    width: wp('6%'),
+    height: hp('4%'),
+    padding: wp('6%'),
+    right: wp('5%'),
   },
-  sendMessage: {
+  sendIcon: {
     width: wp('4%'),
     height: wp('4%'),
-    padding: wp('2.6%'),
+    padding: wp('4%'),
     marginRight: wp('5%'),
   },
   chatContainer: {
@@ -276,7 +278,7 @@ const styles = StyleSheet.create({
     borderRadius: wp('1%'),
   },
   sendTxt: {
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
     padding: wp('2%'),
     color: DARKMODE.headerText,
   },
@@ -322,7 +324,7 @@ const styles = StyleSheet.create({
   chatMessageTime: {
     fontSize: wp('3.2%'),
     color: '#a0a0a0',
-    marginLeft: wp('3%'), 
+    marginLeft: wp('3%'),
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,21 +8,21 @@ import {
   StyleSheet,
   TextInput,
   Image,
-} from "react-native";
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { actionCreators } from "../../Redux/index";
-import { bindActionCreators } from "redux";
-import { useDispatch, useSelector } from "react-redux";
-import { DARKMODE } from "../../Config/Colors";
-import { ROOT_URL } from "../../Config/Constants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Snackbar from "react-native-snackbar";
+} from 'react-native-responsive-screen';
+import {actionCreators} from '../../Redux/index';
+import {bindActionCreators} from 'redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {DARKMODE} from '../../Config/Colors';
+import {ROOT_URI_DEV} from '../../Config/Constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Snackbar from 'react-native-snackbar';
 
-const CreateWorkSpace = ({ navigation }) => {
-  const [token, setToken] = useState("");
+const CreateWorkSpace = ({navigation}) => {
+  const [token, setToken] = useState('');
   // State Management
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
@@ -43,28 +43,28 @@ const CreateWorkSpace = ({ navigation }) => {
 
   // reset space
   const resetSpace = () => {
-    actions.updateWorkspaceName("");
-    actions.updateProjectName("");
+    actions.updateWorkspaceName('');
+    actions.updateProjectName('');
   };
 
   // token
   const getToken = async () => {
-    const jwtToken = await AsyncStorage.getItem("token");
+    const jwtToken = await AsyncStorage.getItem('token');
     setToken(jwtToken);
   };
 
   // handling api reqs
   const addWorkSpace = async () => {
     try {
-      const res = await fetch(`${ROOT_URL}/user/api/v1/workspace/add`, {
-        method: "POST",
+      const res = await fetch(`${ROOT_URI_DEV}/user/api/v1/workspace/add`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           workspace: workspaceTitle,
-          projectName:projectName,
+          projectName: projectName,
         }),
       });
       const data = await res.json();
@@ -76,10 +76,10 @@ const CreateWorkSpace = ({ navigation }) => {
         Snackbar.show({
           text: data.message,
           duration: Snackbar.LENGTH_LONG,
-          backgroundColor: "#FFB800",
-          textColor: "black",
+          backgroundColor: '#FFB800',
+          textColor: 'black',
         });
-        return ;
+        return;
       }
     } catch (e) {
       console.log(e);
@@ -88,13 +88,13 @@ const CreateWorkSpace = ({ navigation }) => {
 
   // navigations
   const navigateToWorkspaceHome = () => {
-    navigation.replace("WorkSpaceHome");
+    navigation.replace('WorkSpaceHome');
   };
 
   //. TODO INSTEAD OF HARDCODED TITLE & PROJECT CHANGING IT TO GET-WORKSPACE-BY ID to FETCH THE DATA
   const navigateToWorkSpace = (workspaceTitle, projectName) => {
     addWorkSpace(workspaceTitle, projectName);
-    navigation.navigate("WorkSpace", {
+    navigation.navigate('WorkSpace', {
       title: workspaceTitle,
       project: projectName,
     });
@@ -103,7 +103,11 @@ const CreateWorkSpace = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.outContainer}>
         <TouchableOpacity onPress={navigateToWorkspaceHome}>
-          <Image source={require("../../Assets/backlight.png")} alt="Back" style={styles.hamBtn} />
+          <Image
+            source={require('../../Assets/backlight.png')}
+            alt="Back"
+            style={styles.hamBtn}
+          />
         </TouchableOpacity>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Create Workspace</Text>
@@ -111,9 +115,7 @@ const CreateWorkSpace = ({ navigation }) => {
       </View>
       <View style={styles.userInputContainer}>
         <View style={styles.nameContainer}>
-          <Text style={styles.customLabel}>
-            Workspace title
-          </Text>
+          <Text style={styles.customLabel}>Workspace title</Text>
           <TextInput
             placeholder="My Workspace 1"
             style={styles.textInput}
@@ -123,9 +125,7 @@ const CreateWorkSpace = ({ navigation }) => {
           />
         </View>
         <View style={styles.projectContainer}>
-          <Text style={styles.customLabel}>
-            Project name
-          </Text>
+          <Text style={styles.customLabel}>Project name</Text>
           <TextInput
             placeholder="# My App Project"
             style={styles.textInput}
@@ -151,78 +151,78 @@ const CreateWorkSpace = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: 'black',
   },
   outContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   headerContainer: {
-    width: wp("80%"),
+    width: wp('80%'),
     height: null,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   headerText: {
-    fontSize: wp("4.8%"),
-    fontWeight: "600",
-    marginVertical: hp("5%"),
+    fontSize: wp('4.8%'),
+    fontWeight: '600',
+    marginVertical: hp('5%'),
     color: DARKMODE.headerText,
-    textAlign: "center",
+    textAlign: 'center',
   },
   workSpaceButton: {
     borderRadius: 10,
-    width: wp("60%"),
-    height: hp("6%"),
+    width: wp('60%'),
+    height: hp('6%'),
     backgroundColor: DARKMODE.buttons,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   todoText: {
-    color: "white",
-    fontSize: wp("3%"),
-    fontWeight: "bold",
+    color: 'white',
+    fontSize: wp('3%'),
+    fontWeight: 'bold',
   },
   hamBtn: {
-    width: wp("4%"),
-    height: wp("4%"),
-    padding: wp("3%"),
+    width: wp('4%'),
+    height: wp('4%'),
+    padding: wp('3%'),
     tintColor: DARKMODE.iconColor,
-    marginHorizontal: wp("4%"),
+    marginHorizontal: wp('4%'),
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: wp("2%"),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: wp('2%'),
   },
   userInputContainer: {
-    width: wp("80%"),
-    display: "flex",
-    height: wp("40%"),
-    margin: wp("10%"),
+    width: wp('80%'),
+    display: 'flex',
+    height: wp('40%'),
+    margin: wp('10%'),
   },
   nameContainer: {
-    padding: wp("4%"),
+    padding: wp('4%'),
   },
   customLabel: {
-    fontSize: wp("2.8%"),
+    fontSize: wp('2.8%'),
     color: DARKMODE.labelText,
   },
   textInput: {
-    height: wp("10%"),
-    backgroundColor: "white",
-    marginTop: wp("2%"),
-    padding: wp("2%"),
+    height: wp('10%'),
+    backgroundColor: 'white',
+    marginTop: wp('2%'),
+    padding: wp('2%'),
     color: DARKMODE.inputText,
-    fontSize: wp("3%"),
-    borderRadius: wp("1%"),
+    fontSize: wp('3%'),
+    borderRadius: wp('1%'),
   },
   projectContainer: {
-    paddingBottom: wp("4%"),
-    paddingLeft: wp("4%"),
-    paddingRight: wp("4%"),
-    paddingTop: wp("2%"),
+    paddingBottom: wp('4%'),
+    paddingLeft: wp('4%'),
+    paddingRight: wp('4%'),
+    paddingTop: wp('2%'),
   },
 });
 

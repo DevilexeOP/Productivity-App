@@ -17,7 +17,7 @@ import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 
 const Login = ({navigation}) => {
   useEffect(() => {
@@ -38,7 +38,7 @@ const Login = ({navigation}) => {
   // handling login
   // const handleLogin = async (Email, Password) => {
   //   try {
-  //     const res = await fetch(`${ROOT_URL}/auth/api/v1/login`, {
+  //     const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/login`, {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ const Login = ({navigation}) => {
   // };
   const handleLogin = async (Email, Password) => {
     try {
-      const res = await fetch(`${ROOT_URL}/auth/api/v1/login`, {
+      const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const Login = ({navigation}) => {
       });
 
       const data = await res.json();
-      console.log('Login Data ? ' + JSON.stringify(data)); // returns message Login Success and token 
+      console.log('Login Data ? ' + JSON.stringify(data)); // returns message Login Success and token
 
       if (res.status === 200) {
         const token = data.token;
@@ -130,7 +130,7 @@ const Login = ({navigation}) => {
   // forgot password
   const forgotPassword = async email => {
     try {
-      const res = await fetch(`${ROOT_URL}/auth/api/v1/reset`, {
+      const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/reset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
