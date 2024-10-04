@@ -27,7 +27,7 @@ import {
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
-import {ROOT_URI_DEV} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import {DARKMODE} from '../../Config/Colors';
 
 const {width, height} = Dimensions.get('screen');

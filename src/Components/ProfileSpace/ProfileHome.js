@@ -22,7 +22,7 @@ const ProfileHome = () => {
 
   useFocusEffect(() => {
     fetchToken();
-    getData();
+    // getData();
   });
 
   const [token, setToken] = useState('');

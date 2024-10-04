@@ -24,6 +24,8 @@ export const DARKMODE = {
   profileTextColorSecondary: '#c6c6c6',
   signOutTextColor: '#ffa600',
   senderTextColor: '#ffffff',
+  black: '#000000',
+  white: '#ffffff',
 };
 
 export const LIGHTMODE = {

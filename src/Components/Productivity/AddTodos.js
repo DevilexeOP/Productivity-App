@@ -28,7 +28,7 @@ import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
 import {bindActionCreators} from 'redux';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URI_DEV} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import {DARKMODE} from '../../Config/Colors';
 
 const {width, height} = Dimensions.get('window');

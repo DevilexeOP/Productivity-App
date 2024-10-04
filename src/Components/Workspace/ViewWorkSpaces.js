@@ -8,22 +8,20 @@ import {
   StyleSheet,
   TextInput,
   Image,
+  Modal,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {updateAllWorkSpaces} from '../../Redux/Action-Creators';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  updateAllWorkSpaces,
+  updateSpaceData,
+} from '../../Redux/Action-Creators';
 import {DARKMODE} from '../../Config/Colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
-import socket from '../../Config/Socket';
-import {bindActionCreators} from 'redux';
-import {actionCreators} from '../../Redux/index';
-import {updateAllMessages} from '../../Redux/Action-Creators';
-import {all} from 'axios';
 
 const ViewWorkSpaces = ({navigation, route}) => {
   // fetch token when component mounts
@@ -31,7 +29,14 @@ const ViewWorkSpaces = ({navigation, route}) => {
   // State managements
   const dispatch = useDispatch();
   const workspaces = useSelector(state => state.spaces.allWorkSpaces);
+  const data = useSelector(state => state.data.spaceData);
   const [isLoading, setIsLoading] = useState(true);
+  // console.log('Data in ALLWORKSPACES ' + JSON.stringify(data, null, 2));
+
+  // Modal State Handle
+  const [modalVisible, setModalVisible] = useState(false);
+  const [workspaceId, setWorkspaceId] = useState('');
+
   useEffect(() => {
     getSpaces();
     console.log(jwt);
@@ -47,6 +52,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
 
   // navigate to specific space
   const handleWorkspace = (_id, token) => {
+    console.log(_id);
     navigation.navigate('WorkSpace', {
       spaceId: _id,
       jwtToken: token,
@@ -69,6 +75,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
       });
       const data = await res.json();
       if (res.status === 200) {
+        // console.log('Fetched workspaces:', data); // Debug here
         dispatch(updateAllWorkSpaces(data));
         setIsLoading(false);
       } else if (res.status === 404) {
@@ -85,6 +92,73 @@ const ViewWorkSpaces = ({navigation, route}) => {
       setIsLoading(false);
     }
   };
+
+  // Join a Workspace
+  const handleJoinWorkspace = async () => {
+    if (!jwt) return;
+
+    //workspaceId from the full invite link
+    const linkRegex = /\/join\/([a-zA-Z0-9]+)/;
+    const match = workspaceId.match(linkRegex);
+    console.log(match);
+    const extractedWorkspaceId = match ? match[1] : null;
+
+    if (!extractedWorkspaceId) {
+      Snackbar.show({
+        text: 'Invalid Workspace Link',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#FF0000',
+        textColor: 'white',
+      });
+      setModalVisible(false);
+      return;
+    }
+
+    try {
+      // Make a POST request to join the workspace using the extracted workspaceId
+      const res = await fetch(
+        `${ROOT_URI_DEV}/invite/api/v1/join/${extractedWorkspaceId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
+          },
+        },
+      );
+
+      const data = await res.json();
+      console.log(data);
+      if (res.status === 200) {
+        Snackbar.show({
+          text: 'Successfully joined the workspace!',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#00FF00',
+          textColor: 'white',
+        });
+      } else {
+        Snackbar.show({
+          text: data.message || 'Error joining workspace',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FF0000',
+          textColor: 'white',
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      Snackbar.show({
+        text: 'Failed to join workspace',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#FF0000',
+        textColor: 'white',
+      });
+    }
+
+    // Reset modal state
+    setModalVisible(false);
+    setWorkspaceId('');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.outContainer}>
@@ -98,10 +172,18 @@ const ViewWorkSpaces = ({navigation, route}) => {
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>All Workspaces</Text>
         </View>
+        <View>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Image
+              style={styles.workSpaceJoinIcon}
+              source={require('../../Assets/adduserlight.png')}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <ScrollView style={{marginBottom: wp('-17%')}}>
         <View>
-          {isLoading ? ( // Display "Loading..." when isLoading is true
+          {isLoading ? (
             <View>
               <Text style={styles.noWorkspaceText}>Loading....</Text>
             </View>
@@ -137,6 +219,41 @@ const ViewWorkSpaces = ({navigation, route}) => {
           )}
         </View>
       </ScrollView>
+
+      {/* Add Modal Component */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Enter Workspace Link to Join</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Link"
+              value={workspaceId}
+              placeholderTextColor={`${DARKMODE.black}`}
+              onChangeText={text => setWorkspaceId(text)}
+            />
+            <View style={styles.modalButtonContainer}>
+              <TouchableOpacity
+                style={styles.joinButton}
+                onPress={handleJoinWorkspace}>
+                <Text style={styles.joinButtonText}>Join</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setModalVisible(false)}>
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.workSpaceButton}
@@ -258,6 +375,81 @@ const styles = StyleSheet.create({
     color: DARKMODE.iconColor,
     textAlign: 'center',
     fontWeight: '700',
+  },
+  workSpaceJoinIcon: {
+    width: wp('3%'),
+    height: wp('3%'),
+    padding: wp('3%'),
+    tintColor: DARKMODE.iconColor,
+    marginLeft: wp('-4%'),
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    backgroundColor: DARKMODE.headerText,
+    borderRadius: wp('3%'),
+    padding: wp('8%'),
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: hp('0.2%'),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: wp('2%'),
+    elevation: 5,
+    width: wp('90%'),
+    height: hp('30%'),
+  },
+  modalText: {
+    fontSize: wp('4.5%'),
+    marginBottom: hp('2%'),
+    textAlign: 'center',
+    color: DARKMODE.black,
+  },
+  input: {
+    height: hp('6%'),
+    width: wp('65%'),
+    color: DARKMODE.black,
+    borderColor: 'gray',
+    borderWidth: wp('0.3%'),
+    borderRadius: wp('2%'),
+    paddingLeft: wp('2.5%'),
+    marginBottom: hp('3%'),
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: wp('60%'),
+  },
+  joinButton: {
+    backgroundColor: DARKMODE.black,
+    width: wp('25%'),
+    height: hp('6%'),
+    padding: wp('3%'),
+    borderRadius: wp('2%'),
+    marginRight: wp('2%'),
+  },
+  cancelButton: {
+    width: wp('25%'),
+    height: hp('6%'),
+    padding: wp('3%'),
+    backgroundColor: DARKMODE.white,
+    borderRadius: wp('2%'),
+  },
+  joinButtonText: {
+    textAlign: 'center',
+    color: DARKMODE.white,
+    fontSize: wp('3.8%'),
+  },
+  cancelButtonText: {
+    textAlign: 'center',
+    color: DARKMODE.black,
+    fontSize: wp('3.8%'),
   },
 });
 

@@ -16,7 +16,7 @@ import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../Config/Colors';
-import {ROOT_URI_DEV} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 
 const CreateChannel = ({navigation, route}) => {

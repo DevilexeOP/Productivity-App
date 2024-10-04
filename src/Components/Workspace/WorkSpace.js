@@ -18,28 +18,81 @@ import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {updateSpaceData} from '../../Redux/Action-Creators';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const WorkSpace = ({navigation, route}) => {
   const {spaceId, jwtToken} = route.params;
+
+  // state management
+  const dispatch = useDispatch();
+  const data = useSelector(state => state.data.spaceData);
+  const [defaultChannels, setDefaultChannels] = useState([]);
+  console.log('Redux data:', data);
+
   useEffect(() => {
     fetchData();
     navigation.addListener('focus', () => {
       fetchData();
     });
-  }, []);
-  // state management
-  const dispatch = useDispatch();
-  const data = useSelector(state => state.data.spaceData);
-  const [defaultChannels, setDefaultChannels] = useState([]);
+  }, [spaceId, jwtToken]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      // Reset space data when navigating away
+      dispatch(resetSpaceData());
+    });
+    return unsubscribe;
+  }, [navigation, dispatch]);
+
+  // fetching space data
+  const fetchData = async () => {
+    if (!jwtToken) {
+      return;
+    }
+    try {
+      console.log('AM i being called?' + 'Inside TRy catch');
+      const res = await fetch(
+        `${ROOT_URI_DEV}/user/api/v1/workspace/${spaceId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        },
+      );
+      const data = await res.json();
+      if (res.status === 404 || res.status === 403) {
+        Snackbar.show({
+          text: data.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#FFB800',
+          textColor: 'black',
+        });
+        console.log(data.message);
+        setIsLoading(true);
+      } else {
+        console.log('FUNC DATA', JSON.stringify(data, null, 2));
+        dispatch(updateSpaceData([data]));
+        setIsLoading(false);
+      }
+    } catch (e) {
+      console.log(e);
+      setIsLoading(true);
+    }
+  };
+
   // search state manage
   useEffect(() => {
-    // Initialize defaultChannels when data changes
     setDefaultChannels(data.flatMap(workspace => workspace.channels));
   }, [data]);
 
   // search state manage
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredChannels, setFilteredChannels] = useState(defaultChannels);
+
+  // Invite link state
+  const [inviteLink, setInviteLink] = useState('');
 
   const searchQueryHandler = text => {
     setSearchQuery(text);
@@ -72,47 +125,49 @@ const WorkSpace = ({navigation, route}) => {
       spaceId: id,
     });
   };
-  // fetching space data
-  const fetchData = async () => {
-    if (!jwtToken) {
-      return;
-    }
+
+  // Reset space data
+  const resetSpaceData = () => ({type: 'RESET_SPACE_DATA'});
+
+  // navigate to Chat in Channel
+  const navigateToChat = (s_id, _id, jwt) => {
+    navigation.navigate('Channel', {
+      spaceId: s_id,
+      channelId: _id,
+      jwtToken: jwt,
+    });
+  };
+
+  // generate workspace invite link
+  const generateInviteLink = async () => {
+    if (!jwtToken) return;
     try {
-      const res = await fetch(
-        `${ROOT_URI_DEV}/user/api/v1/workspace/${spaceId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
+      const res = await fetch(`${ROOT_URI_DEV}/invite/api/v1/${spaceId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
         },
-      );
-      const data = await res.json();
-      if (res.status === 404 || res.status === 403) {
+      });
+      const link = await res.json();
+      if (res.ok) {
         Snackbar.show({
-          text: data.message,
+          text: 'Link Copied to Clipboard',
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: '#FFB800',
           textColor: 'black',
         });
-        setIsLoading(true);
-      } else {
-        console.log(data);
-        dispatch(updateSpaceData([data]));
-        setIsLoading(false);
+        copyLinkToClipBoard(link.inviteLink);
+        console.log(inviteLink);
       }
     } catch (e) {
       console.log(e);
-      setIsLoading(true);
     }
   };
-  // navigate to Chat in Channel
-  const navigateToChat = (_id, jwt) => {
-    navigation.navigate('Channel', {
-      channelId: _id,
-      jwtToken: jwt,
-    });
+
+  const copyLinkToClipBoard = link => {
+    setInviteLink(link);
+    Clipboard.setString(link);
   };
   return (
     <>
@@ -149,9 +204,12 @@ const WorkSpace = ({navigation, route}) => {
           />
         </View>
         <View style={styles.btnContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              generateInviteLink();
+            }}>
             <Image
-              source={require('../../Assets/adduserlight.png')}
+              source={require('../../Assets/link.png')}
               alt="Back"
               style={styles.memberBtn}
             />
@@ -210,7 +268,9 @@ const WorkSpace = ({navigation, route}) => {
                       return (
                         <TouchableOpacity
                           key={channel._id}
-                          onPress={() => navigateToChat(channel._id, jwtToken)}>
+                          onPress={() =>
+                            navigateToChat(spaceId, channel._id, jwtToken)
+                          }>
                           <View style={styles.container2}>
                             <Text style={styles.channelName}>
                               #{trimmedChannelName}
@@ -280,8 +340,9 @@ const styles = StyleSheet.create({
   memberBtn: {
     width: wp('4%'),
     height: wp('4%'),
-    padding: wp('2.6%'),
+    padding: wp('3%'),
     tintColor: DARKMODE.iconColor,
+    marginLeft: wp('-2%'),
   },
   searchContainer: {
     backgroundColor: DARKMODE.searchBox,
@@ -298,7 +359,7 @@ const styles = StyleSheet.create({
     backgroundColor: DARKMODE.searchBox,
     width: wp('100%'),
     height: wp('.5%'),
-    marginTop: wp('12%'),
+    marginTop: wp('15%'),
   },
   divider2: {
     backgroundColor: DARKMODE.searchBox,
@@ -344,8 +405,8 @@ const styles = StyleSheet.create({
   },
   channelHead: {
     color: DARKMODE.headerText,
-    fontSize: wp('3.6%'),
-    margin: wp('3%'),
+    fontSize: wp('4%'),
+    margin: wp('4%'),
   },
   btnsContainer: {
     display: 'flex',

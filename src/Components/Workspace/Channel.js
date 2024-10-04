@@ -34,24 +34,23 @@ import socket from '../../Config/Socket';
 // all Message -> display all messages by  user
 
 const Channel = ({navigation, route}) => {
-  const {channelId, jwtToken} = route.params;
+  const {spaceId, channelId, jwtToken} = route.params;
   const name = useSelector(state => state.user.name);
   const email = useSelector(state => state.user.email);
   const username = useSelector(state => state.user.username);
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
   const data = useSelector(state => state.data.channelData);
+  console.log('Here is the channel ID ' + channelId);
 
   // loading manage
   const [isLoading, setIsLoading] = useState(true);
   // msg manage
   const allMessages = useSelector(state => state.message.allMessages);
-  console.log('Name:', name);
-  console.log('Email:', email);
-  console.log('Username:', username);
   useEffect(() => {
     fetchData();
     console.log('All Messages', allMessages);
+    console.log('Space ID ', spaceId);
   }, []);
 
   useEffect(() => {
@@ -107,9 +106,10 @@ const Channel = ({navigation, route}) => {
   };
   //navigation
   const navigationToHome = token => {
-    navigation.navigate('WorkSpace', {
-      jwtToken: token,
-    });
+    // navigation.navigate('WorkSpace', {
+    //   jwtToken: token,
+    // });
+    navigation.goBack();
   };
   //send message  handler
   const sentMessage = useSelector(state => state.message.message);

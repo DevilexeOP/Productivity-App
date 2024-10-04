@@ -8,12 +8,13 @@ import reducers from './Reducers';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['spaceData', 'channelData'],
 };
 
 // Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, reducers);
 
-// Create Store & persistor 
+// Create Store & persistor
 const store = createStore(persistedReducer, applyMiddleware(thunk));
 const persistor = persistStore(store);
 

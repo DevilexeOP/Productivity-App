@@ -22,7 +22,7 @@ import {
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {ROOT_URI_DEV} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import {DARKMODE} from '../../Config/Colors';
 
 const {width, height} = Dimensions.get('screen');

@@ -17,7 +17,7 @@ import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../Config/Colors';
-import {ROOT_URI_DEV} from '../../Config/Constants';
+import {ROOT_URI_DEV} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
 
@@ -69,6 +69,7 @@ const CreateWorkSpace = ({navigation}) => {
       });
       const data = await res.json();
       if (res.ok) {
+        console.log(data);
         actions.updateWorkspaceName(data.workspace);
         actions.updateProjectName(data.projectName);
         navigateToWorkSpace(data.workspace, data.projectName);
