@@ -8,8 +8,9 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Modal,
 } from 'react-native';
-import {DARKMODE} from '../../Config/Colors';
+import {DARKMODE} from '../../config/Colors';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -17,7 +18,7 @@ import {
 import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {updateSpaceData} from '../../Redux/Action-Creators';
+import {updateSpaceData} from '../../redux/actioncreators';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 const WorkSpace = ({navigation, route}) => {
@@ -107,6 +108,8 @@ const WorkSpace = ({navigation, route}) => {
   };
   // loading manage
   const [isLoading, setIsLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+
   // Dropdown state manage
   const [toggleDrop, setToggleDrop] = useState(true);
   const toggleDropdown = () => {
@@ -175,7 +178,7 @@ const WorkSpace = ({navigation, route}) => {
         <View style={styles.outContainer}>
           <TouchableOpacity onPress={() => navigationToHome(jwtToken)}>
             <Image
-              source={require('../../Assets/backlight.png')}
+              source={require('../../assets/images/backlight.png')}
               alt="Back"
               style={styles.backBtn}
             />
@@ -185,9 +188,9 @@ const WorkSpace = ({navigation, route}) => {
               <Text style={styles.headerText}>{info.workspace}</Text>
             </View>
           ))}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
-              source={require('../../Assets/settings.png')}
+              source={require('../../assets/images/settings.png')}
               alt="Back"
               style={styles.settingBtn}
             />
@@ -203,18 +206,6 @@ const WorkSpace = ({navigation, route}) => {
             onChangeText={searchQueryHandler}
           />
         </View>
-        <View style={styles.btnContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              generateInviteLink();
-            }}>
-            <Image
-              source={require('../../Assets/link.png')}
-              alt="Back"
-              style={styles.memberBtn}
-            />
-          </TouchableOpacity>
-        </View>
         {/* LINE DIVIDE */}
         <View style={styles.divider} />
         <View style={styles.channelContainer}>
@@ -225,7 +216,7 @@ const WorkSpace = ({navigation, route}) => {
                 navigateToCreateChannel(jwtToken, spaceId);
               }}>
               <Image
-                source={require('../../Assets/add.png')}
+                source={require('../../assets/images/add.png')}
                 alt="Back"
                 style={styles.addBtn}
               />
@@ -233,13 +224,13 @@ const WorkSpace = ({navigation, route}) => {
             <TouchableOpacity onPress={toggleDropdown}>
               {toggleDrop ? (
                 <Image
-                  source={require('../../Assets/dropdownlight.png')}
+                  source={require('../../assets/images/dropdownlight.png')}
                   alt="Close"
                   style={styles.dropwdownBtn}
                 />
               ) : (
                 <Image
-                  source={require('../../Assets/dropdownlight.png')}
+                  source={require('../../assets/images/dropdownlight.png')}
                   alt="Open"
                   style={styles.dropwdownBtnClose}
                 />
@@ -285,6 +276,46 @@ const WorkSpace = ({navigation, route}) => {
                 )
               )}
             </View>
+            {/* Modal */}
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <View style={styles.modalOverlay}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>Invite to Space</Text>
+                  {/* Additional space for future elements */}
+                  <View style={styles.additionalSpace} />
+
+                  <TouchableOpacity
+                    style={styles.inviteButton}
+                    onPress={generateInviteLink}>
+                    <View style={styles.inviteLinkContainer}>
+                      <Image
+                        source={require('../../assets/images/link.png')}
+                        alt="Invite Link"
+                        style={styles.modalLinkIcon}
+                      />
+                      <Text style={styles.modalLinkText}>
+                        Generate Invite Link
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  {/* Additional space for new components */}
+                  <View style={styles.additionalSpace} />
+                  <View style={styles.modalButtonContainer}></View>
+                  <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={() => setModalVisible(false)}>
+                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           </ScrollView>
         )}
       </SafeAreaView>
@@ -333,16 +364,16 @@ const styles = StyleSheet.create({
   settingBtn: {
     width: wp('4%'),
     height: wp('4%'),
-    padding: wp('2.6%'),
+    padding: wp('3%'),
     tintColor: DARKMODE.iconColor,
-    marginHorizontal: wp('1%'),
+    marginLeft: wp('-5%'),
   },
-  memberBtn: {
+  linkBtn: {
     width: wp('4%'),
     height: wp('4%'),
     padding: wp('3%'),
     tintColor: DARKMODE.iconColor,
-    marginLeft: wp('-2%'),
+    alignSelf: 'flex-end',
   },
   searchContainer: {
     backgroundColor: DARKMODE.searchBox,
@@ -427,6 +458,81 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dim background
+  },
+  modalView: {
+    width: wp('80%'),
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: DARKMODE.headerText,
+    borderRadius: wp('3%'),
+    padding: wp('8%'),
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: hp('0.2%'),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: wp('2%'),
+    elevation: 5,
+    width: wp('90%'),
+    height: hp('40%'),
+  },
+  modalLinkIcon: {
+    width: wp('6%'),
+    height: wp('6%'),
+    marginRight: wp('2%'),
+    tintColor: DARKMODE.iconColor,
+    padding: wp('3%'),
+    marginTop: hp('2%'),
+  },
+  inviteLinkContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: wp('5%'),
+  },
+  modalLinkText: {
+    fontSize: wp('4%'),
+    color: DARKMODE.white,
+    marginTop: hp('2%'),
+  },
+  modalText: {
+    fontSize: wp('5%'),
+    fontWeight: '600',
+    color: DARKMODE.black,
+    marginBottom: wp('4%'),
+  },
+  additionalSpace: {
+    height: wp('10%'), // Add extra space between elements
+  },
+  inviteButton: {
+    width: wp('60%'),
+    height: hp('7%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: DARKMODE.black,
+    borderRadius: 8,
+  },
+  cancelButton: {
+    width: wp('40%'),
+    height: hp('5%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: DARKMODE.black,
+    borderRadius: 8,
+  },
+  cancelButtonText: {
+    color: DARKMODE.buttons,
+    fontSize: wp('4%'),
+    fontWeight: 'bold',
   },
 });
 

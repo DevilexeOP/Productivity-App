@@ -16,9 +16,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
-import {updateAllNotes} from '../../Redux/Action-Creators';
+import {updateAllNotes} from '../../redux/actioncreators';
 import {ROOT_URI_DEV} from '@env';
-import {DARKMODE} from '../../Config/Colors';
+import {DARKMODE} from '../../config/Colors';
 
 const NotesScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -135,7 +135,7 @@ const NotesScreen = ({navigation, route}) => {
             navigateToHome();
           }}>
           <Image
-            source={require('../../Assets/backlight.png')}
+            source={require('../../assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />
@@ -180,7 +180,7 @@ const NotesScreen = ({navigation, route}) => {
                         }>
                         <Image
                           style={styles.icon}
-                          source={require('../../Assets/edit.png')}
+                          source={require('../../assets/images/edit.png')}
                         />
                       </TouchableOpacity>
                     </View>
@@ -191,7 +191,7 @@ const NotesScreen = ({navigation, route}) => {
                         }}>
                         <Image
                           style={styles.icon2}
-                          source={require('../../Assets/bin.png')}
+                          source={require('../../assets/images/bin.png')}
                         />
                       </TouchableOpacity>
                     </View>

@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {actionCreators} from '../../Redux/index';
+import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -35,47 +35,6 @@ const Login = ({navigation}) => {
   const passwordHandler = password => {
     actions.updatePassword(password);
   };
-  // handling login
-  // const handleLogin = async (Email, Password) => {
-  //   try {
-  //     const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/login`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         email: Email,
-  //         password: Password,
-  //       }),
-  //     });
-  //     const data = await res.json();
-  //     console.log(JSON.stringify(data))
-  //     if (res.status === 200) {
-  //       const token = data.token;
-  //       const id  = data.userId;
-  //       await AsyncStorage.setItem('token', token);
-  //       await AsyncStorage.setItem('userId',id);
-  //       setTimeout(() => {
-  //         navigateToSuccess(token);
-  //       }, 1000);
-  //     } else if (res.status === 400 || 401) {
-  //       console.log('Error ? :', data.message);
-  //       Snackbar.show({
-  //         text: data.message,
-  //         duration: Snackbar.LENGTH_LONG,
-  //         backgroundColor: '#FFB800',
-  //         textColor: 'black',
-  //       });
-  //     } else if (res.status === 500) {
-  //       navigation.navigate('LoginFail');
-  //     } else {
-  //       console.log('Error ' + res.status);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     navigation.navigate('LoginFail');
-  //   }
-  // };
   const handleLogin = async (Email, Password) => {
     try {
       const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/login`, {
@@ -90,15 +49,18 @@ const Login = ({navigation}) => {
       });
 
       const data = await res.json();
-      console.log('Login Data ? ' + JSON.stringify(data)); // returns message Login Success and token
+      console.log('Login Data ->  ' + JSON.stringify(data)); // returns message Login Success and token
 
       if (res.status === 200) {
         const token = data.token;
-        // const id = data.userId;
-
-        // Log User ID to verify it's not undefined or null
-        // console.log('User ID:', id);
-
+        const id = data._id;
+        const name = data.name;
+        const email = data.email;
+        const username = data.username;
+        if (id) await AsyncStorage.setItem('user_id', id);
+        if (name) await AsyncStorage.setItem('name', name);
+        if (email) await AsyncStorage.setItem('email', email);
+        if (username) await AsyncStorage.setItem('username', username);
         if (token) {
           await AsyncStorage.setItem('token', token);
           // await AsyncStorage.setItem('userId', id);
@@ -213,7 +175,9 @@ const Login = ({navigation}) => {
       </View>
       <View style={styles.loggedInContainer}>
         <View style={styles.userContainer}>
-          <Text style={styles.userText}>Dont have an account ? </Text>
+          <Text style={styles.userText}>
+            Dont have an account ?{' '}
+          </Text>
         </View>
         <View>
           <TouchableOpacity

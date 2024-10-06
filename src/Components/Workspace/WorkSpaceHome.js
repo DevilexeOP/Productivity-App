@@ -14,8 +14,8 @@ import {
 } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {DARKMODE} from '../../Config/Colors';
-import socket from '../../Config/Socket';
+import {DARKMODE} from '../../config/Colors';
+import socket from '../../config/Socket';
 
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
@@ -52,7 +52,7 @@ const WorkSpaceHome = ({navigation}) => {
             return;
           }}>
           <Image
-            source={require('../../Assets/hamdark.png')}
+            source={require('../../assets/images/hamdark.png')}
             alt="Back"
             style={styles.hamBtn}
           />

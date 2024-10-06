@@ -19,7 +19,7 @@ import {
   updateTodoTitle,
   updateTodoStatus,
   updateTodoPriority,
-} from '../../Redux/Action-Creators';
+} from '../../redux/actioncreators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -28,7 +28,7 @@ import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
 import {ROOT_URI_DEV} from '@env';
-import {DARKMODE} from '../../Config/Colors';
+import {DARKMODE} from '../../config/Colors';
 
 const {width, height} = Dimensions.get('screen');
 const UpdateTodos = ({actions, navigation, route}) => {
@@ -121,7 +121,7 @@ const UpdateTodos = ({actions, navigation, route}) => {
             navigateToHome(jwtToken);
           }}>
           <Image
-            source={require('../../Assets/backlight.png')}
+            source={require('../../assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />

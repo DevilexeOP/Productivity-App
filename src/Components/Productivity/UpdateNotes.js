@@ -15,7 +15,7 @@ import {bindActionCreators} from 'redux';
 import {
   updateNotesDescription,
   updateNotesTitle,
-} from '../../Redux/Action-Creators';
+} from '../../redux/actioncreators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -23,7 +23,7 @@ import {
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {ROOT_URI_DEV} from '@env';
-import {DARKMODE} from '../../Config/Colors';
+import {DARKMODE} from '../../config/Colors';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -99,7 +99,7 @@ const UpdateNotes = ({actions, navigation, route}) => {
             navigateToNotes(jwtToken);
           }}>
           <Image
-            source={require('../../Assets/backlight.png')}
+            source={require('../../assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />

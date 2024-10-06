@@ -7,24 +7,20 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import Snackbar from 'react-native-snackbar';
-import {ROOT_URI_DEV} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ROOT_URI_DEV} from '@env';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {DARKMODE} from '../../Config/Colors';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {DARKMODE} from '../../config/Colors';
 
 const ProfileHome = () => {
   const navigation = useNavigation();
-
-  useFocusEffect(() => {
-    fetchToken();
-    // getData();
-  });
-
+  const [name, setName] = useState('');
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
 
   const fetchToken = async () => {
@@ -32,41 +28,60 @@ const ProfileHome = () => {
     if (jwt) {
       setToken(jwt);
     }
+    return jwt;
   };
 
-  const getData = async () => {
-    let userId = await AsyncStorage.getItem('userId');
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const jwt = await fetchToken();
+        if (jwt) {
+          await getData(jwt);
+        }
+      };
+      fetchData();
+    }, []),
+  );
+
+  const getData = async jwt => {
+    let userId = await AsyncStorage.getItem('user_id');
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/user/api/v1/profile/${userId}`, {
+      const res = await fetch(`${ROOT_URI_DEV}/api/v1/profile/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${jwt}`,
         },
       });
       const data = await res.json();
-      setName(data.name);
-      setUserName(data.username);
-      setEmail(data.email);
-      console.log(JSON.stringify(data));
+      if (res.ok) {
+        // Check if the data is as expected
+        const user = data[0];
+        console.log(JSON.stringify(data));
+        if (user) {
+          setName(user.name);
+          setUserName(user.username);
+          setEmail(user.email);
+        }
+      } else {
+        // Handle errors from the API
+        console.error('Failed to fetch user data', data);
+      }
     } catch (e) {
-      console.log(e);
+      console.log('Error fetching data:', e);
     }
   };
-
-  const [name, setName] = useState('');
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
 
   const signOut = async () => {
     await AsyncStorage.removeItem('token');
     setName('');
     setUserName('');
     setEmail('');
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Auth', screen: 'OnBoard'}],
-    });
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{name: 'Auth', screen: 'OnBoard'}],
+    // });
+    navigation.navigate('Auth', {screen: 'OnBoard'});
   };
 
   return (
@@ -74,19 +89,22 @@ const ProfileHome = () => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.profileImage}
-          source={require('../../Assets/profile.png')}
+          source={require('../../assets/images/profile.png')}
           resizeMode="contain"
         />
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.labelName}>{name}</Text>
-        <Text style={styles.labelUserName}>{userName}</Text>
-        <Text style={styles.labelEmail}>{email}</Text>
+        <Text style={styles.labelName}>{name || 'Loading...'}</Text>
+        <Text style={styles.labelUserName}>{userName || 'Loading...'}</Text>
+        <Text style={styles.labelEmail}>{email || 'Loading...'}</Text>
       </View>
       <View style={styles.divider}></View>
       <View style={styles.bottomContainer}>
         <View>
-          <TouchableOpacity onPress={signOut}>
+          <TouchableOpacity
+            onPress={() => {
+              signOut();
+            }}>
             <Text style={styles.labelSignOut}>Sign Out </Text>
           </TouchableOpacity>
         </View>

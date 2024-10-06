@@ -14,7 +14,7 @@ import {
 import {
   updateNotesTitle,
   updateNotesDescription,
-} from '../../Redux/Action-Creators';
+} from '../../redux/actioncreators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -22,7 +22,7 @@ import {
 import Toast from 'react-native-toast-message';
 import Snackbar from 'react-native-snackbar';
 import {ROOT_URI_DEV} from '@env';
-import {DARKMODE} from '../../Config/Colors';
+import {DARKMODE} from '../../config/Colors';
 
 const {width, height} = Dimensions.get('window');
 
@@ -106,7 +106,7 @@ const AddNotes = ({navigation, route}) => {
             navigateToHome(jwtToken);
           }}>
           <Image
-            source={require('../../Assets/backlight.png')}
+            source={require('../../assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />

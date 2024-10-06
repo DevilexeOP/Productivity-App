@@ -18,8 +18,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   updateAllWorkSpaces,
   updateSpaceData,
-} from '../../Redux/Action-Creators';
-import {DARKMODE} from '../../Config/Colors';
+} from '../../redux/actioncreators';
+import {DARKMODE} from '../../config/Colors';
 import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 
@@ -164,7 +164,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
       <View style={styles.outContainer}>
         <TouchableOpacity onPress={navigateToWorkspaceHome}>
           <Image
-            source={require('../../Assets/backlight.png')}
+            source={require('../../assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />
@@ -176,7 +176,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={styles.workSpaceJoinIcon}
-              source={require('../../Assets/adduserlight.png')}
+              source={require('../../assets/images/adduserlight.png')}
             />
           </TouchableOpacity>
         </View>
@@ -203,7 +203,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
                     <View style={styles.rowContainer}>
                       <Image
                         style={styles.membersIcon}
-                        source={require('../../Assets/members.png')}
+                        source={require('../../assets/images/members.png')}
                       />
                       <Text style={styles.members}>
                         {workspace.members.length}

@@ -1,15 +1,15 @@
 import {combineReducers} from 'redux';
 
 // Importing Reducers
-import AddNoteReducer from '../Reducers/AddNoteReducer';
-import ToDoReducer from '../Reducers/AddTodoReducer';
-import UserReducer from '../Reducers/UserReducer';
-import WorkSpaceReducer from '../Reducers/AddWorkSpaceReducer';
-import ChannelReducer from '../Reducers/AddChannelReducer';
-import MessageReducer from '../Reducers/SendMessageReducer';
-import WorkSpaces from '../Reducers/AllSpacesReducer';
-import SpaceDatas from '../Reducers/WorkspaceDataReducer';
-import RetrievedData from '../Reducers/RetrieveDataReducer';
+import AddNoteReducer from '../reducers/AddNoteReducer';
+import ToDoReducer from '../reducers/AddTodoReducer';
+import UserReducer from '../reducers/UserReducer';
+import WorkSpaceReducer from '../reducers/AddWorkSpaceReducer';
+import ChannelReducer from '../reducers/AddChannelReducer';
+import MessageReducer from '../reducers/SendMessageReducer';
+import WorkSpaces from '../reducers/AllSpacesReducer';
+import SpaceDatas from '../reducers/WorkspaceDataReducer';
+import RetrievedData from '../reducers/RetrieveDataReducer';
 
 const reducers = combineReducers({
   addNote: AddNoteReducer,

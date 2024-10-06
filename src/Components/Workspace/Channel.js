@@ -13,10 +13,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {actionCreators} from '../../Redux/index';
+import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
-import {DARKMODE} from '../../Config/Colors';
+import {DARKMODE} from '../../config/Colors';
 import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {
@@ -24,9 +24,10 @@ import {
   updateMessage,
   updateAllMessages,
   updateAddMessage,
-} from '../../Redux/Action-Creators';
-import KeyboardAvoidView from '../../Config/KeyboardAvoidView';
-import socket from '../../Config/Socket';
+} from '../../redux/actioncreators';
+import KeyboardAvoidView from '../../config/KeyboardAvoidView';
+import socket from '../../config/Socket';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import io from 'socket.io-client';
 
@@ -35,9 +36,10 @@ import socket from '../../Config/Socket';
 
 const Channel = ({navigation, route}) => {
   const {spaceId, channelId, jwtToken} = route.params;
-  const name = useSelector(state => state.user.name);
-  const email = useSelector(state => state.user.email);
-  const username = useSelector(state => state.user.username);
+  // const name = useSelector(state => state.user.name);
+  // const email = useSelector(state => state.user.email);
+  // const username = useSelector(state => state.user.username);
+  const [name, setName] = useState('');
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
   const data = useSelector(state => state.data.channelData);
@@ -45,12 +47,13 @@ const Channel = ({navigation, route}) => {
 
   // loading manage
   const [isLoading, setIsLoading] = useState(true);
-  // msg manage
+  // message manage
   const allMessages = useSelector(state => state.message.allMessages);
   useEffect(() => {
     fetchData();
-    console.log('All Messages', allMessages);
-    console.log('Space ID ', spaceId);
+    getUserData();
+    // console.log('All Messages', allMessages);
+    // console.log('Space ID ', spaceId);
   }, []);
 
   useEffect(() => {
@@ -68,6 +71,12 @@ const Channel = ({navigation, route}) => {
       scrollViewRef.current.scrollToEnd({animated: true});
     }
   }, [allMessages]);
+
+  // get user's data from async storage
+  const getUserData = async () => {
+    let name = await AsyncStorage.getItem('name');
+    setName(name);
+  };
 
   // fetching channel data
   const fetchData = async () => {
@@ -150,7 +159,7 @@ const Channel = ({navigation, route}) => {
             navigationToHome(jwtToken);
           }}>
           <Image
-            source={require('../../Assets/backlight.png')}
+            source={require('../../assets/images/backlight.png')}
             alt="Back"
             style={styles.backBtn}
           />
@@ -162,7 +171,7 @@ const Channel = ({navigation, route}) => {
         ))}
         <TouchableOpacity>
           <Image
-            source={require('../../Assets/quick.png')}
+            source={require('../../assets/images/quick.png')}
             alt="Back"
             style={styles.quickBtn}
           />
@@ -202,7 +211,7 @@ const Channel = ({navigation, route}) => {
               onPress={sendMessageToSocket}>
               <Image
                 style={styles.sendIcon}
-                source={require('../../Assets/send.png')}
+                source={require('../../assets/images/send.png')}
                 alt={'Send'}
               />
             </TouchableOpacity>

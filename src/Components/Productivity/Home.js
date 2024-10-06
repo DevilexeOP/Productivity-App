@@ -28,7 +28,6 @@ const HomeScreen = ({navigation}) => {
     }
   };
 
-
   const navigateToNotes = token => {
     navigation.navigate('Notes', {
       jwtToken: token,
@@ -51,7 +50,7 @@ const HomeScreen = ({navigation}) => {
           {/* TODO DISPLAYING RECENT ACTIVITY */}
           <View style={styles.animationContainer}>
             <LottieView
-              source={require('../../Assets/Animations/onBoardHome.json')}
+              source={require('../../assets/animations/onBoardHome.json')}
               style={styles.animation}
               autoPlay={true}
               loop={true}

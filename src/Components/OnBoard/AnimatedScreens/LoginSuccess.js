@@ -6,33 +6,37 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const RegisterSuccess = ({navigation}) => {
+const LoginSuccess = ({navigation, route}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Login'); // using replace so they dont go back to the success page if they click back
+      navigationToHome(); // using replace so they dont go back to the success page if they click back
     }, 5000);
     return () => clearTimeout(timer);
-  }, [navigation]);
+  }, []);
+  // navigation handler
+  const navigationToHome = () => {
+    navigation.replace('BottomStack');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Registered Successfully </Text>
+        <Text style={styles.headerText}>Logged In Successfully</Text>
       </View>
       <View style={styles.animationContainer}>
         <LottieView
-          source={require('../../../Assets/Animations/success.json')}
+          source={require('../../../assets/animations/success.json')}
           style={styles.animation}
           autoPlay={true}
           loop={false}
         />
       </View>
       <View style={styles.redirectContainer}>
-        <Text style={styles.redirectText}>Redirecting to Login </Text>
+        <Text style={styles.redirectText}>Redirecting to Home </Text>
         <LottieView
           style={styles.animation2}
           autoPlay={true}
           loop={true}
-          source={require('../../../Assets/Animations/loading.json')}
+          source={require('../../../assets/animations/loading.json')}
         />
       </View>
     </SafeAreaView>
@@ -78,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterSuccess;
+export default LoginSuccess;

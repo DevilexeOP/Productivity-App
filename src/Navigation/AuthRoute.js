@@ -2,72 +2,70 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 // Splash Screen
-import SplashScreen from '../Components/OnBoard/Splash';
+import SplashScreen from '../components/onboard/Splash';
 // OnBoarding Screens
-import OnBoarding from '../Components/OnBoard/OnBoarding';
-import Register from '../Components/OnBoard/Register';
-import Login from '../Components/OnBoard/Login';
+import OnBoarding from '../components/onboard/OnBoarding';
+import Register from '../components/onboard/Register';
+import Login from '../components/onboard/Login';
 // Animation Screens
-import ProductiveRoute from './ProductiveStack/ProductiveRoute';
-import LoginSuccess from '../Components/OnBoard/Animations/LoginSuccess';
-import LoginFailed from '../Components/OnBoard/Animations/LoginFail';
-import RegisterSuccess from '../Components/OnBoard/Animations/RegisterSuccess';
-import RegisterFailed from '../Components/OnBoard/Animations/RegisterFailed';
-import WorkSpaceRoute from './WorkSpaceStack/WorkSpaceRoute';
-import BottomRoute from './BottomRouter/BottomRoute';
+import LoginSuccess from '../components/onboard/AnimatedScreens/LoginSuccess';
+import LoginFailed from '../components/onboard/AnimatedScreens/LoginFail';
+import RegisterSuccess from '../components/onboard/AnimatedScreens/RegisterSuccess';
+import RegisterFailed from '../components/onboard/AnimatedScreens/RegisterFailed';
+import BottomRoute from './bottomRouter/BottomRoute';
 
 const AuthStack = createStackNavigator();
 
 const AuthRoute = () => {
-    return (
-        <AuthStack.Navigator initialRouteName="SplashScreen">
-            <AuthStack.Screen
-                name="SplashScreen"
-                component={SplashScreen}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="OnBoard"
-                component={OnBoarding}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="Register"
-                component={Register}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="RegisterSuccess"
-                component={RegisterSuccess}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="RegisterFail"
-                component={RegisterFailed}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="LoginSuccess"
-                component={LoginSuccess}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="LoginFail"
-                component={LoginFailed}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="Login"
-                component={Login}
-                options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-                name="BottomStack"
-                component={BottomRoute}
-                options={{headerShown: false}}
-            />
-        </AuthStack.Navigator>
-    );
+  return (
+    <AuthStack.Navigator initialRouteName="SplashScreen">
+      <AuthStack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="OnBoard"
+        component={OnBoarding}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="Register"
+        component={Register}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="RegisterSuccess"
+        component={RegisterSuccess}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="RegisterFail"
+        component={RegisterFailed}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="LoginSuccess"
+        component={LoginSuccess}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="LoginFail"
+        component={LoginFailed}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="BottomStack"
+        component={BottomRoute}
+        options={{headerShown: false}}
+      />
+    </AuthStack.Navigator>
+  );
 };
 
 export default AuthRoute;

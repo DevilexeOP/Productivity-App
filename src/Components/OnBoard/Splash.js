@@ -22,7 +22,7 @@ const Splash = () => {
     }
   };
   useEffect(() => {
-    const delayTime = 5000;
+    const delayTime = 3000;
     const timeout = setTimeout(() => {
       getToken();
     }, delayTime);
@@ -36,7 +36,7 @@ const Splash = () => {
       </View>
       <View style={styles.animationContainer}>
         <LottieView
-          source={require('../../Assets/Animations/splashLoad.json')}
+          source={require('../../assets/animations/splashLoad.json')}
           style={styles.animation}
           autoPlay={true}
           loop={true}
