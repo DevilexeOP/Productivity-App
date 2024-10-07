@@ -13,6 +13,7 @@ import LoginFailed from '../components/onboard/AnimatedScreens/LoginFail';
 import RegisterSuccess from '../components/onboard/AnimatedScreens/RegisterSuccess';
 import RegisterFailed from '../components/onboard/AnimatedScreens/RegisterFailed';
 import BottomRoute from './bottomRouter/BottomRoute';
+import ProfileHome from '../components/profilespace/ProfileHome';
 
 const AuthStack = createStackNavigator();
 
@@ -63,6 +64,13 @@ const AuthRoute = () => {
         name="BottomStack"
         component={BottomRoute}
         options={{headerShown: false}}
+      />
+      <AuthStack.Screen
+        name="ProfileHome"
+        component={ProfileHome}
+        options={{
+          headerShown: false,
+        }}
       />
     </AuthStack.Navigator>
   );

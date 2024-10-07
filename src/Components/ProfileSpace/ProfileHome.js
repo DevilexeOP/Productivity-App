@@ -77,10 +77,6 @@ const ProfileHome = () => {
     setName('');
     setUserName('');
     setEmail('');
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{name: 'Auth', screen: 'OnBoard'}],
-    // });
     navigation.navigate('Auth', {screen: 'OnBoard'});
   };
 

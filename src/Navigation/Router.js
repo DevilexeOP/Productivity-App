@@ -10,7 +10,7 @@ const RootStack = createStackNavigator();
 
 const Router = () => {
   const [token, setToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchToken();
@@ -20,7 +20,7 @@ const Router = () => {
     try {
       const jwt = await AsyncStorage.getItem('token');
       if (jwt) {
-        setToken(jwt); 
+        setToken(jwt);
       }
     } catch (e) {
       console.log('Failed to fetch token', e);
@@ -30,7 +30,7 @@ const Router = () => {
   };
 
   if (isLoading) {
-    return null; 
+    return;
   }
 
   return (
