@@ -103,11 +103,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: wp('4.8%'),
+    fontSize: wp('5%'),
     fontWeight: '600',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
   },
   buttonContainer1: {
     flexDirection: 'row',
@@ -139,8 +140,8 @@ const styles = StyleSheet.create({
   },
   todoText: {
     color: 'white',
-    fontSize: wp('3%'),
-    fontWeight: 'bold',
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Medium',
   },
   hamBtn: {
     width: wp('4%'),

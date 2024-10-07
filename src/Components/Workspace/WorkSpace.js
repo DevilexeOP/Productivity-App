@@ -342,8 +342,8 @@ const styles = StyleSheet.create({
     marginVertical: wp('2%'),
   },
   headerText: {
-    fontSize: wp('4.5%'),
-    fontWeight: '600',
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     textAlign: 'center',
@@ -384,7 +384,8 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     color: DARKMODE.inputText,
-    fontSize: wp('3.5%'),
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Medium',
   },
   divider: {
     backgroundColor: DARKMODE.searchBox,
@@ -436,23 +437,26 @@ const styles = StyleSheet.create({
   },
   channelHead: {
     color: DARKMODE.headerText,
-    fontSize: wp('4%'),
+    fontSize: wp('5%'),
     margin: wp('4%'),
+    fontFamily: 'Poppins-Bold',
   },
   btnsContainer: {
     display: 'flex',
     flexDirection: 'row',
   },
   noWorkspaceText: {
-    fontSize: wp('4%'),
+    fontSize: wp('5%'),
     color: DARKMODE.headerText, // Dark yellow color
     textAlign: 'center',
     marginTop: wp('4%'),
+    fontFamily: 'Poppins-Bold',
   },
   channelName: {
-    fontSize: wp('4%'),
+    fontSize: wp('4.2%'),
     color: DARKMODE.iconColor, // Dark yellow color
-    margin: wp('2.5%'),
+    margin: wp('3.5%'),
+    fontFamily: 'Poppins-Medium',
   },
   container2: {
     display: 'flex',
@@ -503,12 +507,13 @@ const styles = StyleSheet.create({
     fontSize: wp('4%'),
     color: DARKMODE.white,
     marginTop: hp('2%'),
+    fontFamily: 'Poppins-Bold',
   },
   modalText: {
     fontSize: wp('5%'),
-    fontWeight: '600',
+    fontFamily: 'Poppins-Bold',
     color: DARKMODE.black,
-    marginBottom: wp('4%'),
+    marginBottom: hp('-1%'),
   },
   additionalSpace: {
     height: wp('10%'), // Add extra space between elements
@@ -523,7 +528,7 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     width: wp('40%'),
-    height: hp('5%'),
+    height: hp('6%'),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: DARKMODE.black,
@@ -532,7 +537,7 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: DARKMODE.buttons,
     fontSize: wp('4%'),
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Medium',
   },
 });
 

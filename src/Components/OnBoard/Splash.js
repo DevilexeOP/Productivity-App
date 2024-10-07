@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#dbac00',
-    fontWeight: 'bold',
     fontSize: wp('7%'),
+    fontFamily: 'Poppins-Bold',
   },
   animationContainer: {
     justifyContent: 'center',

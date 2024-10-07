@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#FFB800',
-    fontWeight: '600',
     fontSize: wp('6.5%'),
+    fontFamily: 'Poppins-Bold',
   },
   imageContainer: {
     justifyContent: 'center',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   registerText: {
     color: 'white',
     fontSize: wp('3.5%'),
-    fontWeight: 600,
+    fontFamily: 'Poppins-Bold',
   },
   loginBtn: {
     width: wp('40%'),
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'white',
     fontSize: wp('3.5%'),
-    fontWeight: 600,
+    fontFamily: 'Poppins-Bold',
   },
   animationContainer: {
     justifyContent: 'center',

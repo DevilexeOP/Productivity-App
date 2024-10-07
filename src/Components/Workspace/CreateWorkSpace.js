@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: wp('4.8%'),
-    fontWeight: '600',
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     textAlign: 'center',
@@ -181,8 +181,8 @@ const styles = StyleSheet.create({
   },
   todoText: {
     color: 'white',
-    fontSize: wp('3%'),
-    fontWeight: 'bold',
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Medium',
   },
   hamBtn: {
     width: wp('4%'),
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: wp('2%'),
+    marginVertical: wp('10%'),
   },
   userInputContainer: {
     width: wp('80%'),
@@ -207,17 +207,19 @@ const styles = StyleSheet.create({
     padding: wp('4%'),
   },
   customLabel: {
-    fontSize: wp('2.8%'),
+    fontSize: wp('4%'),
     color: DARKMODE.labelText,
+    fontFamily: 'Poppins-Bold',
   },
   textInput: {
-    height: wp('10%'),
+    height: wp('12%'),
     backgroundColor: 'white',
     marginTop: wp('2%'),
     padding: wp('2%'),
     color: DARKMODE.inputText,
     fontSize: wp('3%'),
     borderRadius: wp('1%'),
+    fontFamily: 'Poppins-Medium',
   },
   projectContainer: {
     paddingBottom: wp('4%'),

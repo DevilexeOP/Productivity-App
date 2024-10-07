@@ -242,8 +242,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: wp('4.5%'),
-    fontWeight: '600',
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     textAlign: 'center',
@@ -290,6 +290,7 @@ const styles = StyleSheet.create({
     fontSize: wp('4%'),
     padding: wp('2%'),
     color: DARKMODE.headerText,
+    fontFamily: 'Poppins-Medium',
   },
   inputContainer: {
     flex: 1,
@@ -300,10 +301,6 @@ const styles = StyleSheet.create({
     width: wp('80%'),
     padding: wp('3%'),
     margin: wp('5%'),
-  },
-  messageLabel: {
-    color: DARKMODE.iconColor,
-    fontSize: wp('3%'),
   },
   messageContainer: {
     flexDirection: 'column',
@@ -323,17 +320,20 @@ const styles = StyleSheet.create({
     borderRadius: wp('2%'),
     backgroundColor: '#000000',
     maxWidth: '100%',
+    fontFamily: 'Poppins-Medium',
   },
   senderName: {
-    fontSize: wp('4%'),
+    fontSize: wp('4.2%'),
     color: DARKMODE.senderTextColor,
-    marginBottom: wp('1%'),
+    margin: wp('1%'),
     alignSelf: 'flex-start',
+    fontFamily: 'Poppins-Bold',
   },
   chatMessageTime: {
-    fontSize: wp('3.2%'),
+    fontSize: wp('3.5%'),
     color: '#a0a0a0',
     marginLeft: wp('3%'),
+    fontFamily: 'Poppins-Bold',
   },
 });
 

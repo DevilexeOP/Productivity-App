@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: wp('6.5%'),
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     marginVertical: hp('5%'),
     marginHorizontal: wp('5%'),
     color: '#dbac00',
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   notesText: {
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
   todoButton: {
     borderRadius: 10,
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
   },
   todoText: {
     color: 'white',
-    fontSize: wp('3%'),
-    fontWeight: 'bold',
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Bold',
   },
   animationContainer: {
     justifyContent: 'center',

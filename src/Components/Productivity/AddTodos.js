@@ -163,7 +163,6 @@ const AddTodos = ({
               onValueChange={item => {
                 actions.updateTodoStatus(item);
               }}
-              style={{color: DARKMODE.notesInput}}
               dropdownIconColor={DARKMODE.iconColor}>
               <Picker.Item
                 color={DARKMODE.inputTextPicker}
@@ -193,7 +192,6 @@ const AddTodos = ({
               onValueChange={item => {
                 actions.updateTodoPriority(item);
               }}
-              style={{color: DARKMODE.notesInput}}
               dropdownIconColor={DARKMODE.iconColor}>
               <Picker.Item
                 color={DARKMODE.inputTextPicker}
@@ -246,10 +244,10 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: wp('5%'),
-    fontWeight: '600',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     marginRight: wp('25%'),
+    fontFamily: 'Poppins-Bold',
   },
   todosButton: {
     width: wp('50%'),
@@ -263,9 +261,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   todoText: {
-    fontSize: wp('3%'),
+    fontSize: wp('3.5%'),
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
   inputContainer: {
     width: wp('70%'),
@@ -276,8 +274,9 @@ const styles = StyleSheet.create({
   },
   inputText: {
     marginHorizontal: wp('2%'),
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
     color: '#dbac00',
+    fontFamily: 'Poppins-Bold',
   },
   inputContainer2: {
     width: wp('70%'),
@@ -289,8 +288,9 @@ const styles = StyleSheet.create({
   },
   inputText2: {
     marginHorizontal: wp('2%'),
-    fontSize: wp('3%'),
+    fontSize: wp('3.5%'),
     color: DARKMODE.notesInput,
+    fontFamily: 'Poppins-Medium',
   },
   pickerContainer: {
     width: wp('80%'),

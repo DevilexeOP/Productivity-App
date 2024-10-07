@@ -175,9 +175,7 @@ const Login = ({navigation}) => {
       </View>
       <View style={styles.loggedInContainer}>
         <View style={styles.userContainer}>
-          <Text style={styles.userText}>
-            Dont have an account ?{' '}
-          </Text>
+          <Text style={styles.userText}>Dont have an account ? </Text>
         </View>
         <View>
           <TouchableOpacity
@@ -207,18 +205,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#FFB800',
     fontSize: wp('6%'),
-    fontWeight: 700,
-  },
-  subHeaderContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginTop: wp('3%'),
-    marginLeft: wp('4%'),
-  },
-  subHeaderText: {
-    color: '#B3B3B3',
-    fontSize: wp('3.5%'),
-    fontWeight: 300,
+    fontFamily: 'Poppins-Bold',
   },
   googleContainer: {
     width: wp('40%'),
@@ -250,10 +237,11 @@ const styles = StyleSheet.create({
     marginLeft: wp('4%'),
   },
   inputHeader: {
-    color: '#B3B3B3',
-    fontSize: wp('4%'),
-    marginTop: wp('1%'),
-    marginBottom: wp('1%'),
+    color: '#ffffff',
+    fontSize: wp('4.2%'),
+    marginTop: wp('2%'),
+    marginBottom: wp('2%'),
+    fontFamily: 'Poppins-Medium',
   },
   input: {
     width: wp('90%'),
@@ -267,6 +255,7 @@ const styles = StyleSheet.create({
     marginTop: wp('2%'),
     paddingLeft: 15,
     marginBottom: wp('1%'),
+    fontFamily: 'Poppins-Medium',
   },
   loginContainer: {
     justifyContent: 'center',
@@ -287,6 +276,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'white',
     fontSize: wp('3.5%'),
+    fontFamily: 'Poppins-Bold',
   },
   loggedInContainer: {
     flexDirection: 'row',
@@ -298,6 +288,7 @@ const styles = StyleSheet.create({
   userText: {
     fontSize: wp('3.2%'),
     color: '#D3CACA',
+    fontFamily: 'Poppins-Medium',
   },
   registerBtn: {
     marginLeft: wp('2%'),
@@ -305,26 +296,18 @@ const styles = StyleSheet.create({
   registerText: {
     color: '#D69D0C',
     fontSize: wp('3.5%'),
-  },
-  redirectContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: hp('20%'),
+    fontFamily: 'Poppins-Bold',
   },
   animation2: {
     width: wp('20%'),
     height: hp('20%'),
   },
-  redirectText: {
-    color: '#FFB800',
-    fontSize: wp('3.5%'),
-  },
   forgotText: {
     color: '#FFB800',
-    fontSize: wp('3%'),
-    marginLeft: wp('5%'),
+    fontSize: wp('3.5%'),
+    marginLeft: wp('6%'),
     marginTop: hp('2%'),
+    fontFamily: 'Poppins-Bold',
   },
 });
 

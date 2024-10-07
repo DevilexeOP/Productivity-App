@@ -77,7 +77,7 @@ const ProfileHome = () => {
     setName('');
     setUserName('');
     setEmail('');
-    navigation.navigate('Auth', {screen: 'OnBoard'});
+    navigation.navigate('OnBoard');
   };
 
   return (
@@ -136,27 +136,31 @@ const styles = StyleSheet.create({
     marginTop: wp('12%'),
   },
   labelName: {
-    fontSize: hp('2.3%'),
+    fontSize: hp('2.5%'),
     margin: wp('6%'),
     color: DARKMODE.profileTextColor,
+    fontFamily: 'Poppins-Medium',
   },
   labelUserName: {
     fontSize: hp('2.2%'),
     marginLeft: wp('8%'),
     color: DARKMODE.profileTextColorSecondary,
+    fontFamily: 'Poppins-Medium',
   },
   labelEmail: {
     fontSize: hp('2.3%'),
     margin: wp('6%'),
     color: DARKMODE.profileTextColor,
+    fontFamily: 'Poppins-Medium',
   },
   labelSignOut: {
-    fontSize: hp('2.3%'),
+    fontSize: hp('2.75%'),
     color: DARKMODE.signOutTextColor,
     display: 'flex',
     textAlign: 'right',
     marginTop: wp('80%'),
     marginRight: wp('5%'),
+    fontFamily: 'Poppins-Bold',
   },
 });
 

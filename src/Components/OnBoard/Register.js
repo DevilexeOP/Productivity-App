@@ -183,18 +183,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#FFB800',
     fontSize: wp('6%'),
-    fontWeight: 700,
-  },
-  subHeaderContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginTop: wp('3%'),
-    marginLeft: wp('4%'),
-  },
-  subHeaderText: {
-    color: '#B3B3B3',
-    fontSize: wp('3.5%'),
-    fontWeight: 300,
+    fontFamily: 'Poppins-Bold',
   },
   googleContainer: {
     width: wp('40%'),
@@ -226,10 +215,11 @@ const styles = StyleSheet.create({
     marginLeft: wp('4%'),
   },
   inputHeader: {
-    color: '#B3B3B3',
+    color: '#FFFFFF',
     fontSize: wp('4%'),
     marginTop: wp('1%'),
     marginBottom: wp('1%'),
+    fontFamily: 'Poppins-Medium',
   },
   input: {
     width: wp('90%'),
@@ -243,6 +233,7 @@ const styles = StyleSheet.create({
     marginTop: wp('2%'),
     paddingLeft: 15,
     marginBottom: wp('1%'),
+    fontFamily: 'Poppins-Medium',
   },
   registerContainer: {
     justifyContent: 'center',
@@ -262,7 +253,8 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: 'white',
-    fontSize: wp('3%'),
+    fontSize: wp('3.5%'),
+    fontFamily: 'Poppins-Bold',
   },
   loggedInContainer: {
     flexDirection: 'row',
@@ -274,6 +266,7 @@ const styles = StyleSheet.create({
   userText: {
     fontSize: wp('3.5%'),
     color: '#D3CACA',
+    fontFamily: 'Poppins-Medium',
   },
   loginBtn: {
     marginLeft: wp('2%'),
@@ -281,6 +274,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: '#D69D0C',
     fontSize: wp('3.5%'),
+    fontFamily: 'Poppins-Bold',
   },
 });
 

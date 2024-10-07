@@ -264,8 +264,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    fontSize: wp('5%'),
-    fontWeight: '600',
+    fontSize: wp('5.5%'),
+    fontFamily: 'Poppins-Bold',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     marginRight: wp('25%'),
@@ -282,9 +282,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   todoText: {
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
   todoContainer: {
     borderWidth: 1,
@@ -297,27 +297,31 @@ const styles = StyleSheet.create({
   },
   todoTitle: {
     marginVertical: hp('1%'),
-    fontSize: wp('4%'),
+    fontSize: wp('5%'),
     marginHorizontal: hp('2%'),
     color: '#f0cf9c',
+    fontFamily: 'Poppins-Bold',
   },
   todoDescription: {
     marginVertical: hp('.5%'),
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
     marginHorizontal: hp('2%'),
     color: DARKMODE.notesInput,
+    fontFamily: 'Poppins-Medium',
   },
   todoStatus: {
     marginVertical: hp('.5%'),
-    fontSize: wp('3%'),
+    fontSize: wp('3.5%'),
     marginHorizontal: hp('2%'),
     color: DARKMODE.notesInput,
+    fontFamily: 'Poppins-Medium',
   },
   todoPriortiy: {
     marginVertical: hp('.5%'),
-    fontSize: wp('3%'),
+    fontSize: wp('3.5%'),
     marginHorizontal: hp('2%'),
     color: DARKMODE.notesInput,
+    fontFamily: 'Poppins-Medium',
   },
   icon: {
     width: wp('2%'),

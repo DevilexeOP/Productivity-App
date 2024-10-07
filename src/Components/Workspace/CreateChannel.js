@@ -109,8 +109,8 @@ const CreateChannel = ({navigation, route}) => {
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>
-          Channels are where you can communicate with your team . {'\n'}
-          Choose a unique channel name for your workspace
+          Channels are where you can communicate with your team . Choose a
+          unique channel name for your workspace
         </Text>
       </View>
       <View style={styles.createContainer}>
@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: wp('4.5%'),
-    fontWeight: '600',
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     textAlign: 'center',
@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
   },
   labelHead: {
     color: DARKMODE.iconColor,
-    fontSize: wp('3.6%'),
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Medium',
   },
   addContainer: {
     display: 'flex',
@@ -176,20 +177,22 @@ const styles = StyleSheet.create({
     height: wp('12%'),
     backgroundColor: 'white',
     margin: wp('5%'),
-    padding: wp('4%'),
-    color: DARKMODE.inputText,
-    fontSize: wp('3.6%'),
+    padding: wp('3%'),
+    color: DARKMODE.black,
+    fontSize: wp('4%'),
     borderRadius: wp('1%'),
+    fontFamily: 'Poppins-Medium',
   },
   infoContainer: {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginLeft: wp('12%'),
+    marginLeft: wp('5%'),
   },
   infoText: {
     color: DARKMODE.infoText,
-    fontSize: wp('2.6%'),
+    fontSize: wp('3.2%'),
+    fontFamily: 'Poppins-Bold',
   },
   createContainer: {
     marginTop: wp('12%'),
@@ -198,15 +201,15 @@ const styles = StyleSheet.create({
   },
   createText: {
     color: DARKMODE.iconColor,
-    fontSize: wp('3%'),
-    fontWeight: '700',
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Bold',
   },
   btn: {
     width: wp('60%'),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: DARKMODE.buttons,
-    height: wp('9%'),
+    height: wp('12%'),
     borderRadius: wp('2%'),
   },
 });

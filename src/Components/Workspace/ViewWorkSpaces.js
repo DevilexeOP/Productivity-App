@@ -15,10 +15,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  updateAllWorkSpaces,
-  updateSpaceData,
-} from '../../redux/actioncreators';
+import {updateAllWorkSpaces, updateSpaceData} from '../../redux/actioncreators';
 import {DARKMODE} from '../../config/Colors';
 import {ROOT_URI_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
@@ -283,8 +280,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    fontSize: wp('4.8%'),
-    fontWeight: '600',
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
     marginVertical: hp('5%'),
     color: DARKMODE.headerText,
     textAlign: 'center',
@@ -306,8 +303,8 @@ const styles = StyleSheet.create({
   },
   todoText: {
     color: 'white',
-    fontSize: wp('3%'),
-    fontWeight: 'bold',
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Medium',
   },
   hamBtn: {
     width: wp('4%'),
@@ -321,6 +318,7 @@ const styles = StyleSheet.create({
     color: DARKMODE.headerText, // Dark yellow color
     textAlign: 'center',
     marginTop: wp('4%'),
+    fontFamily: 'Poppins-Bold',
   },
   workspaceContainer: {
     width: wp('90%'),
@@ -338,13 +336,13 @@ const styles = StyleSheet.create({
     padding: wp('2%'),
   },
   spaceName: {
-    fontSize: wp('4%'),
+    fontSize: wp('4.5%'),
     color: DARKMODE.iconColor,
     marginLeft: wp('2%'),
     marginRight: wp('2%'),
     marginBottom: wp('3%'),
     marginTop: wp('2%'),
-    fontWeight: '700',
+    fontFamily: 'Poppins-Bold',
   },
   container2: {
     flexDirection: 'column',
@@ -366,15 +364,16 @@ const styles = StyleSheet.create({
     marginHorizontal: wp('1%'),
   },
   members: {
-    fontSize: wp('3.6%'),
+    fontSize: wp('4.2%'),
     color: DARKMODE.iconColor,
     marginRight: wp('5%'),
+    fontFamily: 'Poppins-Bold',
   },
   channelText: {
-    fontSize: wp('3.2%'),
+    fontSize: wp('4%'),
     color: DARKMODE.iconColor,
     textAlign: 'center',
-    fontWeight: '700',
+    fontFamily: 'Poppins-Regular',
   },
   workSpaceJoinIcon: {
     width: wp('3%'),
@@ -406,20 +405,22 @@ const styles = StyleSheet.create({
     height: hp('30%'),
   },
   modalText: {
-    fontSize: wp('4.5%'),
+    fontSize: wp('5%'),
     marginBottom: hp('2%'),
     textAlign: 'center',
     color: DARKMODE.black,
+    fontFamily: 'Poppins-Bold',
   },
   input: {
     height: hp('6%'),
-    width: wp('65%'),
+    width: wp('80%'),
     color: DARKMODE.black,
     borderColor: 'gray',
     borderWidth: wp('0.3%'),
     borderRadius: wp('2%'),
     paddingLeft: wp('2.5%'),
     marginBottom: hp('3%'),
+    fontFamily: 'Poppins-Medium',
   },
   modalButtonContainer: {
     flexDirection: 'row',
@@ -444,12 +445,14 @@ const styles = StyleSheet.create({
   joinButtonText: {
     textAlign: 'center',
     color: DARKMODE.white,
-    fontSize: wp('3.8%'),
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Bold',
   },
   cancelButtonText: {
     textAlign: 'center',
     color: DARKMODE.black,
-    fontSize: wp('3.8%'),
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Bold',
   },
 });
 

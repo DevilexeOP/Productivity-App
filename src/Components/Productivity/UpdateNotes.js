@@ -151,6 +151,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: wp('100%'),
+    height: null,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
+    marginVertical: hp('5%'),
+    color: DARKMODE.headerText,
+    marginRight: wp('25%'),
+  },
   notesButton: {
     width: wp('50%'),
     height: wp('10%'),
@@ -163,9 +178,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   notesText: {
-    fontSize: wp('3%'),
+    fontSize: wp('3.5%'),
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
   inputContainer: {
     width: wp('90%'),
@@ -176,45 +191,27 @@ const styles = StyleSheet.create({
   },
   inputText: {
     marginHorizontal: wp('2%'),
-    fontSize: wp('3%'),
+    fontSize: wp('4%'),
     color: '#dbac00',
+    fontFamily: 'Poppins-Bold',
   },
   inputContainer2: {
     width: wp('90%'),
     height: null,
     borderRadius: 10,
-    marginVertical: hp('2%'),
     marginHorizontal: wp('5%'),
     justifyContent: 'center',
   },
   inputText2: {
     marginHorizontal: wp('2%'),
-    fontSize: wp('3%'),
+    fontSize: wp('3.5%'),
     color: DARKMODE.notesInput,
+    fontFamily: 'Poppins-Medium',
   },
-  pickerContainer: {
-    width: wp('80%'),
-    marginVertical: hp('8%'),
-    marginHorizontal: wp('8%'),
-  },
-  pickerContainer2: {
-    width: wp('80%'),
-    marginHorizontal: wp('8%'),
-  },
-  headerContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: wp('100%'),
-    height: null,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontSize: wp('5%'),
-    fontWeight: '600',
+  icon: {
     marginVertical: hp('5%'),
-    color: DARKMODE.headerText,
-    marginRight: wp('25%'),
+    width: 35,
+    height: 35,
   },
   hamBtn: {
     width: wp('4%'),

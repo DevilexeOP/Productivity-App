@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#FFB800',
     fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
   },
   animationContainer: {
     justifyContent: 'center',
@@ -74,7 +75,8 @@ const styles = StyleSheet.create({
   },
   redirectText: {
     color: '#FFB800',
-    fontSize: wp('3.5%'),
+    fontSize: wp('3.8%'),
+    fontFamily: 'Poppins-Bold',
   },
 });
 

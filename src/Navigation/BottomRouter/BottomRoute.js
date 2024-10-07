@@ -49,8 +49,8 @@ const BottomRoute = () => {
                   color: focused
                     ? DARKMODE.bottomNavActive
                     : DARKMODE.bottomNavInActive,
-                  fontSize: wp('2.5%'),
-                  fontWeight: focused ? 'bold' : 'normal',
+                  fontSize: wp('3%'),
+                  fontFamily: 'Poppins-Bold',
                 }}>
                 Productive Space
               </Text>
@@ -78,8 +78,8 @@ const BottomRoute = () => {
                   color: focused
                     ? DARKMODE.bottomNavActive
                     : DARKMODE.bottomNavInActive,
-                  fontSize: wp('2.5%'),
-                  fontWeight: focused ? 'bold' : 'normal',
+                  fontSize: wp('3%'),
+                  fontFamily: 'Poppins-Bold',
                 }}>
                 Work Space
               </Text>
@@ -107,8 +107,8 @@ const BottomRoute = () => {
                   color: focused
                     ? DARKMODE.bottomNavActive
                     : DARKMODE.bottomNavInActive,
-                  fontSize: wp('2.5%'),
-                  fontWeight: focused ? 'bold' : 'normal',
+                  fontSize: wp('3%'),
+                  fontFamily: 'Poppins-Bold',
                 }}>
                 Profile
               </Text>
