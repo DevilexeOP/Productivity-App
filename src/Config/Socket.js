@@ -1,5 +1,5 @@
 import * as io from 'socket.io-client';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 
-const socket = io.connect(ROOT_URI_DEV);
+const socket = io.connect(ROOT_URL_KOYEB);
 export default socket;

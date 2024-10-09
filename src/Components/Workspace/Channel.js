@@ -17,7 +17,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {
   updateChannelData,
@@ -85,7 +85,7 @@ const Channel = ({navigation, route}) => {
     }
     try {
       const res = await fetch(
-        `${ROOT_URI_DEV}/user/api/v1/channel/${channelId}`,
+        `${ROOT_URL_KOYEB}/user/api/v1/channel/${channelId}`,
         {
           method: 'GET',
           headers: {

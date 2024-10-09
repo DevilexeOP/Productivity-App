@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -17,10 +17,14 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {DARKMODE} from '../../config/Colors';
 
 const Register = ({navigation}) => {
+  // spinner state
+  const [spinner, setSpinner] = useState(false);
   //use effect to clear values
   useEffect(() => {
     actions.updateName('');
@@ -54,8 +58,9 @@ const Register = ({navigation}) => {
   };
   // handle creating account
   const handleCreateAccount = async (Name, Username, Email, Password) => {
+    setSpinner(true);
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/signup`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/auth/api/v1/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,6 +81,7 @@ const Register = ({navigation}) => {
         actions.updateName(Name);
         actions.updateUserName(Username);
         actions.updateEmail(Email);
+        setSpinner(false);
         setTimeout(() => {
           navigation.replace('RegisterSuccess'); // using replace so they don't go back to the register page if they click back
         }, 1000);
@@ -87,6 +93,7 @@ const Register = ({navigation}) => {
           backgroundColor: '#FFB800',
           textColor: 'black',
         });
+        setSpinner(false);
       } else if (res.status === 500) {
         Snackbar.show({
           text: data.message,
@@ -94,18 +101,28 @@ const Register = ({navigation}) => {
           backgroundColor: '#FFB800',
           textColor: 'black',
         });
+        setSpinner(false);
         navigation.navigate('RegisterFail');
       } else {
         console.log('Error3' + res.status);
+        setSpinner(false);
       }
     } catch (error) {
       console.log('Error2' + error);
+      setSpinner(false);
       navigation.navigate('RegisterFail'); // Navigate to 'RegisterFail' screen on any other error, including network errors
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <Spinner
+        visible={spinner}
+        textContent={'Creating Account ...'}
+        textStyle={styles.spinnerTextStyle}
+        color={`${DARKMODE.headerText}`}
+        overlayColor="rgba(0, 0, 0, 0.75)"
+      />
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Register</Text>
       </View>
@@ -170,6 +187,11 @@ const Register = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: DARKMODE.headerText,
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
+  },
   container: {
     flex: 1,
     backgroundColor: 'black',

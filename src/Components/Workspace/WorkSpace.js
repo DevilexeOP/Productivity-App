@@ -15,7 +15,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {updateSpaceData} from '../../redux/actioncreators';
@@ -53,7 +53,7 @@ const WorkSpace = ({navigation, route}) => {
     try {
       console.log('AM i being called?' + 'Inside TRy catch');
       const res = await fetch(
-        `${ROOT_URI_DEV}/user/api/v1/workspace/${spaceId}`,
+        `${ROOT_URL_KOYEB}/user/api/v1/workspace/${spaceId}`,
         {
           method: 'GET',
           headers: {
@@ -145,7 +145,7 @@ const WorkSpace = ({navigation, route}) => {
   const generateInviteLink = async () => {
     if (!jwtToken) return;
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/invite/api/v1/${spaceId}`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/invite/api/v1/${spaceId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

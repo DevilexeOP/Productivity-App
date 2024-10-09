@@ -7,7 +7,7 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -17,9 +17,13 @@ import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {DARKMODE} from '../../config/Colors';
 
 const Login = ({navigation}) => {
+  const [spinner, setSpinner] = useState(false);
+
   useEffect(() => {
     actions.updateEmail('');
     actions.updatePassword('');
@@ -36,8 +40,9 @@ const Login = ({navigation}) => {
     actions.updatePassword(password);
   };
   const handleLogin = async (Email, Password) => {
+    setSpinner(true);
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/login`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/auth/api/v1/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,6 +69,7 @@ const Login = ({navigation}) => {
         if (token) {
           await AsyncStorage.setItem('token', token);
           // await AsyncStorage.setItem('userId', id);
+          setSpinner(false);
           setTimeout(() => {
             navigateToSuccess(token);
           }, 1000);
@@ -78,13 +84,17 @@ const Login = ({navigation}) => {
           backgroundColor: '#FFB800',
           textColor: 'black',
         });
+        setSpinner(false);
       } else if (res.status === 500) {
+        setSpinner(false);
         navigation.navigate('LoginFail');
       } else {
         console.log('Unexpected status:', res.status);
+        setSpinner(false);
       }
     } catch (error) {
       console.log('Login error:', error);
+      setSpinner(false);
       navigation.navigate('LoginFail');
     }
   };
@@ -92,7 +102,7 @@ const Login = ({navigation}) => {
   // forgot password
   const forgotPassword = async email => {
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/auth/api/v1/reset`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/auth/api/v1/reset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,6 +141,13 @@ const Login = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.container}>
+      <Spinner
+        visible={spinner}
+        textContent={'Logging in...'}
+        textStyle={styles.spinnerTextStyle}
+        color={`${DARKMODE.headerText}`}
+        overlayColor="rgba(0, 0, 0, 0.75)"
+      />
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Login</Text>
       </View>
@@ -192,6 +209,11 @@ const Login = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: DARKMODE.headerText,
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
+  },
   container: {
     flex: 1,
     backgroundColor: 'black',
@@ -306,7 +328,7 @@ const styles = StyleSheet.create({
     color: '#FFB800',
     fontSize: wp('3.5%'),
     marginLeft: wp('6%'),
-    marginTop: hp('2%'),
+    marginTop: hp('3%'),
     fontFamily: 'Poppins-Bold',
   },
 });

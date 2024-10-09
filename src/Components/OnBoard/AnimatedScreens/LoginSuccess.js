@@ -10,7 +10,7 @@ const LoginSuccess = ({navigation, route}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigationToHome(); // using replace so they dont go back to the success page if they click back
-    }, 5000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
   // navigation handler

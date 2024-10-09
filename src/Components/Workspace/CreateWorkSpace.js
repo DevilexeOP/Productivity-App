@@ -17,7 +17,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
 
@@ -56,7 +56,7 @@ const CreateWorkSpace = ({navigation}) => {
   // handling api reqs
   const addWorkSpace = async () => {
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/user/api/v1/workspace/add`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/user/api/v1/workspace/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -22,7 +22,7 @@ import {
 } from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import {DARKMODE} from '../../config/Colors';
 
 const {width, height} = Dimensions.get('screen');
@@ -45,7 +45,7 @@ const UpdateNotes = ({actions, navigation, route}) => {
   const handleUpdateNote = async () => {
     try {
       const res = await fetch(
-        `${ROOT_URI_DEV}/user/api/v1/notes/update/${id}`,
+        `${ROOT_URL_KOYEB}/user/api/v1/notes/update/${id}`,
         {
           method: 'PUT',
           headers: {

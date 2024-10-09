@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
@@ -46,7 +46,7 @@ const ProfileHome = () => {
   const getData = async jwt => {
     let userId = await AsyncStorage.getItem('user_id');
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/api/v1/profile/${userId}`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/profile/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -28,7 +28,7 @@ import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
 import {bindActionCreators} from 'redux';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URI_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import {DARKMODE} from '../../config/Colors';
 
 const {width, height} = Dimensions.get('window');
@@ -48,7 +48,7 @@ const AddTodos = ({
   const {jwtToken} = route.params;
   const handleAddTodo = async () => {
     try {
-      const res = await fetch(`${ROOT_URI_DEV}/user/api/v1/todos/add`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/user/api/v1/todos/add`, {
         // 209 for linux , 154 pc
         method: 'POST',
         headers: {

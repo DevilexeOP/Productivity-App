@@ -10,7 +10,7 @@ const LoginFailed = ({navigation}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('Login'); // using replace so they dont go back to the success page if they click back
-    }, 10000);
+    }, 4000);
     return () => clearTimeout(timer);
   }, [navigation]);
   return (
