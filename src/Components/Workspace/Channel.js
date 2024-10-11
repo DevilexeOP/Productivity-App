@@ -19,50 +19,60 @@ import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
 import {ROOT_URL_KOYEB} from '@env';
 import Snackbar from 'react-native-snackbar';
-import {
-  updateChannelData,
-  updateMessage,
-  updateAllMessages,
-  updateAddMessage,
-} from '../../redux/actioncreators';
+import {updateChannelData, updateAddMessage} from '../../redux/actioncreators';
 import KeyboardAvoidView from '../../config/KeyboardAvoidView';
 import socket from '../../config/Socket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import io from 'socket.io-client';
-
-// sentMessage - >  message sent by user
-// all Message -> display all messages by  user
-
 const Channel = ({navigation, route}) => {
   const {spaceId, channelId, jwtToken} = route.params;
-  // const name = useSelector(state => state.user.name);
-  // const email = useSelector(state => state.user.email);
-  // const username = useSelector(state => state.user.username);
+
+  // local states
+  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [userName, setUserName] = useState('');
+  // redux states
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
   const data = useSelector(state => state.data.channelData);
-  console.log('Here is the channel ID ' + channelId);
+  const sentMessage = useSelector(state => state.message.message);
+  // messageData object
+  const messageData = {
+    message: sentMessage,
+    name: name,
+    email: email,
+    userName: userName,
+    socketID: socket.id,
+    timeStamp: new Date().toLocaleTimeString(),
+    channelID: channelId,
+    date: new Date().toLocaleDateString(),
+  };
 
   // loading manage
   const [isLoading, setIsLoading] = useState(true);
   // message manage
   const allMessages = useSelector(state => state.message.allMessages);
+
+  // API Calls
   useEffect(() => {
+    socket.emit('join-channel', channelId);
     fetchData();
     getUserData();
-    // console.log('All Messages', allMessages);
-    // console.log('Space ID ', spaceId);
   }, []);
 
   useEffect(() => {
-    const handleMessageResponse = data => {
-      // dispatch(updateAddMessage(data)); // Dispatching action to add new message
+    const handleResponse = msg => {
+      console.log(msg.message);
+      if (
+        msg.userName !== messageData.userName &&
+        msg.socketID !== messageData.socketID
+      ) {
+        dispatch(updateAddMessage({...msg}));
+      }
     };
-    socket.on('chat message', handleMessageResponse);
+    socket.on('chat message', handleResponse);
     return () => {
-      socket.off('chat message', handleMessageResponse);
+      socket.off('chat message');
     };
   }, [dispatch]);
 
@@ -75,7 +85,11 @@ const Channel = ({navigation, route}) => {
   // get user's data from async storage
   const getUserData = async () => {
     let name = await AsyncStorage.getItem('name');
+    let email = await AsyncStorage.getItem('email');
+    let userName = await AsyncStorage.getItem('username');
     setName(name);
+    setEmail(email);
+    setUserName(userName);
   };
 
   // fetching channel data
@@ -104,7 +118,7 @@ const Channel = ({navigation, route}) => {
         });
         setIsLoading(true);
       } else {
-        console.log(data);
+        // console.log(data);
         dispatch(updateChannelData([data]));
         setIsLoading(false);
       }
@@ -113,40 +127,23 @@ const Channel = ({navigation, route}) => {
       setIsLoading(true);
     }
   };
-  //navigation
-  const navigationToHome = token => {
-    // navigation.navigate('WorkSpace', {
-    //   jwtToken: token,
-    // });
-    navigation.goBack();
-  };
-  //send message  handler
-  const sentMessage = useSelector(state => state.message.message);
-  const handleSentMessage = val => {
-    actions.updateMessage(val);
-  };
 
+  // sending message to socket listener
   const sendMessageToSocket = async () => {
-    if (sentMessage) {
-      // const userData = await getData();
-      // console.log('Users Data ' + JSON.stringify(userData));
-      // const {name, userName, email} = userData;
-      const messageData = {
-        message: sentMessage,
-        // name: name,
-        // email: email,
-        // userName: userName,
-        socketID: socket.id,
-        timeStamp: new Date().toLocaleTimeString(),
-      };
+    if (sentMessage.trim()) {
       socket.emit('chat message', messageData);
-
-      // dispatch action to redux
-      dispatch(updateAddMessage(messageData));
-
-      // set to default state
+      dispatch(updateAddMessage({...messageData, isSender: true}));
       actions.updateMessage('');
     }
+  };
+
+  //navigation
+  const navigationToHome = token => {
+    navigation.goBack();
+  };
+
+  const handleSentMessage = val => {
+    actions.updateMessage(val);
   };
 
   const scrollViewRef = useRef();
@@ -181,15 +178,18 @@ const Channel = ({navigation, route}) => {
       <View style={styles.chatContainer}>
         {/* All Chat */}
         <ScrollView style={styles.scrollView} ref={scrollViewRef}>
-          {allMessages.map((msg, index) => (
-            <View key={index} style={styles.messageContainer}>
-              <Text style={styles.senderName}>{name}</Text>
-              <View style={styles.messageContent}>
-                <Text style={styles.chatMessage}>{msg.message}</Text>
-                <Text style={styles.chatMessageTime}>{msg.timeStamp}</Text>
+          {allMessages.map((msg, index) => {
+            if (!msg.message) return null;
+            return (
+              <View key={index} style={styles.messageContainer}>
+                <Text style={styles.senderName}>{msg.name}</Text>
+                <View style={styles.messageContent}>
+                  <Text style={styles.chatMessage}>{msg.message}</Text>
+                  <Text style={styles.chatMessageTime}>{msg.timeStamp}</Text>
+                </View>
               </View>
-            </View>
-          ))}
+            );
+          })}
         </ScrollView>
 
         {/* Chat Input Box */}

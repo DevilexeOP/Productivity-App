@@ -6,9 +6,9 @@ import reducers from './reducers';
 
 // Persist Config
 const persistConfig = {
-  key: 'root',
+  key: 'root',  
   storage: AsyncStorage,
-  blacklist: ['spaceData', 'channelData', 'addNote', 'addTodo'],
+  blacklist: ['spaceData', 'channelData', 'addNote', 'addTodo', 'message'],
 };
 
 // Persisted Reducer

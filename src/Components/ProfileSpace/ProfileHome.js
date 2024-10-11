@@ -19,8 +19,8 @@ import {DARKMODE} from '../../config/Colors';
 const ProfileHome = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
-  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [token, setToken] = useState('');
 
   const fetchToken = async () => {
