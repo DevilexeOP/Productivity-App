@@ -4,10 +4,10 @@ import {
   View,
   TextInput,
   Image,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -17,57 +17,70 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import {ROOT_URL_KOYEB} from '@env';
+import {ROOT_URL_KOYEB, ROOT_URL_DEV} from '@env';
 import Snackbar from 'react-native-snackbar';
-import {updateChannelData, updateAddMessage} from '../../redux/actioncreators';
+import {
+  updateChannelData,
+  updateAddMessage,
+  updateAllMessages,
+} from '../../redux/actioncreators';
 import KeyboardAvoidView from '../../config/KeyboardAvoidView';
 import socket from '../../config/Socket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const Channel = ({navigation, route}) => {
   const {spaceId, channelId, jwtToken} = route.params;
 
   // local states
+  const [spinner, setSpinner] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
+  const [socketMessages, setSocketMessages] = useState([]);
+  const [combinedMessages, setCombinedMessages] = useState([]);
+
   // redux states
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
   const data = useSelector(state => state.data.channelData);
   const sentMessage = useSelector(state => state.message.message);
-  // messageData object
-  const messageData = {
-    message: sentMessage,
-    name: name,
-    email: email,
-    userName: userName,
-    socketID: socket.id,
-    timeStamp: new Date().toLocaleTimeString(),
-    channelID: channelId,
-    date: new Date().toLocaleDateString(),
-  };
 
-  // loading manage
-  const [isLoading, setIsLoading] = useState(true);
   // message manage
   const allMessages = useSelector(state => state.message.allMessages);
+
+  // messageData object
+  const messageData = {
+    socketID: socket.id,
+    text: sentMessage,
+    sentBy: name,
+    email: email,
+    userName: userName,
+    channel: channelId,
+    sentAt: new Date().toLocaleTimeString(),
+    sentOn: new Date().toISOString(),
+  };
 
   // API Calls
   useEffect(() => {
     socket.emit('join-channel', channelId);
+    getMessages();
     fetchData();
     getUserData();
   }, []);
 
+  // Setting messages
+  useEffect(() => {
+    setCombinedMessages([...allMessages, ...socketMessages]);
+  }, [allMessages, socketMessages]);
+
   useEffect(() => {
     const handleResponse = msg => {
-      console.log(msg.message);
       if (
         msg.userName !== messageData.userName &&
         msg.socketID !== messageData.socketID
       ) {
-        dispatch(updateAddMessage({...msg}));
+        setSocketMessages(prev => [...prev, msg]);
       }
     };
     socket.on('chat message', handleResponse);
@@ -75,12 +88,6 @@ const Channel = ({navigation, route}) => {
       socket.off('chat message');
     };
   }, [dispatch]);
-
-  useEffect(() => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollToEnd({animated: true});
-    }
-  }, [allMessages]);
 
   // get user's data from async storage
   const getUserData = async () => {
@@ -97,6 +104,7 @@ const Channel = ({navigation, route}) => {
     if (!jwtToken) {
       return;
     }
+    setSpinner(true);
     try {
       const res = await fetch(
         `${ROOT_URL_KOYEB}/user/api/v1/channel/${channelId}`,
@@ -116,15 +124,48 @@ const Channel = ({navigation, route}) => {
           backgroundColor: '#FFB800',
           textColor: 'black',
         });
-        setIsLoading(true);
+        setSpinner(false);
       } else {
         // console.log(data);
         dispatch(updateChannelData([data]));
-        setIsLoading(false);
+        setSpinner(false);
       }
     } catch (e) {
       console.log(e);
-      setIsLoading(true);
+      setSpinner(false);
+    }
+  };
+
+  // fetch channel messages
+  const getMessages = async () => {
+    if (!jwtToken) {
+      return;
+    }
+    setSpinner(true);
+    try {
+      const res = await fetch(
+        `http://192.168.29.155:8082/api/v1/message/${channelId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        },
+      );
+      const data = await res.json();
+      if (res.ok) {
+        if (data.length === 0) {
+          setSpinner(false);
+          setSocketMessages([]);
+        } else {
+          setSpinner(false);
+          dispatch(updateAllMessages(data));
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      setSpinner(false);
     }
   };
 
@@ -132,7 +173,6 @@ const Channel = ({navigation, route}) => {
   const sendMessageToSocket = async () => {
     if (sentMessage.trim()) {
       socket.emit('chat message', messageData);
-      dispatch(updateAddMessage({...messageData, isSender: true}));
       actions.updateMessage('');
     }
   };
@@ -146,7 +186,7 @@ const Channel = ({navigation, route}) => {
     actions.updateMessage(val);
   };
 
-  const scrollViewRef = useRef();
+  const scrollViewRef = useRef(null);
 
   return (
     <KeyboardAvoidView>
@@ -177,21 +217,57 @@ const Channel = ({navigation, route}) => {
       {/*Chatting Section */}
       <View style={styles.chatContainer}>
         {/* All Chat */}
-        <ScrollView style={styles.scrollView} ref={scrollViewRef}>
-          {allMessages.map((msg, index) => {
-            if (!msg.message) return null;
+        <Spinner
+          visible={spinner}
+          textContent={'Loading messages...'}
+          textStyle={styles.spinnerTextStyle}
+          color={`${DARKMODE.headerText}`}
+          overlayColor="rgba(0, 0, 0, 0.75)"
+        />
+        <FlatList
+          ref={scrollViewRef}
+          data={combinedMessages.filter(
+            item => item.text && item.text.trim() !== '',
+          )}
+          renderItem={({item}) => {
+            const isSender = item.sentBy === name;
             return (
-              <View key={index} style={styles.messageContainer}>
-                <Text style={styles.senderName}>{msg.name}</Text>
+              <View key={item.id} style={styles.messageContainer}>
+                <View style={styles.infoContainer}>
+                  <Text
+                    style={
+                      (styles.senderName,
+                      isSender ? styles.senderName : styles.senderName2)
+                    }>
+                    {item.sentBy}
+                  </Text>
+                  <Text
+                    style={
+                      (styles.chatMessageTime,
+                      isSender
+                        ? styles.chatMessageTime
+                        : styles.chatMessageTime2)
+                    }>
+                    {item.sentAt}
+                  </Text>
+                </View>
                 <View style={styles.messageContent}>
-                  <Text style={styles.chatMessage}>{msg.message}</Text>
-                  <Text style={styles.chatMessageTime}>{msg.timeStamp}</Text>
+                  <Text
+                    style={
+                      (styles.chatMessage,
+                      isSender ? styles.chatMessage : styles.chatMessage2)
+                    }>
+                    {item.text}
+                  </Text>
                 </View>
               </View>
             );
-          })}
-        </ScrollView>
-
+          }}
+          keyExtractor={(item, index) => index.toString()}
+          onContentSizeChange={() => {
+            scrollViewRef.current.scrollToEnd({animated: true});
+          }}
+        />
         {/* Chat Input Box */}
         <View style={styles.sendingContainer}>
           <View style={styles.inputContainer}>
@@ -236,6 +312,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
   headerContainer: {
     width: wp('75%'),
     height: null,
@@ -275,7 +355,7 @@ const styles = StyleSheet.create({
     marginLeft: wp('5%'),
     marginRight: wp('5%'),
     borderRadius: wp('2%'),
-    marginTop: wp('-2.5%'),
+    marginTop: wp('-6%'),
   },
   sendingContainer: {
     display: 'flex',
@@ -322,7 +402,23 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
     fontFamily: 'Poppins-Medium',
   },
+  chatMessage2: {
+    fontSize: wp('4%'),
+    color: '#FBD595',
+    padding: wp('3%'),
+    borderRadius: wp('2%'),
+    backgroundColor: '#000000',
+    maxWidth: '100%',
+    fontFamily: 'Poppins-Medium',
+  },
   senderName: {
+    fontSize: wp('4.2%'),
+    color: DARKMODE.senderTextColor,
+    margin: wp('1%'),
+    alignSelf: 'flex-start',
+    fontFamily: 'Poppins-Bold',
+  },
+  senderName2: {
     fontSize: wp('4.2%'),
     color: DARKMODE.senderTextColor,
     margin: wp('1%'),
@@ -331,9 +427,17 @@ const styles = StyleSheet.create({
   },
   chatMessageTime: {
     fontSize: wp('3.5%'),
-    color: '#a0a0a0',
+    color: '#A3A19B',
     marginLeft: wp('3%'),
     fontFamily: 'Poppins-Bold',
+    marginBottom: hp('0.75%'),
+  },
+  chatMessageTime2: {
+    fontSize: wp('3.5%'),
+    color: '#AEACAC',
+    marginLeft: wp('3%'),
+    fontFamily: 'Poppins-Bold',
+    marginBottom: hp('0.75%'),
   },
 });
 
