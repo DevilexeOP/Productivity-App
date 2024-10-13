@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     width: wp('6%'),
     height: wp('6%'),
     marginRight: wp('2%'),
-    tintColor: DARKMODE.iconColor,
+    tintColor: DARKMODE.white,
     padding: wp('3%'),
     marginTop: hp('2%'),
   },

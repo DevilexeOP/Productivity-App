@@ -21,9 +21,9 @@ const BottomRoute = () => {
           backgroundColor: DARKMODE.bottomNav,
           height: hp('8%'),
           position: 'absolute',
-          bottom: hp('1.5%'),
-          right: wp('4%'),
-          left: wp('4%'),
+          bottom: hp('0.5%'),
+          right: wp('3%'),
+          left: wp('3%'),
           borderRadius: wp('2%'),
           elevation: 8,
           ...styles.navShadow,
@@ -35,7 +35,12 @@ const BottomRoute = () => {
         options={{
           headerShown: false,
           tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: wp('3%'),
+              }}>
               <Image
                 source={require('../../assets/images/productive.png')}
                 resizeMode="contain"
@@ -64,7 +69,12 @@ const BottomRoute = () => {
         options={{
           headerShown: false,
           tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: wp('5%'),
+              }}>
               <Image
                 source={require('../../assets/images/workspace.png')}
                 resizeMode="contain"

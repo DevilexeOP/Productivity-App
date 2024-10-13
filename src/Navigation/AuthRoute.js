@@ -61,16 +61,16 @@ const AuthRoute = () => {
         options={{headerShown: false}}
       />
       <AuthStack.Screen
-        name="BottomStack"
-        component={BottomRoute}
-        options={{headerShown: false}}
-      />
-      <AuthStack.Screen
-        name="ProfileHome"
+        name="Profile"
         component={ProfileHome}
         options={{
           headerShown: false,
         }}
+      />
+      <AuthStack.Screen
+        name="BottomStack"
+        component={BottomRoute}
+        options={{headerShown: false}}
       />
     </AuthStack.Navigator>
   );
