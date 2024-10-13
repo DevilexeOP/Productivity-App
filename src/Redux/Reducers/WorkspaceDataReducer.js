@@ -10,7 +10,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         spaceData: action.payload,
       };
-    case 'resetSpaceData':
+    case 'updateResetSpaceData':
       return {
         ...state,
         spaceData: [],

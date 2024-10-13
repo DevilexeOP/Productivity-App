@@ -12,7 +12,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import LottieView from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DARKMODE} from '../../config/Colors';
 import socket from '../../config/Socket';
@@ -21,14 +20,20 @@ const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
 
   useEffect(() => {
+    const getToken = async () => {
+      const jwt = await AsyncStorage.getItem('token');
+      setToken(jwt);
+    };
     getToken();
     console.log(token);
-  }, []);
+    const focusListener = navigation.addListener('focus', () => {
+      getToken();
+    });
+    return () => {
+      focusListener();
+    };
+  }, [navigation]);
 
-  const getToken = async () => {
-    const jwt = await AsyncStorage.getItem('token');
-    setToken(jwt);
-  };
   // getting recent workspace limit 1 or 2
   const getRecentWorkspace = async () => {
     if (!token) {
@@ -37,7 +42,9 @@ const WorkSpaceHome = ({navigation}) => {
   };
   // navigation
   const navigateToCreate = () => {
-    navigation.navigate('CreateWorkSpace');
+    navigation.navigate('CreateWorkSpace', {
+      jwt: token,
+    });
   };
   const navigateToView = () => {
     navigation.navigate('ViewWorkSpaces', {

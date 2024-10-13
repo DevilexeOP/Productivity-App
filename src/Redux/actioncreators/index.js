@@ -204,6 +204,15 @@ export const updateSpaceData = spaceData => {
   };
 };
 
+export const updateResetSpaceData = resetSpaceData => {
+  return dispatch => {
+    dispatch({
+      type: 'updateResetSpaceData',
+      payload: resetSpaceData,
+    });
+  };
+};
+
 export const updateChannelData = channelData => {
   return dispatch => {
     dispatch({
@@ -212,6 +221,8 @@ export const updateChannelData = channelData => {
     });
   };
 };
+
+
 
 // User Data
 export const updateRetrievedName = retrievedName => {

@@ -21,18 +21,29 @@ import {ROOT_URL_KOYEB} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
 
-const CreateWorkSpace = ({navigation}) => {
+const CreateWorkSpace = ({navigation, route}) => {
   const [token, setToken] = useState('');
   // State Management
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
   const workspaceTitle = useSelector(state => state.workspace.workspaceName);
   const projectName = useSelector(state => state.workspace.projectName);
-  // getting token
+  // getting token and space reset
   useEffect(() => {
+    const getToken = async () => {
+      const jwt = await AsyncStorage.getItem('token');
+      setToken(jwt);
+    };
     getToken();
     resetSpace();
-  }, []);
+    console.log(token);
+    const focusListener = navigation.addListener('focus', () => {
+      getToken();
+    });
+    return () => {
+      focusListener();
+    };
+  }, [navigation]);
   // handlers
   const handleWorkSpaceTitle = workspaceTitle => {
     actions.updateWorkspaceName(workspaceTitle);
@@ -47,12 +58,6 @@ const CreateWorkSpace = ({navigation}) => {
     actions.updateProjectName('');
   };
 
-  // token
-  const getToken = async () => {
-    const jwtToken = await AsyncStorage.getItem('token');
-    setToken(jwtToken);
-  };
-
   // handling api reqs
   const addWorkSpace = async () => {
     try {
@@ -63,16 +68,16 @@ const CreateWorkSpace = ({navigation}) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          workspace: workspaceTitle,
-          projectName: projectName,
+          workspace: workspaceTitle.trim(),
+          projectName: projectName.trim(),
         }),
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
+        console.log(JSON.stringify(data) + ' create space ');
         actions.updateWorkspaceName(data.workspace);
         actions.updateProjectName(data.projectName);
-        navigateToWorkSpace(data.workspace, data.projectName);
+        navigateToWorkSpace(data.workspace, data.projectName, token, data._id);
       } else if (res.status === 400) {
         Snackbar.show({
           text: data.message,
@@ -93,11 +98,14 @@ const CreateWorkSpace = ({navigation}) => {
   };
 
   //. TODO INSTEAD OF HARDCODED TITLE & PROJECT CHANGING IT TO GET-WORKSPACE-BY ID to FETCH THE DATA
-  const navigateToWorkSpace = (workspaceTitle, projectName) => {
-    addWorkSpace(workspaceTitle, projectName);
+  const navigateToWorkSpace = (workspaceTitle, projectName, token, spaceId) => {
+    addWorkSpace(workspaceTitle, projectName, token, spaceId);
+    console.log('navigate to space ' + spaceId);
     navigation.navigate('WorkSpace', {
       title: workspaceTitle,
       project: projectName,
+      token: token,
+      spaceId: spaceId,
     });
   };
   return (

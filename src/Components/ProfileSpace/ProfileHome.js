@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Modal,
+  TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ROOT_URL_KOYEB} from '@env';
@@ -15,6 +17,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {DARKMODE} from '../../config/Colors';
+import RNExitApp from 'react-native-exit-app';
+import RNRestart from 'react-native-restart';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const ProfileHome = () => {
   const navigation = useNavigation();
@@ -22,7 +27,9 @@ const ProfileHome = () => {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [token, setToken] = useState('');
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [feedBack, setFeedBack] = useState('');
+  const [loading, setLoading] = useState(false);
   const fetchToken = async () => {
     const jwt = await AsyncStorage.getItem('token');
     if (jwt) {
@@ -73,15 +80,29 @@ const ProfileHome = () => {
   };
 
   const signOut = async () => {
-    await AsyncStorage.removeItem('token');
-    setName('');
-    setUserName('');
-    setEmail('');
-    navigation.navigate('OnBoard');
+    setLoading(true);
+    try {
+      await AsyncStorage.removeItem('token');
+      setName('');
+      setUserName('');
+      setEmail('');
+      RNRestart.restart();
+    } catch (e) {
+      console.error('Error during sign-out:', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <Spinner
+        visible={loading}
+        textContent={'Signing Out...'}
+        textStyle={styles.spinnerTextStyle}
+        color={`${DARKMODE.headerText}`}
+        overlayColor="rgba(0, 0, 0, 0.75)"
+      />
       <View style={styles.imageContainer}>
         <Image
           style={styles.profileImage}
@@ -95,21 +116,62 @@ const ProfileHome = () => {
         <Text style={styles.labelEmail}>{email || 'Loading...'}</Text>
       </View>
       <View style={styles.divider}></View>
-      <View style={styles.bottomContainer}>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              signOut();
-            }}>
-            <Text style={styles.labelSignOut}>Sign Out </Text>
+      <View style={styles.additionalContainer}>
+        <View style={styles.feedbackButton}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text style={styles.feedBackLabel}>Drop a Feedback</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signOutContainer}>
+          <TouchableOpacity onPress={signOut}>
+            <Text style={styles.labelSignOut}>Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>
+      {/* Modal  */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!setModalVisible);
+        }}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>User Feedback</Text>
+            <TextInput
+              style={styles.feedbackInput}
+              placeholder="Your feedback..."
+              value={feedBack}
+              onChangeText={setFeedBack}
+              multiline
+              numberOfLines={4}
+            />
+            <TouchableOpacity
+              style={styles.inviteButton}
+              onPress={() => {
+                setModalVisible(true);
+              }}>
+              <Text style={styles.modalLinkText}>Submit Feedback</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setModalVisible(false)}>
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: DARKMODE.headerText,
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
+  },
   container: {
     flex: 1,
     backgroundColor: 'black',
@@ -120,14 +182,29 @@ const styles = StyleSheet.create({
     marginLeft: hp('16%'),
     marginTop: wp('10%'),
   },
+  modalLinkIcon: {
+    width: wp('6%'),
+    height: wp('6%'),
+    marginRight: wp('2.5%'),
+    tintColor: DARKMODE.white,
+    padding: wp('3%'),
+    marginTop: hp('2%'),
+  },
   infoContainer: {
     width: '100%',
     height: '20%',
     marginTop: hp('-15%'),
   },
-  bottomContainer: {
-    width: '100%',
-    height: '100%',
+  signOutContainer: {
+    marginTop: wp('3%'),
+    marginLeft: wp('5%'),
+    padding: wp('1%'),
+    backgroundColor: DARKMODE.headerText,
+    color: DARKMODE.white,
+    borderRadius: 5,
+    fontFamily: 'Poppins-Bold',
+    width: wp('25%'),
+    height: hp('6%'),
   },
   divider: {
     backgroundColor: DARKMODE.searchBox,
@@ -154,13 +231,116 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
   labelSignOut: {
-    fontSize: hp('2.75%'),
-    color: DARKMODE.signOutTextColor,
-    display: 'flex',
-    textAlign: 'right',
-    marginTop: wp('80%'),
-    marginRight: wp('5%'),
+    fontSize: hp('2%'),
+    margin: wp('2%'),
+    color: DARKMODE.profileTextColor,
+    fontFamily: 'Poppins-Medium',
+    alignContent: 'center',
+  },
+  feedbackButton: {
+    marginVertical: hp('3%'),
+    margin: wp('5%'),
+    padding: wp('1%'),
+    backgroundColor: DARKMODE.headerText,
+    color: DARKMODE.white,
+    borderRadius: 5,
     fontFamily: 'Poppins-Bold',
+    width: wp('45%'),
+    height: hp('6%'),
+    justifyContent: 'center',
+  },
+  feedbackInput: {
+    width: '100%',
+    height: hp('16%'),
+    backgroundColor: DARKMODE.searchBox,
+    borderRadius: wp('2%'),
+    padding: wp('2%'),
+    color: DARKMODE.inputText,
+    marginBottom: hp('2%'),
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    width: wp('80%'),
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: DARKMODE.headerText,
+    borderRadius: wp('3%'),
+    padding: wp('8%'),
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: hp('0.2%'),
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: wp('2%'),
+    elevation: 5,
+    width: wp('90%'),
+    height: hp('50%'),
+  },
+  modalLinkIcon: {
+    width: wp('6%'),
+    height: wp('6%'),
+    marginRight: wp('2.5%'),
+    tintColor: DARKMODE.white,
+    padding: wp('3%'),
+    marginTop: hp('2%'),
+  },
+  inviteLinkContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: wp('5%'),
+  },
+  modalLinkText: {
+    fontSize: wp('4%'),
+    color: DARKMODE.white,
+    fontFamily: 'Poppins-Bold',
+  },
+  modalText: {
+    fontSize: wp('5%'),
+    fontFamily: 'Poppins-Bold',
+    color: DARKMODE.black,
+    marginBottom: hp('2%'),
+  },
+  additionalSpace: {
+    height: wp('10%'),
+  },
+  inviteButton: {
+    width: wp('60%'),
+    height: hp('7%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: DARKMODE.black,
+    borderRadius: 8,
+    marginTop: wp('5%'),
+  },
+  cancelButton: {
+    width: wp('40%'),
+    height: hp('6%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: DARKMODE.black,
+    borderRadius: 8,
+    marginBottom: wp('-2%'),
+    marginTop: wp('5%'),
+  },
+  cancelButtonText: {
+    color: DARKMODE.buttons,
+    fontSize: wp('4%'),
+    fontFamily: 'Poppins-Medium',
+  },
+  feedBackLabel: {
+    fontSize: hp('2%'),
+    margin: wp('2%'),
+    color: DARKMODE.profileTextColor,
+    fontFamily: 'Poppins-Medium',
   },
 });
 

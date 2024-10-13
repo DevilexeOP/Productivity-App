@@ -61,13 +61,6 @@ const AuthRoute = () => {
         options={{headerShown: false}}
       />
       <AuthStack.Screen
-        name="Profile"
-        component={ProfileHome}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <AuthStack.Screen
         name="BottomStack"
         component={BottomRoute}
         options={{headerShown: false}}

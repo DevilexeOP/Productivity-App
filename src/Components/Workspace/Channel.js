@@ -143,16 +143,13 @@ const Channel = ({navigation, route}) => {
     }
     setSpinner(true);
     try {
-      const res = await fetch(
-        `http://192.168.29.155:8082/api/v1/message/${channelId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
+      const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/message/${channelId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
         },
-      );
+      });
       const data = await res.json();
       if (res.ok) {
         if (data.length === 0) {

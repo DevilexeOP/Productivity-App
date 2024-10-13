@@ -68,7 +68,7 @@ const Login = ({navigation}) => {
         if (username) await AsyncStorage.setItem('username', username);
         if (token) {
           await AsyncStorage.setItem('token', token);
-          // await AsyncStorage.setItem('userId', id);
+          console.log(token + ' Login Token ');
           setSpinner(false);
           setTimeout(() => {
             navigateToSuccess(token);

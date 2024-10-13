@@ -19,6 +19,8 @@ import {updateAllWorkSpaces, updateSpaceData} from '../../redux/actioncreators';
 import {DARKMODE} from '../../config/Colors';
 import {ROOT_URL_KOYEB} from '@env';
 import Snackbar from 'react-native-snackbar';
+import {showMessage, hideMessage} from 'react-native-flash-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ViewWorkSpaces = ({navigation, route}) => {
   // fetch token when component mounts
@@ -33,11 +35,29 @@ const ViewWorkSpaces = ({navigation, route}) => {
   // Modal State Handle
   const [modalVisible, setModalVisible] = useState(false);
   const [workspaceId, setWorkspaceId] = useState('');
+  const [jwtToken, setJwtToken] = useState('');
 
   useEffect(() => {
+    const fetchToken = async () => {
+      const token = await AsyncStorage.getItem('token');
+      setJwtToken(token);
+      console.log('Async Storage Token ' + token);
+    };
+    fetchToken();
     getSpaces();
-    console.log(jwt);
-  }, []);
+    const focusListener = navigation.addListener('focus', () => {
+      fetchToken();
+    });
+    return () => {
+      focusListener();
+    };
+  }, [navigation]);
+
+  // token
+  const getToken = async () => {
+    const token = await AsyncStorage.getItem('token');
+    setJwtToken(token);
+  };
 
   // Navigation Functions
   const navigateToWorkspaceHome = () => {
@@ -48,11 +68,10 @@ const ViewWorkSpaces = ({navigation, route}) => {
   };
 
   // navigate to specific space
-  const handleWorkspace = (_id, token) => {
-    console.log(_id);
+  const handleWorkspace = (_id, jwtToken) => {
     navigation.navigate('WorkSpace', {
       spaceId: _id,
-      jwtToken: token,
+      jwtToken: jwtToken,
     });
   };
 
@@ -72,7 +91,6 @@ const ViewWorkSpaces = ({navigation, route}) => {
       });
       const data = await res.json();
       if (res.status === 200) {
-        // console.log('Fetched workspaces:', data); // Debug here
         dispatch(updateAllWorkSpaces(data));
         setIsLoading(false);
       } else if (res.status === 404) {
@@ -95,9 +113,8 @@ const ViewWorkSpaces = ({navigation, route}) => {
     if (!jwt) return;
 
     //workspaceId from the full invite link
-    const linkRegex = /\/join\/([a-zA-Z0-9]+)/;
+    const linkRegex = /\/invite\/api\/v1\/([a-zA-Z0-9]+)/;
     const match = workspaceId.match(linkRegex);
-    console.log(match);
     const extractedWorkspaceId = match ? match[1] : null;
 
     if (!extractedWorkspaceId) {
@@ -114,35 +131,39 @@ const ViewWorkSpaces = ({navigation, route}) => {
     try {
       // Make a POST request to join the workspace using the extracted workspaceId
       const res = await fetch(
-        `${ROOT_URL_KOYEB}/invite/api/v1/join/${extractedWorkspaceId}`,
+        `${ROOT_URL_KOYEB}/invite/api/v1/${extractedWorkspaceId}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwt}`,
+            Authorization: `Bearer ${jwtToken}`,
           },
         },
       );
 
       const data = await res.json();
-      console.log(data);
       if (res.status === 200) {
-        Snackbar.show({
-          text: 'Successfully joined the workspace!',
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: '#00FF00',
-          textColor: 'white',
+        showMessage({
+          message: 'Workspace Joined',
+          description: 'Successfully joined the workspace ',
+          type: 'success',
+          icon: 'success',
+          position: 'top',
+          duration: 4000,
         });
+        await getSpaces();
       } else {
-        Snackbar.show({
-          text: data.message || 'Error joining workspace',
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: '#FF0000',
-          textColor: 'white',
+        showMessage({
+          message: 'Already in the workspace!',
+          description: data.message,
+          type: 'warning',
+          icon: 'warning',
+          position: 'top',
+          duration: 4000,
         });
       }
     } catch (e) {
-      console.log(e);
+      console.log(e + '?');
       Snackbar.show({
         text: 'Failed to join workspace',
         duration: Snackbar.LENGTH_LONG,
@@ -193,7 +214,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
               <TouchableOpacity
                 key={workspace._id}
                 style={styles.workspaceItem}
-                onPress={() => handleWorkspace(workspace._id, jwt)}>
+                onPress={() => handleWorkspace(workspace._id, jwtToken)}>
                 <View style={styles.workspaceContainer}>
                   <Text style={styles.spaceName}>{workspace.workspace}</Text>
                   <View style={styles.container2}>

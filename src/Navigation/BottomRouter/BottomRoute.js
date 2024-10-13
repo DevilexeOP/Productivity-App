@@ -98,7 +98,7 @@ const BottomRoute = () => {
         }}
       />
       <BottomRouter.Screen
-        name="Profile"
+        name="ProfileSpace"
         component={ProfileRoute}
         options={{
           headerShown: false,
