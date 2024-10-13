@@ -120,7 +120,7 @@ const BottomRoute = () => {
                   fontSize: wp('3%'),
                   fontFamily: 'Poppins-Bold',
                 }}>
-                Profile
+                Profile Space
               </Text>
             </View>
           ),
