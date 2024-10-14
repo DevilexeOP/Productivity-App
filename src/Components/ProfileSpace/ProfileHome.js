@@ -87,7 +87,7 @@ const ProfileHome = () => {
     }
     try {
       console.log('Here/....');
-      const res = await fetch(`http://192.168.29.155:8082/api/v1/feedback`, {
+      const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ const ProfileHome = () => {
               style={styles.inviteButton}
               onPress={() => {
                 postFeedBack();
-                setModalVisible(false)
+                setModalVisible(false);
                 setFeedBack('');
               }}>
               <Text style={styles.modalLinkText}>Submit Feedback</Text>
