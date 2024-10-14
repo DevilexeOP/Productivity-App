@@ -17,9 +17,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {DARKMODE} from '../../config/Colors';
-import RNExitApp from 'react-native-exit-app';
 import RNRestart from 'react-native-restart';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const ProfileHome = () => {
   const navigation = useNavigation();
@@ -30,6 +30,7 @@ const ProfileHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [feedBack, setFeedBack] = useState('');
   const [loading, setLoading] = useState(false);
+
   const fetchToken = async () => {
     const jwt = await AsyncStorage.getItem('token');
     if (jwt) {
@@ -52,6 +53,7 @@ const ProfileHome = () => {
 
   const getData = async jwt => {
     let userId = await AsyncStorage.getItem('user_id');
+    if (!jwt) return;
     try {
       const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/profile/${userId}`, {
         method: 'GET',
@@ -76,6 +78,56 @@ const ProfileHome = () => {
       }
     } catch (e) {
       console.log('Error fetching data:', e);
+    }
+  };
+
+  const postFeedBack = async () => {
+    if (!token) {
+      return;
+    }
+    try {
+      console.log('Here/....');
+      const res = await fetch(`http://192.168.29.155:8082/api/v1/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          feedbackMessage: feedBack,
+          sentBy: name,
+        }),
+      });
+      const data = await res.json();
+      if (res.status === 200) {
+        showMessage({
+          message: 'Feedback Submitted ',
+          description: data.message,
+          type: 'default',
+          icon: 'success',
+          position: 'top',
+          duration: 5000,
+          backgroundColor: DARKMODE.headerText,
+        });
+      } else if (res.status === 403) {
+        showMessage({
+          message: 'Couldn`t submit feedback!  ',
+          description: data.message,
+          type: 'error',
+          icon: 'error',
+          position: 'top',
+          duration: 5000,
+        });
+      }
+    } catch (e) {
+      showMessage({
+        message: 'Couldn`t submit feedback! Server Error ',
+        description: e,
+        type: 'error',
+        icon: 'error',
+        position: 'top',
+        duration: 5000,
+      });
     }
   };
 
@@ -150,7 +202,9 @@ const ProfileHome = () => {
             <TouchableOpacity
               style={styles.inviteButton}
               onPress={() => {
-                setModalVisible(true);
+                postFeedBack();
+                setModalVisible(false)
+                setFeedBack('');
               }}>
               <Text style={styles.modalLinkText}>Submit Feedback</Text>
             </TouchableOpacity>

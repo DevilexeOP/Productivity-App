@@ -67,6 +67,9 @@ const Channel = ({navigation, route}) => {
     getMessages();
     fetchData();
     getUserData();
+    return () => {
+      dispatch(updateAllMessages([]));
+    };
   }, []);
 
   // Setting messages

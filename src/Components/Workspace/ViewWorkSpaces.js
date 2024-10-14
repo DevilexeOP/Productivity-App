@@ -146,10 +146,11 @@ const ViewWorkSpaces = ({navigation, route}) => {
         showMessage({
           message: 'Workspace Joined',
           description: 'Successfully joined the workspace ',
-          type: 'success',
+          type: 'default',
           icon: 'success',
           position: 'top',
-          duration: 4000,
+          duration: 5000,
+          backgroundColor: DARKMODE.headerText,
         });
         await getSpaces();
       } else {

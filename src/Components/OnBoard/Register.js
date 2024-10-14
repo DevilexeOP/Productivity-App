@@ -21,6 +21,7 @@ import {ROOT_URL_KOYEB} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {DARKMODE} from '../../config/Colors';
+import {showMessage} from 'react-native-flash-message';
 
 const Register = ({navigation}) => {
   // spinner state
@@ -81,25 +82,39 @@ const Register = ({navigation}) => {
         actions.updateName(Name);
         actions.updateUserName(Username);
         actions.updateEmail(Email);
+        // Success Message
+        showMessage({
+          message: `${Name} Welcome to Be-Productive`,
+          description: 'Onboarding You.....',
+          type: 'default',
+          icon: 'success',
+          position: 'top',
+          duration: 5000,
+          backgroundColor: DARKMODE.headerText,
+        });
         setSpinner(false);
         setTimeout(() => {
           navigation.replace('RegisterSuccess'); // using replace so they don't go back to the register page if they click back
         }, 1000);
       } else if (res.status === 400 || 401) {
         console.log('Error ? :', data.message);
-        Snackbar.show({
-          text: data.message,
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: '#FFB800',
-          textColor: 'black',
+        showMessage({
+          message: `Facing issues in Signing you up`,
+          description: data.message,
+          type: 'error',
+          icon: 'error',
+          position: 'top',
+          duration: 5000,
         });
         setSpinner(false);
       } else if (res.status === 500) {
-        Snackbar.show({
-          text: data.message,
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: '#FFB800',
-          textColor: 'black',
+        showMessage({
+          message: `Facing issues in Signing you up`,
+          description: data.message,
+          type: 'error',
+          icon: 'error',
+          position: 'top',
+          duration: 5000,
         });
         setSpinner(false);
         navigation.navigate('RegisterFail');
@@ -110,7 +125,7 @@ const Register = ({navigation}) => {
     } catch (error) {
       console.log('Error2' + error);
       setSpinner(false);
-      navigation.navigate('RegisterFail'); // Navigate to 'RegisterFail' screen on any other error, including network errors
+      navigation.navigate('RegisterFail');
     }
   };
 

@@ -20,6 +20,7 @@ import Snackbar from 'react-native-snackbar';
 import {ROOT_URL_KOYEB} from '@env';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {DARKMODE} from '../../config/Colors';
+import {showMessage} from 'react-native-flash-message';
 
 const Login = ({navigation}) => {
   const [spinner, setSpinner] = useState(false);
@@ -67,6 +68,15 @@ const Login = ({navigation}) => {
         if (email) await AsyncStorage.setItem('email', email);
         if (username) await AsyncStorage.setItem('username', username);
         if (token) {
+          showMessage({
+            message: `Welcome back ${name}`,
+            description: 'Glad to see you again !',
+            type: 'default',
+            icon: 'success',
+            position: 'top',
+            duration: 5000,
+            backgroundColor: DARKMODE.headerText,
+          });
           await AsyncStorage.setItem('token', token);
           console.log(token + ' Login Token ');
           setSpinner(false);
@@ -77,15 +87,25 @@ const Login = ({navigation}) => {
           console.log('Login response missing token or userId.');
         }
       } else if (res.status === 400 || res.status === 401) {
-        console.log('Error:', data.message);
-        Snackbar.show({
-          text: data.message,
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: '#FFB800',
-          textColor: 'black',
+        showMessage({
+          message: `Error Logging in`,
+          description: data.message,
+          type: 'error',
+          icon: 'error',
+          position: 'top',
+          duration: 5000,
         });
+        console.log('Error:', data.message);
         setSpinner(false);
       } else if (res.status === 500) {
+        showMessage({
+          message: `Login Failed`,
+          description: 'Retrying .....',
+          type: 'error',
+          icon: 'error',
+          position: 'top',
+          duration: 5000,
+        });
         setSpinner(false);
         navigation.navigate('LoginFail');
       } else {
