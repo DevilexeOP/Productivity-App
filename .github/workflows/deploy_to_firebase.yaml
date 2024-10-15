@@ -50,16 +50,23 @@ jobs:
           cd android
           ./gradlew assembleDebug
 
-      - name: List APK Output Directory
+      - name: Read Changelog
+        id: changelog
         run: |
-          cd android/app/build/outputs/apk/debug/
-          ls -al
+          if [ -f CHANGELOG.md ]; then
+            echo "## Changelog" > changelog.txt
+            cat CHANGELOG.md >> changelog.txt
+          else
+            echo "CHANGELOG.md file not found."
+            echo "## Changelog" > changelog.txt
+            echo "No changelog available." >> changelog.txt
+          fi
 
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file:  android/app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${{ inputs.release_notes }}
+          groups: test-build
+          file: android/app/build/outputs/apk/debug/app-debug.apk
+          releaseNotes: ${{ steps.changelog.outputs.changelog }}
