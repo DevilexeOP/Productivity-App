@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,8 @@ import {
 import {DARKMODE} from '../../config/Colors';
 import RNRestart from 'react-native-restart';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
+import DeviceInfo from 'react-native-device-info';
 
 const ProfileHome = () => {
   const navigation = useNavigation();
@@ -30,6 +31,7 @@ const ProfileHome = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [feedBack, setFeedBack] = useState('');
   const [loading, setLoading] = useState(false);
+  const [appVersion, setAppVersion] = useState('');
 
   const fetchToken = async () => {
     const jwt = await AsyncStorage.getItem('token');
@@ -38,6 +40,14 @@ const ProfileHome = () => {
     }
     return jwt;
   };
+
+  useEffect(() => {
+    const fetchAppVersion = () => {
+      const version = DeviceInfo.getVersion();
+      setAppVersion(version);
+    };
+    fetchAppVersion();
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -180,6 +190,9 @@ const ProfileHome = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <View style={styles.versionContainer}>
+        <Text style={styles.labelAppVersion}>v{appVersion}</Text>
+      </View>
       {/* Modal  */}
       <Modal
         animationType="fade"
@@ -260,6 +273,11 @@ const styles = StyleSheet.create({
     width: wp('25%'),
     height: hp('6%'),
   },
+  versionContainer: {
+    position: 'absolute',
+    bottom: hp('10%'),
+    right: wp('1%'),
+  },
   divider: {
     backgroundColor: DARKMODE.searchBox,
     width: wp('100%'),
@@ -285,6 +303,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
   labelSignOut: {
+    fontSize: hp('2%'),
+    margin: wp('2%'),
+    color: DARKMODE.profileTextColor,
+    fontFamily: 'Poppins-Medium',
+    alignContent: 'center',
+  },
+  labelAppVersion: {
     fontSize: hp('2%'),
     margin: wp('2%'),
     color: DARKMODE.profileTextColor,
