@@ -52,7 +52,7 @@ jobs:
 
       - name: Read Changelog and Create a Temporary File
         run: |
-          changelog=$(cat CHANGELOG.md)
+          changelog=$(cat CHANGELOG.md | tr '\n' ' ') 
           echo "changelog=$changelog" >> $GITHUB_OUTPUT
 
       - name: Upload Artifact to Firebase App Distribution
