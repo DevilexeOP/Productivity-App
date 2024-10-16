@@ -53,10 +53,9 @@ jobs:
       - name: Read Changelog
         id: changelog
         run: |
-          cd .. && cd .. 
-          echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
-          cat .CHANGELOG.md >> $GITHUB_ENV  # Correct path to the changelog
-          echo "EOF" >> $GITHUB_ENV
+          pwd
+          cd .. && cd ..
+          pwd
 
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -65,4 +64,3 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: test-individual
           file: android/app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${{ env.CHANGELOG_CONTENT }}
