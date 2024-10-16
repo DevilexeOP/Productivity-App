@@ -53,6 +53,8 @@ jobs:
       - name: Read Changelog and Create a Temporary File
         run: |
           cat CHANGELOG.md > changelog.txt
+          cat changelog.txt
+          echo changelog.txt
 
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
