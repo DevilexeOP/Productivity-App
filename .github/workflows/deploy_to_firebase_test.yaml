@@ -47,9 +47,8 @@ jobs:
 
       - name: Read Changelog and Set Environment Variable
         run: |
-          echo "changelog_text<<EOF" >> $GITHUB_ENV
-          cat CHANGELOG.md >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          printf "%s" "$(cat CHANGELOG.md)" >> $GITHUB_ENV
+          echo "changelog_text=$(cat CHANGELOG.md)" >> $GITHUB_ENV
 
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
