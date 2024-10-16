@@ -45,10 +45,10 @@ jobs:
           cd android
           chmod +x ./gradlew
 
-      - name: Read Changelog and Set Environment Variable
+      - name: Read Changelog and Create a Temporary File
         run: |
-          printf "%s" "$(cat CHANGELOG.md)" >> $GITHUB_ENV
-          echo "changelog_text=$(cat CHANGELOG.md)" >> $GITHUB_ENV
+          # Create a temporary file for the changelog content
+          cat CHANGELOG.md > changelog.txt
 
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -57,4 +57,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: test-individual
           file: android/app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${{ env.changelog_text }}
+          releaseNotes: ${{ steps.read-changelog.outputs.changelog }}
