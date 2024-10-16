@@ -52,9 +52,8 @@ jobs:
 
       - name: Read Changelog and Create a Temporary File
         run: |
-          cat CHANGELOG.md > changelog.txt
-          cat changelog.txt
-          echo changelog.txt
+          changelog=$(cat CHANGELOG.md)
+          echo "changelog=$changelog" >> $GITHUB_OUTPUT
 
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -63,4 +62,4 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: test-individual
           file: android/app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: ${ { changelog.txt } }
+          releaseNotes: ${{ steps.read_changelog.outputs.changelog }}
