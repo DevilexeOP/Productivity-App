@@ -45,9 +45,13 @@ jobs:
           cd android
           chmod +x ./gradlew
 
+      - name: Build Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
       - name: Read Changelog and Create a Temporary File
         run: |
-          # Create a temporary file for the changelog content
           cat CHANGELOG.md > changelog.txt
 
       - name: Upload Artifact to Firebase App Distribution
