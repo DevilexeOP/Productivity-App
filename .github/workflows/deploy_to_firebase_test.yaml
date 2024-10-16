@@ -54,8 +54,6 @@ jobs:
         id: changelog
         run: |
           pwd
-          cd .. && cd ..
-          pwd
           cat CHANGELOG.md
 
       # - name: Upload Artifact to Firebase App Distribution
