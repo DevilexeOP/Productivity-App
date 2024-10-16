@@ -56,7 +56,7 @@ jobs:
           pwd
           cd .. && cd ..
           pwd
-          cat CHANELOG.md
+          cat CHANGELOG.md
 
       # - name: Upload Artifact to Firebase App Distribution
       #   uses: wzieba/Firebase-Distribution-Github-Action@v1
