@@ -45,10 +45,10 @@ jobs:
           cd android
           chmod +x ./gradlew
 
-      - name: Build Debug APK
-        run: |
-          cd android
-          ./gradlew assembleDebug
+      # - name: Build Debug APK
+      #   run: |
+      #     cd android
+      #     ./gradlew assembleDebug
           
       - name: Read Changelog
         id: changelog
