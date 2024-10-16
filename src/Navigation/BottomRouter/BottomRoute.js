@@ -1,4 +1,4 @@
-import {Image, View, Text, StyleSheet} from 'react-native';
+import {Image, View, Text, StyleSheet, Dimensions} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ProductiveRoute from '../productiveStack/ProductiveRoute';
 import WorkSpaceRoute from '../workspaceStack/WorkSpaceRoute';
@@ -19,14 +19,13 @@ const BottomRoute = () => {
         tabBarStyle: {
           borderTopWidth: 0,
           backgroundColor: DARKMODE.bottomNav,
-          height: hp('8%'),
+          height: height,
           position: 'absolute',
-          bottom: hp('0.5%'),
-          right: wp('3%'),
-          left: wp('3%'),
-          borderRadius: wp('2%'),
+          bottom: heightMarginBottom,
+          borderRadius: wp('6%'),
           elevation: 8,
           ...styles.navShadow,
+          width: wp('100%'),
         },
       }}>
       <BottomRouter.Screen
@@ -130,12 +129,16 @@ const BottomRoute = () => {
   );
 };
 
+const screenHeight = Dimensions.get('screen').height;
+const height = screenHeight * 0.08;
+const heightMarginBottom = screenHeight * 0.0025;
+
 const styles = StyleSheet.create({
   navShadow: {
     shadowColor: DARKMODE.shadowColor, // Customize the shadow color
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 6,
     },
     shadowOpacity: 0.7, // Customize the shadow opacity
     shadowRadius: 4, //

@@ -394,11 +394,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerContainer: {
     width: wp('75%'),
     height: null,
     justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   buttonContainer: {
     marginVertical: wp('2%'),
@@ -428,7 +431,7 @@ const styles = StyleSheet.create({
     height: wp('4%'),
     padding: wp('3%'),
     tintColor: DARKMODE.iconColor,
-    marginLeft: wp('-5%'),
+    marginRight: wp('4%'),
   },
   linkBtn: {
     width: wp('4%'),

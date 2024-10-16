@@ -8,7 +8,9 @@ const KeyboardAvoidView = ({children}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
       <KeyboardAvoidingView enabled style={{flex: 1}} behavior={'position'}>
-        <ScrollView style={{padding: hp('-1%'), paddingTop: hp('-3%')}}>
+        <ScrollView
+          style={{padding: hp('-1%'), paddingTop: hp('-3%')}}
+          keyboardShouldPersistTaps="handled">
           {children}
         </ScrollView>
       </KeyboardAvoidingView>
