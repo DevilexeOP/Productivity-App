@@ -9,6 +9,7 @@ import {
   Dimensions,
   FlatList,
   Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -25,14 +26,12 @@ import {
   updateAddMessage,
   updateAllMessages,
 } from '../../redux/actioncreators';
-import KeyboardAvoidView from '../../config/KeyboardAvoidView';
 import socket from '../../config/Socket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const Channel = ({navigation, route}) => {
   const {spaceId, channelId, jwtToken} = route.params;
-
   // local states
   const [spinner, setSpinner] = useState(false);
   const [email, setEmail] = useState('');
@@ -70,6 +69,7 @@ const Channel = ({navigation, route}) => {
     getUserData();
     return () => {
       dispatch(updateAllMessages([]));
+      dispatch(updateChannelData([]));
     };
   }, []);
 
@@ -212,18 +212,21 @@ const Channel = ({navigation, route}) => {
     );
   });
 
+  const renderItem = ({item}) => {
+    const isSender = item.sentBy === name;
+    return <MessageItem item={item} isSender={isSender} />;
+  };
+
   return (
-    <KeyboardAvoidView>
+    <KeyboardAvoidingView
+      style={{flex: 1, backgroundColor: 'black'}}
+      behavior="padding">
       <View style={styles.container}>
-        {/* Top Content: Header */}
+        {/* Header */}
         <View style={styles.outContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              navigationToHome(jwtToken);
-            }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
               source={require('../../assets/images/backlight.png')}
-              alt="Back"
               style={styles.backBtn}
             />
           </TouchableOpacity>
@@ -235,13 +238,12 @@ const Channel = ({navigation, route}) => {
           <TouchableOpacity>
             <Image
               source={require('../../assets/images/quick.png')}
-              alt="Back"
               style={styles.quickBtn}
             />
           </TouchableOpacity>
         </View>
 
-        {/* Chat Section */}
+        {/* Messages */}
         <View style={styles.chatContainer}>
           <Spinner
             visible={spinner}
@@ -255,26 +257,26 @@ const Channel = ({navigation, route}) => {
             data={combinedMessages.filter(
               item => item.text && item.text.trim() !== '',
             )}
-            renderItem={({item}) => {
-              const isSender = item.sentBy === name;
-              return <MessageItem item={item} isSender={isSender} />;
-            }}
+            renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onContentSizeChange={() => {
               scrollViewRef.current.scrollToEnd({animated: true});
             }}
+            initialNumToRender={10}
+            maxToRenderPerBatch={5}
+            windowSize={5}
           />
         </View>
 
-        {/* Sending Container (Chat Input Box) */}
+        {/* Chat Input */}
         <View style={styles.sendingContainer}>
           <View style={styles.inputContainer}>
             <TextInput
-              multiline={true}
+              multiline
               numberOfLines={2}
               style={styles.sendTxt}
-              placeholderTextColor={'black'}
-              placeholder={'Send Message'}
+              placeholder="Send Message"
+              placeholderTextColor="black"
               value={sentMessage}
               onChangeText={handleSentMessage}
             />
@@ -286,20 +288,21 @@ const Channel = ({navigation, route}) => {
               <Image
                 style={styles.sendIcon}
                 source={require('../../assets/images/send.png')}
-                alt={'Send'}
               />
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    </KeyboardAvoidView>
+    </KeyboardAvoidingView>
   );
 };
 
 // height
 const screenHeight = Dimensions.get('screen').height;
-const chatContainerHeight = screenHeight * 0.68;
+console.log(screenHeight);
 
+const chatContainerHeight = screenHeight / 1.45;
+console.log(chatContainerHeight);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -309,6 +312,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  backBtn: {
+    width: wp('4%'),
+    height: wp('4%'),
+    padding: wp('3%'),
+    tintColor: DARKMODE.iconColor,
+    marginHorizontal: wp('3.5%'),
   },
   infoContainer: {
     flexDirection: 'row',
@@ -346,7 +356,6 @@ const styles = StyleSheet.create({
     marginRight: wp('5%'),
   },
   chatContainer: {
-    flex: 1,
     display: 'flex',
     width: wp('100%'),
     backgroundColor: DARKMODE.chatContainer,
@@ -373,6 +382,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
+    backgroundColor: 'white',
   },
   chattingSection: {
     display: 'flex',
