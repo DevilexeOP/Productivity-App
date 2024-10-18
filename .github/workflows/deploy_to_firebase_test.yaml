@@ -50,12 +50,6 @@ jobs:
           cd android
           ./gradlew assembleDebug
 
-      - name: Read Changelog and Create a Temporary File
-        run: |
-          changelog=$(cat CHANGELOG.md | tr '\n' ' ') 
-          echo "changelog=$changelog" >> $GITHUB_OUTPUT
-          cat $GITHUB_OUTPUT
-
       - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
