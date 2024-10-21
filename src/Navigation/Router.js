@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DarkTheme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import AppRoute from './AppRoute.js';
@@ -34,7 +34,7 @@ const Router = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={DarkTheme}>
       <RootStack.Navigator screenOptions={{headerShown: false}}>
         {token ? (
           <RootStack.Screen name="App" component={AppRoute} />
