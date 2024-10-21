@@ -10,6 +10,7 @@ import {
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
+  Modal,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -19,7 +20,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import {ROOT_URL_KOYEB, ROOT_URL_DEV} from '@env';
+import {ROOT_URL_KOYEB} from '@env';
 import Snackbar from 'react-native-snackbar';
 import {
   updateChannelData,
@@ -29,6 +30,8 @@ import {
 import socket from '../../config/Socket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
+import ParentModal from './quickModals/ParentModal';
+
 
 const Channel = ({navigation, route}) => {
   const {spaceId, channelId, jwtToken} = route.params;
@@ -39,7 +42,7 @@ const Channel = ({navigation, route}) => {
   const [userName, setUserName] = useState('');
   const [socketMessages, setSocketMessages] = useState([]);
   const [combinedMessages, setCombinedMessages] = useState([]);
-
+  const [parentModal, setParentModal] = useState(false);
   // redux states
   const dispatch = useDispatch();
   const actions = bindActionCreators(actionCreators, dispatch);
@@ -188,6 +191,15 @@ const Channel = ({navigation, route}) => {
     actions.updateMessage(val);
   };
 
+  // Quick modal function and working .
+  const handleOpenParentModal = () => {
+    setParentModal(true);
+  };
+
+  const handleCloseParentModal = () => {
+    setParentModal(false);
+  };
+
   const scrollViewRef = useRef(null);
 
   // Message Component
@@ -235,7 +247,7 @@ const Channel = ({navigation, route}) => {
               <Text style={styles.headerText}>#{info.channelName}</Text>
             </View>
           ))}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleOpenParentModal}>
             <Image
               source={require('../../assets/images/quick.png')}
               style={styles.quickBtn}
@@ -293,20 +305,26 @@ const Channel = ({navigation, route}) => {
           </View>
         </View>
       </View>
+      <ParentModal
+        parentModal={parentModal}
+        closeParentModal={handleCloseParentModal}
+      />
     </KeyboardAvoidingView>
   );
 };
 
 // height
 const screenHeight = Dimensions.get('screen').height;
-console.log(screenHeight);
-
 const chatContainerHeight = screenHeight / 1.45;
-console.log(chatContainerHeight);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: DARKMODE.background,
+  },
+  containerModalOpen: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   outContainer: {
     display: 'flex',
