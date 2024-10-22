@@ -32,7 +32,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ParentModal from './quickModals/ParentModal';
 
-
 const Channel = ({navigation, route}) => {
   const {spaceId, channelId, jwtToken} = route.params;
   // local states
@@ -308,6 +307,7 @@ const Channel = ({navigation, route}) => {
       <ParentModal
         parentModal={parentModal}
         closeParentModal={handleCloseParentModal}
+        token={jwtToken}
       />
     </KeyboardAvoidingView>
   );
