@@ -1,0 +1,60 @@
+name: Deploy to Firebase App Distribution Main
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        type: string
+        description: 'Enter the release notes for this Firebase build'
+        required: true
+        default: 'Firebase Build'
+
+jobs:
+  build:
+    name: Build and Distribute Android App to Firebase
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install -g react-native-cli
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 31
+          build-tools: '31.0.0'
+
+      - name: Prepare Gradle
+        run: |
+          cd android
+          chmod +x ./gradlew
+
+      - name: Build Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload Artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: test-build-in-app
+          file: android/app/build/outputs/apk/debug/app-debug.apk
+          releaseNotesFile: CHANGELOG.md
