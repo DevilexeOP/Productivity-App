@@ -43,7 +43,7 @@ const ProfileHome = () => {
 
   useEffect(() => {
     const fetchAppVersion = () => {
-      const version = DeviceInfo.getVersion();
+      const version = DeviceInfo.getReadableVersion();
       setAppVersion(version);
     };
     fetchAppVersion();
