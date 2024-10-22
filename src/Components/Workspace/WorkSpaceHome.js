@@ -14,7 +14,7 @@ import {
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DARKMODE} from '../../config/Colors';
-import socket from '../../config/Socket';
+import {showMessage} from 'react-native-flash-message';
 
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
@@ -56,7 +56,14 @@ const WorkSpaceHome = ({navigation}) => {
       <View style={styles.outContainer}>
         <TouchableOpacity
           onPress={() => {
-            return;
+            showMessage({
+              message: 'Come back later , Under Development !',
+              type: 'info',
+              icon: 'info',
+              position: 'top',
+              duration: 3000,
+              backgroundColor: DARKMODE.headerText,
+            });
           }}>
           <Image
             source={require('../../assets/images/hamdark.png')}
@@ -69,7 +76,9 @@ const WorkSpaceHome = ({navigation}) => {
         </View>
       </View>
       <ScrollView>
-        {/* TODO DISPLAYING RECENT ACTIVITY GET-RECENT FUNCTION FOR SPACES & CHANNEL*/}
+        <View>
+          <Text style={{textAlign: 'center'}}>Under Development</Text>
+        </View>
         <View style={styles.activityContainer} />
       </ScrollView>
       <View style={styles.buttonContainer1}>
