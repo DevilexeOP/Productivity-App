@@ -25,6 +25,7 @@ import {
 } from '../../redux/actioncreators';
 import Clipboard from '@react-native-clipboard/clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const WorkSpace = ({navigation, route}) => {
   const {spaceId, jwtToken} = route.params;
@@ -33,7 +34,7 @@ const WorkSpace = ({navigation, route}) => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.data.spaceData);
   const [defaultChannels, setDefaultChannels] = useState([]);
-
+  const [spinner, setSpinner] = useState(false);
   useEffect(() => {
     const getToken = async () => {
       const jwt = await AsyncStorage.getItem('token');
@@ -163,6 +164,7 @@ const WorkSpace = ({navigation, route}) => {
   // generate workspace invite link
   const generateInviteLink = async () => {
     if (!jwtToken) return;
+    setSpinner(true);
     try {
       const res = await fetch(`${ROOT_URL_KOYEB}/invite/api/v1/${spaceId}`, {
         method: 'GET',
@@ -173,6 +175,7 @@ const WorkSpace = ({navigation, route}) => {
       });
       const link = await res.json();
       if (res.ok) {
+        setSpinner(false);
         Snackbar.show({
           text: 'Link Copied to Clipboard',
           duration: Snackbar.LENGTH_LONG,
@@ -183,6 +186,7 @@ const WorkSpace = ({navigation, route}) => {
         console.log(inviteLink);
       }
     } catch (e) {
+      setSpinner(false);
       console.log(e);
     }
   };
@@ -190,6 +194,7 @@ const WorkSpace = ({navigation, route}) => {
   // share invite link
   const shareInviteLink = async () => {
     if (!jwtToken) return;
+    setSpinner(true);
     try {
       const res = await fetch(`${ROOT_URL_KOYEB}/invite/api/v1/${spaceId}`, {
         method: 'GET',
@@ -200,6 +205,7 @@ const WorkSpace = ({navigation, route}) => {
       });
       const link = await res.json();
       if (res.ok) {
+        setSpinner(false);
         try {
           await Share.share({
             message: `Here's the invite link to join the workspace: ${link.inviteLink} 
@@ -207,10 +213,12 @@ const WorkSpace = ({navigation, route}) => {
             url: link.inviteLink,
           });
         } catch (error) {
+          setSpinner(false);
           console.log('Error sharing invite link:', error);
         }
       }
     } catch (e) {
+      setSpinner(false);
       console.log(e);
     }
   };
@@ -223,6 +231,13 @@ const WorkSpace = ({navigation, route}) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
+        <Spinner
+          visible={spinner}
+          textContent={'Please wait...'}
+          textStyle={styles.spinnerTextStyle}
+          color={`${DARKMODE.headerText}`}
+          overlayColor="rgba(0, 0, 0, 0.75)"
+        />
         <View style={styles.outContainer}>
           <TouchableOpacity onPress={() => navigationToHome(jwtToken)}>
             <Image
