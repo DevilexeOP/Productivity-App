@@ -202,7 +202,8 @@ const WorkSpace = ({navigation, route}) => {
       if (res.ok) {
         try {
           await Share.share({
-            message: `Here's the invite link to join the workspace: ${link.inviteLink}`,
+            message: `Here's the invite link to join the workspace: ${link.inviteLink} 
+            \nIf you dont have the application https://appdistribution.firebase.dev/i/bdeb6de1b737a080 request access from here ! `,
             url: link.inviteLink,
           });
         } catch (error) {
