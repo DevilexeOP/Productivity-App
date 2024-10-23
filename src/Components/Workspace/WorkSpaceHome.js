@@ -15,24 +15,27 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DARKMODE} from '../../config/Colors';
 import {showMessage} from 'react-native-flash-message';
+import {useFocusEffect} from '@react-navigation/native';
 
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
 
-  useEffect(() => {
-    const getToken = async () => {
-      const jwt = await AsyncStorage.getItem('token');
+  const fetchToken = async () => {
+    const jwt = await AsyncStorage.getItem('token');
+    if (jwt) {
       setToken(jwt);
-    };
-    getToken();
-    console.log(token);
-    const focusListener = navigation.addListener('focus', () => {
-      getToken();
-    });
-    return () => {
-      focusListener();
-    };
-  }, [navigation]);
+    }
+    return jwt;
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        await fetchToken();
+      };
+      fetchData();
+    }, []),
+  );
 
   // getting recent workspace limit 1 or 2
   const getRecentWorkspace = async () => {
