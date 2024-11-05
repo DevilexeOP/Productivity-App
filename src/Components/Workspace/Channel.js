@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -181,11 +181,6 @@ const Channel = ({navigation, route}) => {
     }
   };
 
-  //navigation
-  const navigationToHome = token => {
-    navigation.goBack();
-  };
-
   const handleSentMessage = val => {
     actions.updateMessage(val);
   };
@@ -200,28 +195,6 @@ const Channel = ({navigation, route}) => {
   };
 
   const scrollViewRef = useRef(null);
-
-  // Message Component
-  const MessageItem = React.memo(({item, isSender}) => {
-    return (
-      <View style={styles.messageContainer}>
-        <View style={styles.infoContainer}>
-          <Text style={isSender ? styles.senderName : styles.senderName2}>
-            {item.sentBy}
-          </Text>
-          <Text
-            style={isSender ? styles.chatMessageTime : styles.chatMessageTime2}>
-            {item.sentAt}
-          </Text>
-        </View>
-        <View style={styles.messageContent}>
-          <Text style={isSender ? styles.chatMessage : styles.chatMessage2}>
-            {item.text}
-          </Text>
-        </View>
-      </View>
-    );
-  });
 
   const renderItem = ({item}) => {
     const isSender = item.sentBy === name;
@@ -312,6 +285,25 @@ const Channel = ({navigation, route}) => {
     </KeyboardAvoidingView>
   );
 };
+
+// Message Component
+const MessageItem = React.memo(({item, isSender}) => (
+  <View style={styles.messageContainer}>
+    <View style={styles.infoContainer}>
+      <Text style={isSender ? styles.senderName : styles.senderName2}>
+        {item.sentBy}
+      </Text>
+      <Text style={isSender ? styles.chatMessageTime : styles.chatMessageTime2}>
+        {item.sentAt}
+      </Text>
+    </View>
+    <View style={styles.messageContent}>
+      <Text style={isSender ? styles.chatMessage : styles.chatMessage2}>
+        {item.text}
+      </Text>
+    </View>
+  </View>
+));
 
 // height
 const screenHeight = Dimensions.get('screen').height;
