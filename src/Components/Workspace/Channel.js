@@ -96,14 +96,16 @@ const Channel = ({navigation, route}) => {
   }, [dispatch]);
 
   // get user's data from async storage
-  const getUserData = async () => {
-    let name = await AsyncStorage.getItem('name');
-    let email = await AsyncStorage.getItem('email');
-    let userName = await AsyncStorage.getItem('username');
+  const getUserData = useCallback(async () => {
+    const [name, email, userName] = await Promise.all([
+      AsyncStorage.getItem('name'),
+      AsyncStorage.getItem('email'),
+      AsyncStorage.getItem('username'),
+    ]);
     setName(name);
     setEmail(email);
     setUserName(userName);
-  };
+  }, []);
 
   // fetching channel data
   const fetchData = async () => {
@@ -143,10 +145,8 @@ const Channel = ({navigation, route}) => {
   };
 
   // fetch channel messages
-  const getMessages = async () => {
-    if (!jwtToken) {
-      return;
-    }
+  const getMessages = useCallback(async () => {
+    if (!jwtToken) return;
     setSpinner(true);
     try {
       const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/message/${channelId}`, {
@@ -157,20 +157,13 @@ const Channel = ({navigation, route}) => {
         },
       });
       const data = await res.json();
-      if (res.ok) {
-        if (data.length === 0) {
-          setSpinner(false);
-          setSocketMessages([]);
-        } else {
-          setSpinner(false);
-          dispatch(updateAllMessages(data));
-        }
-      }
+      dispatch(updateAllMessages(data.length ? data : []));
     } catch (e) {
       console.log(e);
+    } finally {
       setSpinner(false);
     }
-  };
+  }, [jwtToken, channelId, dispatch]);
 
   // sending message to socket listener
   const sendMessageToSocket = async () => {
@@ -244,11 +237,9 @@ const Channel = ({navigation, route}) => {
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             onContentSizeChange={() => {
-              scrollViewRef.current.scrollToEnd({animated: true});
+              scrollViewRef.current.scrollToEnd({animated: false});
             }}
             initialNumToRender={10}
-            maxToRenderPerBatch={5}
-            windowSize={5}
           />
         </View>
 
