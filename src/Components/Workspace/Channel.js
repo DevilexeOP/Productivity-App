@@ -73,7 +73,7 @@ const Channel = ({navigation, route}) => {
       dispatch(updateAllMessages([]));
       dispatch(updateChannelData([]));
     };
-  }, []);
+  }, [getUserData,getMessages,fetchData,channelId,dispatch]);
 
   // Setting messages
   useEffect(() => {
