@@ -16,9 +16,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DARKMODE} from '../../config/Colors';
 import {showMessage} from 'react-native-flash-message';
 import {useFocusEffect} from '@react-navigation/native';
+import {ROOT_URL_KOYEB} from '@env';
 
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
+  const [recentWorkspace, setRecentWorkSpace] = useState([]);
 
   const fetchToken = async () => {
     const jwt = await AsyncStorage.getItem('token');
@@ -28,21 +30,44 @@ const WorkSpaceHome = ({navigation}) => {
     return jwt;
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchData = async () => {
-        await fetchToken();
-      };
-      fetchData();
-    }, []),
-  );
-
   // getting recent workspace limit 1 or 2
   const getRecentWorkspace = async () => {
     if (!token) {
       return;
     }
+    try {
+      const response = await fetch(
+        `${ROOT_URL_KOYEB}/user/api/v1/workspace/latest`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setRecentWorkSpace([...data]);
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const jwt = await fetchToken();
+        if (jwt) {
+          await getRecentWorkspace();
+        }
+      };
+      fetchData();
+    }, [token]),
+  );
+
   // navigation
   const navigateToCreate = () => {
     navigation.navigate('CreateWorkSpace', {
@@ -79,10 +104,20 @@ const WorkSpaceHome = ({navigation}) => {
         </View>
       </View>
       <ScrollView>
-        <View>
-          <Text style={{textAlign: 'center'}}>Under Development</Text>
+        <View style={styles.activityContainer}>
+          {recentWorkspace.length > 0 && (
+            <>
+              {recentWorkspace.map((space, index) => (
+                <View key={index} style={styles.item}>
+                  <Text style={styles.workspaceText}>{space.workspace}</Text>
+                  <Text style={styles.workspaceText}>
+                    Members : {space.members.length}
+                  </Text>
+                </View>
+              ))}
+            </>
+          )}
         </View>
-        <View style={styles.activityContainer} />
       </ScrollView>
       <View style={styles.buttonContainer1}>
         <TouchableOpacity
@@ -168,6 +203,30 @@ const styles = StyleSheet.create({
     padding: wp('3%'),
     tintColor: DARKMODE.iconColor,
     marginHorizontal: wp('4%'),
+  },
+  activityContainer: {
+    padding: wp('5%'),
+  },
+  item: {
+    backgroundColor: DARKMODE.headerText,
+    padding: wp('4%'),
+    borderRadius: 8,
+    marginBottom: hp('2%'),
+    shadowColor: DARKMODE.headerText,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 2,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  workspaceText: {
+    color: DARKMODE.black,
+    fontSize: wp('4.5%'),
+    fontWeight: 'bold',
+    marginBottom: hp('0.5%'),
+  },
+  projectText: {
+    color: DARKMODE.secondaryText,
+    fontSize: wp('4%'),
   },
 });
 
