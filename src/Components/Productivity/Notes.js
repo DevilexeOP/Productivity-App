@@ -17,7 +17,7 @@ import {
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
 import {updateAllNotes} from '../../redux/actioncreators';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import {DARKMODE} from '../../config/Colors';
 
 const NotesScreen = ({navigation, route}) => {
@@ -43,7 +43,7 @@ const NotesScreen = ({navigation, route}) => {
       return;
     }
     try {
-      const response = await fetch(`${ROOT_URL_KOYEB}/user/api/v1/notes`, {
+      const response = await fetch(`${Config.ROOT_URL}/user/api/v1/notes`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${jwtToken}`,
@@ -73,7 +73,7 @@ const NotesScreen = ({navigation, route}) => {
   const deleteNote = async _id => {
     try {
       const res = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/notes/delete/${_id}`,
+        `${Config.ROOT_URL}/user/api/v1/notes/delete/${_id}`,
         {
           method: 'DELETE',
           headers: {

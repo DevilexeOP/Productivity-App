@@ -16,7 +16,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import Snackbar from 'react-native-snackbar';
 
 const CreateChannel = ({navigation, route}) => {
@@ -35,7 +35,7 @@ const CreateChannel = ({navigation, route}) => {
     }
     try {
       const res = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/channel/add/${spaceId}`,
+        `${Config.ROOT_URL}/user/api/v1/channel/add/${spaceId}`,
         {
           method: 'POST',
           headers: {

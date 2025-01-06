@@ -5,6 +5,8 @@ import {store, persistor} from './src/redux/store';
 import {Immersive} from 'react-native-immersive';
 import {PersistGate} from 'redux-persist/integration/react';
 import FlashMessage from 'react-native-flash-message';
+import {ROOT_URL} from '@env';
+import Config from 'react-native-config';
 
 const App = () => {
   useEffect(() => {

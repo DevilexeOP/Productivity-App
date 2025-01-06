@@ -20,7 +20,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import Snackbar from 'react-native-snackbar';
 import {
   updateChannelData,
@@ -115,7 +115,7 @@ const Channel = ({navigation, route}) => {
     setSpinner(true);
     try {
       const res = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/channel/${channelId}`,
+        `${Config.ROOT_URL}/user/api/v1/channel/${channelId}`,
         {
           method: 'GET',
           headers: {
@@ -149,7 +149,7 @@ const Channel = ({navigation, route}) => {
     if (!jwtToken) return;
     setSpinner(true);
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/message/${channelId}`, {
+      const res = await fetch(`${Config.ROOT_URL}/api/v1/message/${channelId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

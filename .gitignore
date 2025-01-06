@@ -64,6 +64,8 @@ yarn-error.log
 
 #ENV
 *.env
+.env.prod
+.env.dev
 hs_err_pid109716.log
 hs_err_pid109811.log
 .gitignore

@@ -21,7 +21,7 @@ import {
 } from 'react-native-responsive-screen';
 import Toast from 'react-native-toast-message';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import {DARKMODE} from '../../config/Colors';
 
 const {width, height} = Dimensions.get('window');
@@ -36,7 +36,7 @@ const AddNotes = ({navigation, route}) => {
   }, []);
   const handleSaveNote = async () => {
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/user/api/v1/notes/add`, {
+      const res = await fetch(`${Config.ROOT_URL}/user/api/v1/notes/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

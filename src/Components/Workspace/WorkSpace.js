@@ -16,7 +16,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import Snackbar from 'react-native-snackbar';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -72,16 +72,13 @@ const WorkSpace = ({navigation, route}) => {
       return;
     }
     try {
-      const res = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/workspace/${spaceId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          },
+      const res = await fetch(`${Config.ROOT_URL}/user/api/v1/workspace/${spaceId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwtToken}`,
         },
-      );
+      });
 
       const data = await res.json();
 
@@ -163,10 +160,12 @@ const WorkSpace = ({navigation, route}) => {
 
   // generate workspace invite link
   const generateInviteLink = async () => {
-    if (!jwtToken) return;
+    if (!jwtToken) {
+      return;
+    }
     setSpinner(true);
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/invite/api/v1/${spaceId}`, {
+      const res = await fetch(`${Config.ROOT_URL}/invite/api/v1/${spaceId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -193,10 +192,12 @@ const WorkSpace = ({navigation, route}) => {
 
   // share invite link
   const shareInviteLink = async () => {
-    if (!jwtToken) return;
+    if (!jwtToken) {
+      return;
+    }
     setSpinner(true);
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/invite/api/v1/${spaceId}`, {
+      const res = await fetch(`${Config.ROOT_URL}/invite/api/v1/${spaceId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -385,7 +386,7 @@ const WorkSpace = ({navigation, route}) => {
 
                   {/* Additional space for new components */}
                   <View style={styles.additionalSpace} />
-                  <View style={styles.modalButtonContainer}></View>
+                  <View style={styles.modalButtonContainer} />
                   <TouchableOpacity
                     style={styles.cancelButton}
                     onPress={() => setModalVisible(false)}>

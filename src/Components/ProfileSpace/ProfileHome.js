@@ -10,7 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
@@ -65,7 +65,7 @@ const ProfileHome = () => {
     let userId = await AsyncStorage.getItem('user_id');
     if (!jwt) return;
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/profile/${userId}`, {
+      const res = await fetch(`${Config.ROOT_URL}/api/v1/profile/${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const ProfileHome = () => {
     }
     try {
       console.log('Here/....');
-      const res = await fetch(`${ROOT_URL_KOYEB}/api/v1/feedback`, {
+      const res = await fetch(`${Config.ROOT_URL}/api/v1/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

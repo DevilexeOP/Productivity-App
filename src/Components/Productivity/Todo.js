@@ -17,7 +17,7 @@ import {
 } from 'react-native-responsive-screen';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import {DARKMODE} from '../../config/Colors';
 
 const TodoScreen = ({navigation, route}) => {
@@ -40,7 +40,7 @@ const TodoScreen = ({navigation, route}) => {
       return;
     }
     try {
-      const response = await fetch(`${ROOT_URL_KOYEB}/user/api/v1/todos`, {
+      const response = await fetch(`${Config.ROOT_URL}/user/api/v1/todos`, {
         // 209 for linux , 154 pc
         method: 'GET',
         headers: {
@@ -63,7 +63,7 @@ const TodoScreen = ({navigation, route}) => {
   const deleteTodo = async _id => {
     try {
       const res = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/todos/delete/${_id}`,
+        `${Config.ROOT_URL}/user/api/v1/todos/delete/${_id}`,
         {
           method: 'DELETE',
           headers: {

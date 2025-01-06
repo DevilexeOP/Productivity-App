@@ -17,7 +17,7 @@ import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import Spinner from 'react-native-loading-spinner-overlay';
 import {DARKMODE} from '../../config/Colors';
 import {showMessage} from 'react-native-flash-message';
@@ -43,7 +43,7 @@ const Login = ({navigation}) => {
   const handleLogin = async (Email, Password) => {
     setSpinner(true);
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/auth/api/v1/login`, {
+      const res = await fetch(`${Config.ROOT_URL}/auth/api/v1/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ const Login = ({navigation}) => {
   // forgot password
   const forgotPassword = async email => {
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/auth/api/v1/reset`, {
+      const res = await fetch(`${Config.ROOT_URL}/auth/api/v1/reset`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

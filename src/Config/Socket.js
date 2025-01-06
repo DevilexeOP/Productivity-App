@@ -1,7 +1,7 @@
 import * as io from 'socket.io-client';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 
-const socket = io.connect(ROOT_URL_KOYEB, {
+const socket = io.connect(Config.ROOT_URL, {
   transports: ['websocket'],
   jsonp: false,
 });

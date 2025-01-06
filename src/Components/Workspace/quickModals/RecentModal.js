@@ -11,7 +11,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import {DARKMODE} from '../../../config/Colors';
 import {showMessage} from 'react-native-flash-message';
 
@@ -30,7 +30,7 @@ const RecentModal = ({recentModal, closeRecentModal, token}) => {
     }
     try {
       const notesResponse = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/notes/recents`,
+        `${Config.ROOT_URL}/user/api/v1/notes/recents`,
         {
           method: 'GET',
           headers: {
@@ -54,7 +54,7 @@ const RecentModal = ({recentModal, closeRecentModal, token}) => {
         });
       }
       const todoResponse = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/todos/recents`,
+        `${Config.ROOT_URL}/user/api/v1/todos/recents`,
         {
           method: 'GET',
           headers: {

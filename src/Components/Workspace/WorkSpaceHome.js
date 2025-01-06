@@ -16,12 +16,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DARKMODE} from '../../config/Colors';
 import {showMessage} from 'react-native-flash-message';
 import {useFocusEffect} from '@react-navigation/native';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
   const [recentWorkspace, setRecentWorkSpace] = useState([]);
-
+  const [spaceId, setSpaceId] = useState('');
   const fetchToken = async () => {
     const jwt = await AsyncStorage.getItem('token');
     if (jwt) {
@@ -37,7 +37,7 @@ const WorkSpaceHome = ({navigation}) => {
     }
     try {
       const response = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/workspace/latest`,
+        `${Config.ROOT_URL}/user/api/v1/workspace/latest`,
         {
           method: 'GET',
           headers: {
@@ -47,6 +47,9 @@ const WorkSpaceHome = ({navigation}) => {
         },
       );
       const data = await response.json();
+      data.forEach(item => {
+        setSpaceId(item._id);
+      });
       if (response.ok) {
         setRecentWorkSpace([...data]);
       }
@@ -79,6 +82,12 @@ const WorkSpaceHome = ({navigation}) => {
       jwt: token,
     });
   };
+  const navigateToWorkspace = () => {
+    navigation.navigate('WorkSpace', {
+      spaceId: spaceId,
+      jwtToken: token,
+    });
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.outContainer}>
@@ -108,12 +117,14 @@ const WorkSpaceHome = ({navigation}) => {
           {recentWorkspace.length > 0 && (
             <>
               {recentWorkspace.map((space, index) => (
-                <View key={index} style={styles.item}>
-                  <Text style={styles.workspaceText}>{space.workspace}</Text>
-                  <Text style={styles.workspaceText}>
-                    Members : {space.members.length}
-                  </Text>
-                </View>
+                <TouchableOpacity key={index} onPress={navigateToWorkspace}>
+                  <View style={styles.item}>
+                    <Text style={styles.workspaceText}>{space.workspace}</Text>
+                    <Text style={styles.workspaceText}>
+                      Members : {space.members.length}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               ))}
             </>
           )}

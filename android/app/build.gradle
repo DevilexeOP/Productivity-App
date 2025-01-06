@@ -1,6 +1,18 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+project.ext.envConfigFiles = [
+    release: ".env.dev",
+    debug: ".env.dev",
+    devDebug: ".env.dev",
+    devrelease: ".env.dev",
+    liveDebug: ".env.prod",
+    liverelease: ".env.prod"
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+
 import com.android.build.OutputFile
 
 /**
@@ -92,7 +104,25 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
-
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "com.devilop.beproductive.dev"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "com.devilop.beproductive"
+            versionCode 1
+            versionName "1.0"
+        }
+        live {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "com.devilop.beproductive.prod"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "com.devilop.beproductive"
+            versionCode 1
+            versionName "1.0"
+        }
+    }
     namespace "com.devilop.beproductive"
     defaultConfig {
         applicationId "com.devilop.beproductive"
@@ -101,7 +131,6 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
     splits {
         abi {
             reset()

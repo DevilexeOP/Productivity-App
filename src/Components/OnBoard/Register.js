@@ -17,7 +17,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import Snackbar from 'react-native-snackbar';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {DARKMODE} from '../../config/Colors';
@@ -61,7 +61,7 @@ const Register = ({navigation}) => {
   const handleCreateAccount = async (Name, Username, Email, Password) => {
     setSpinner(true);
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/auth/api/v1/signup`, {
+      const res = await fetch(`${Config.ROOT_URL}/auth/api/v1/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

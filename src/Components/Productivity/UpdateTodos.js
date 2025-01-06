@@ -27,7 +27,7 @@ import {
 import {connect} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {Picker} from '@react-native-picker/picker';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import {DARKMODE} from '../../config/Colors';
 
 const {width, height} = Dimensions.get('screen');
@@ -64,7 +64,7 @@ const UpdateTodos = ({actions, navigation, route}) => {
   const handleUpdateTodo = async () => {
     try {
       const res = await fetch(
-        `${ROOT_URL_KOYEB}/user/api/v1/todos/update/${id}`,
+        `${Config.ROOT_URL}/user/api/v1/todos/update/${id}`,
         {
           method: 'PUT',
           headers: {

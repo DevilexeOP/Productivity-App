@@ -17,7 +17,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {updateAllWorkSpaces, updateSpaceData} from '../../redux/actioncreators';
 import {DARKMODE} from '../../config/Colors';
-import {ROOT_URL_KOYEB} from '@env';
+import Config from "react-native-config";
 import Snackbar from 'react-native-snackbar';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -82,7 +82,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
       return;
     }
     try {
-      const res = await fetch(`${ROOT_URL_KOYEB}/user/api/v1/workspaces`, {
+      const res = await fetch(`${Config.ROOT_URL}/user/api/v1/workspaces`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
     try {
       // Make a POST request to join the workspace using the extracted workspaceId
       const res = await fetch(
-        `${ROOT_URL_KOYEB}/invite/api/v1/${extractedWorkspaceId}`,
+        `${Config.ROOT_URL}/invite/api/v1/${extractedWorkspaceId}`,
         {
           method: 'POST',
           headers: {
