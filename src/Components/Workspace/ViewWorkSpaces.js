@@ -17,7 +17,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {updateAllWorkSpaces, updateSpaceData} from '../../redux/actioncreators';
 import {DARKMODE} from '../../config/Colors';
-import Config from "react-native-config";
+import Config from 'react-native-config';
 import Snackbar from 'react-native-snackbar';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -41,7 +41,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
     const fetchToken = async () => {
       const token = await AsyncStorage.getItem('token');
       setJwtToken(token);
-      console.log('Async Storage Token ' + token);
+      // console.log('Async Storage Token ' + token);
     };
     fetchToken();
     getSpaces();
@@ -110,7 +110,9 @@ const ViewWorkSpaces = ({navigation, route}) => {
 
   // Join a Workspace
   const handleJoinWorkspace = async () => {
-    if (!jwt) return;
+    if (!jwt) {
+      return;
+    }
 
     //workspaceId from the full invite link
     const linkRegex = /\/invite\/api\/v1\/([a-zA-Z0-9]+)/;

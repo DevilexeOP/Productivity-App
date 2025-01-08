@@ -16,7 +16,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import Config from "react-native-config";
+import Config from 'react-native-config';
 import Snackbar from 'react-native-snackbar';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -48,6 +48,7 @@ const WorkSpace = ({navigation, route}) => {
     return () => {
       focusListener();
     };
+    // eslint-disable-next-line
   }, [navigation]);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ const WorkSpace = ({navigation, route}) => {
       unsubscribeFocus();
       unsubscribeBlur();
     };
+    // eslint-disable-next-line
   }, [navigation, spaceId, jwtToken]);
 
   // fetching space data
@@ -72,14 +74,18 @@ const WorkSpace = ({navigation, route}) => {
       return;
     }
     try {
-      const res = await fetch(`${Config.ROOT_URL}/user/api/v1/workspace/${spaceId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
+      const res = await fetch(
+        `${Config.ROOT_URL}/user/api/v1/workspace/${spaceId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
         },
-      });
+      );
 
+      // eslint-disable-next-line no-shadow
       const data = await res.json();
 
       if (res.status === 404 || res.status === 403) {
@@ -552,15 +558,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dim background
   },
   modalView: {
-    width: wp('80%'),
-    backgroundColor: 'white',
-    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: DARKMODE.headerText,
     borderRadius: wp('3%'),
     padding: wp('8%'),
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

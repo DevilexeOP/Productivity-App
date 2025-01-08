@@ -17,7 +17,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import Config from "react-native-config";
+import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
 
@@ -36,7 +36,6 @@ const CreateWorkSpace = ({navigation, route}) => {
     };
     getToken();
     resetSpace();
-    console.log(token);
     const focusListener = navigation.addListener('focus', () => {
       getToken();
     });
@@ -69,23 +68,30 @@ const CreateWorkSpace = ({navigation, route}) => {
         },
         body: JSON.stringify({
           workspace: workspaceTitle.trim(),
-          projectName: projectName.trim(),
+          projectName: projectName,
         }),
       });
       const data = await res.json();
-      if (res.ok) {
+      if (res.status === 201) {
+        console.log(data, res.status);
         console.log(JSON.stringify(data) + ' create space ');
         actions.updateWorkspaceName(data.workspace);
         actions.updateProjectName(data.projectName);
+        console.log(
+          'data from api ' + data.workspace,
+          data.projectName,
+          token,
+          data._id,
+        );
         navigateToWorkSpace(data.workspace, data.projectName, token, data._id);
       } else if (res.status === 400) {
+        console.log(data, res.status);
         Snackbar.show({
           text: data.message,
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: '#FFB800',
           textColor: 'black',
         });
-        return;
       }
     } catch (e) {
       console.log(e);
@@ -99,7 +105,7 @@ const CreateWorkSpace = ({navigation, route}) => {
 
   //. TODO INSTEAD OF HARDCODED TITLE & PROJECT CHANGING IT TO GET-WORKSPACE-BY ID to FETCH THE DATA
   const navigateToWorkSpace = (workspaceTitle, projectName, token, spaceId) => {
-    addWorkSpace(workspaceTitle, projectName, token, spaceId);
+    // addWorkSpace(workspaceTitle, projectName, token, spaceId);
     console.log('navigate to space ' + spaceId);
     navigation.navigate('WorkSpace', {
       title: workspaceTitle,
