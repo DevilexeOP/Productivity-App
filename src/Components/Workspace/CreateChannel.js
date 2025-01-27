@@ -16,7 +16,7 @@ import {actionCreators} from '../../redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {DARKMODE} from '../../config/Colors';
-import Config from "react-native-config";
+import Config from 'react-native-config';
 import Snackbar from 'react-native-snackbar';
 
 const CreateChannel = ({navigation, route}) => {
@@ -72,7 +72,7 @@ const CreateChannel = ({navigation, route}) => {
   };
   // navigation
   const navigateToSpace = id => {
-    navigation.navigate('WorkSpace', {
+    navigation.navigate('WorkSpaceInfo', {
       spaceId: id,
     });
   };

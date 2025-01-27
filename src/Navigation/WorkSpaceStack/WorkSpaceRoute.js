@@ -1,8 +1,8 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import WorkSpaceHome from '../../components/workspace/WorkSpaceHome';
 import CreateWorkSpace from '../../components/workspace/CreateWorkSpace';
-import ViewWorkSpaces from '../../components/workspace/ViewWorkSpaces';
-import WorkSpace from '../../components/workspace/WorkSpace';
+import AllWorkSpaces from '../../components/workspace/AllWorkSpaces';
+import WorkSpaceInfo from '../../components/workspace/WorkSpaceInfo';
 import CreateChannel from '../../components/workspace/CreateChannel';
 import Channel from '../../components/workspace/Channel';
 
@@ -26,15 +26,15 @@ const WorkSpaceRoute = () => {
         }}
       />
       <WorkSpaceStack.Screen
-        name="ViewWorkSpaces"
-        component={ViewWorkSpaces}
+        name="AllWorkSpaces"
+        component={AllWorkSpaces}
         options={{
           headerShown: false,
         }}
       />
       <WorkSpaceStack.Screen
-        name="WorkSpace"
-        component={WorkSpace}
+        name="WorkSpaceInfo"
+        component={WorkSpaceInfo}
         options={{
           headerShown: false,
         }}

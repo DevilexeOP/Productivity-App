@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DARKMODE} from '../../config/Colors';
 import {showMessage} from 'react-native-flash-message';
 import {useFocusEffect} from '@react-navigation/native';
-import Config from "react-native-config";
+import Config from 'react-native-config';
 
 const WorkSpaceHome = ({navigation}) => {
   const [token, setToken] = useState('');
@@ -78,14 +78,16 @@ const WorkSpaceHome = ({navigation}) => {
     });
   };
   const navigateToView = () => {
-    navigation.navigate('ViewWorkSpaces', {
+    navigation.navigate('AllWorkSpaces', {
       jwt: token,
     });
   };
   const navigateToWorkspace = () => {
-    navigation.navigate('WorkSpace', {
+    console.log(token + ' Navigate fnc ');
+    navigation.navigate('WorkSpaceInfo', {
       spaceId: spaceId,
       jwtToken: token,
+      title: recentWorkspace.title,
     });
   };
   return (
@@ -118,11 +120,19 @@ const WorkSpaceHome = ({navigation}) => {
             <>
               {recentWorkspace.map((space, index) => (
                 <TouchableOpacity key={index} onPress={navigateToWorkspace}>
-                  <View style={styles.item}>
-                    <Text style={styles.workspaceText}>{space.workspace}</Text>
-                    <Text style={styles.workspaceText}>
-                      Members : {space.members.length}
-                    </Text>
+                  <View style={styles.workspaceContainer}>
+                    <Text style={styles.spaceName}>{space.workspace}</Text>
+                    <View style={styles.container2}>
+                      <View style={styles.rowContainer}>
+                        <Image
+                          style={styles.membersIcon}
+                          source={require('../../assets/images/members.png')}
+                        />
+                        <Text style={styles.members}>
+                          {space.members.length}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 </TouchableOpacity>
               ))}
@@ -181,6 +191,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: hp('-12%'),
   },
+  workspaceContainer: {
+    width: wp('90%'),
+    display: 'flex',
+    height: null,
+    marginRight: wp('4%'),
+    marginTop: wp('5%'),
+    backgroundColor: DARKMODE.headerText,
+    borderRadius: wp('1%'),
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: wp('2%'),
+  },
   buttonContainer2: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -216,6 +240,7 @@ const styles = StyleSheet.create({
     marginHorizontal: wp('4%'),
   },
   activityContainer: {
+    display: 'flex',
     padding: wp('5%'),
   },
   item: {
@@ -236,8 +261,43 @@ const styles = StyleSheet.create({
     marginBottom: hp('0.5%'),
   },
   projectText: {
-    color: DARKMODE.secondaryText,
-    fontSize: wp('4%'),
+    color: DARKMODE.white,
+    fontSize: wp('5%'),
+    textAlign: 'right',
+  },
+  spaceName: {
+    fontSize: wp('4.5%'),
+    color: DARKMODE.iconColor,
+    marginLeft: wp('2%'),
+    marginRight: wp('2%'),
+    marginBottom: wp('3%'),
+    marginTop: wp('2%'),
+    fontFamily: 'Poppins-Bold',
+  },
+  container2: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    flex: 1,
+    padding: wp('2%'),
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: wp('2%'),
+  },
+  membersIcon: {
+    width: wp('3%'),
+    height: wp('3%'),
+    padding: wp('2.3%'),
+    tintColor: DARKMODE.iconColor,
+    marginHorizontal: wp('1%'),
+  },
+  members: {
+    fontSize: wp('4.2%'),
+    color: DARKMODE.iconColor,
+    marginRight: wp('5%'),
+    fontFamily: 'Poppins-Bold',
   },
 });
 

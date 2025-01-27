@@ -107,7 +107,7 @@ const CreateWorkSpace = ({navigation, route}) => {
   const navigateToWorkSpace = (workspaceTitle, projectName, token, spaceId) => {
     // addWorkSpace(workspaceTitle, projectName, token, spaceId);
     console.log('navigate to space ' + spaceId);
-    navigation.navigate('WorkSpace', {
+    navigation.navigate('WorkSpaceInfo', {
       title: workspaceTitle,
       project: projectName,
       token: token,

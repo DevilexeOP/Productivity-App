@@ -22,7 +22,7 @@ import Snackbar from 'react-native-snackbar';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ViewWorkSpaces = ({navigation, route}) => {
+const AllWorkSpaces = ({navigation, route}) => {
   // fetch token when component mounts
   const {jwt} = route.params;
   // State managements
@@ -69,7 +69,7 @@ const ViewWorkSpaces = ({navigation, route}) => {
 
   // navigate to specific space
   const handleWorkspace = (_id, jwtToken) => {
-    navigation.navigate('WorkSpace', {
+    navigation.navigate('WorkSpaceInfo', {
       spaceId: _id,
       jwtToken: jwtToken,
     });
@@ -480,4 +480,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ViewWorkSpaces;
+export default AllWorkSpaces;

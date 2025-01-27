@@ -27,33 +27,47 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const WorkSpace = ({navigation, route}) => {
-  const {spaceId, jwtToken} = route.params;
+const WorkSpaceInfo = ({navigation, route}) => {
+  const {title, project, spaceId, jwtToken} = route.params;
   const [token, setToken] = useState('');
   // state management
   const dispatch = useDispatch();
   const data = useSelector(state => state.data.spaceData);
   const [defaultChannels, setDefaultChannels] = useState([]);
   const [spinner, setSpinner] = useState(false);
+  const [paramsTitle, setParamsTitle] = useState('');
   useEffect(() => {
+    const getTitle = () => {
+      setParamsTitle(title);
+    };
     const getToken = async () => {
       const jwt = await AsyncStorage.getItem('token');
       setToken(jwt);
     };
     getToken();
-    console.log(token);
+    getTitle();
+    console.log(jwtToken + ' From recent activity ');
     const focusListener = navigation.addListener('focus', () => {
       getToken();
+      getTitle();
     });
     return () => {
       focusListener();
     };
-    // eslint-disable-next-line
+    /*
+     eslint-disable-next-line
+    */
   }, [navigation]);
 
   useEffect(() => {
+    console.log(
+      'workspace title from params ' +
+        title +
+        ' workspace prj from params ' +
+        project,
+    );
     const unsubscribeFocus = navigation.addListener('focus', () => {
-      console.log('Screen focused, fetching data...');
+      // console.log('Screen focused, fetching data...');
       fetchData();
     });
 
@@ -65,7 +79,9 @@ const WorkSpace = ({navigation, route}) => {
       unsubscribeFocus();
       unsubscribeBlur();
     };
-    // eslint-disable-next-line
+    /*
+     eslint-disable-next-line
+    */
   }, [navigation, spaceId, jwtToken]);
 
   // fetching space data
@@ -87,7 +103,7 @@ const WorkSpace = ({navigation, route}) => {
 
       // eslint-disable-next-line no-shadow
       const data = await res.json();
-
+      console.log('data from api ' + JSON.stringify(data));
       if (res.status === 404 || res.status === 403) {
         Snackbar.show({
           text: data.message,
@@ -133,7 +149,7 @@ const WorkSpace = ({navigation, route}) => {
     setFilteredChannels(filtered);
   };
   // loading manage
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   // Dropdown state manage
@@ -144,7 +160,8 @@ const WorkSpace = ({navigation, route}) => {
   };
   // navigation
   const navigationToHome = token => {
-    navigation.navigate('ViewWorkSpaces', {
+    setParamsTitle('');
+    navigation.navigate('AllWorkSpaces', {
       jwtToken: token,
     });
   };
@@ -255,7 +272,9 @@ const WorkSpace = ({navigation, route}) => {
           </TouchableOpacity>
           {data.map(info => (
             <View style={styles.headerContainer} key={info._id}>
-              <Text style={styles.headerText}>{info.workspace}</Text>
+              <Text style={styles.headerText}>
+                {info.workspace ? info.workspace : paramsTitle}
+              </Text>
             </View>
           ))}
           <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -626,4 +645,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorkSpace;
+export default WorkSpaceInfo;
