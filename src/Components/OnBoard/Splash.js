@@ -36,7 +36,7 @@ const Splash = () => {
       </View>
       <View style={styles.animationContainer}>
         <LottieView
-          source={require('../../assets/animations/splashLoad.json')}
+          source={require('../../Assets/animations/splashLoad.json')}
           style={styles.animation}
           autoPlay={true}
           loop={true}

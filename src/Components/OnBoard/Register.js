@@ -13,14 +13,14 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {actionCreators} from '../../redux/index';
+import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import Snackbar from 'react-native-snackbar';
 import Config from "react-native-config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 import {showMessage} from 'react-native-flash-message';
 
 const Register = ({navigation}) => {

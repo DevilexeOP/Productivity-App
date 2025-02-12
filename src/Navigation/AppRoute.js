@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 // navigator
 // Components
-import BottomRoute from './bottomRouter/BottomRoute';
+import BottomRoute from './BottomRouter/BottomRoute';
 
 const AppStack = createStackNavigator();
 

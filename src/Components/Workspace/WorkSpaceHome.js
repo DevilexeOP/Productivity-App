@@ -13,7 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 import {showMessage} from 'react-native-flash-message';
 import {useFocusEffect} from '@react-navigation/native';
 import Config from 'react-native-config';
@@ -105,7 +105,7 @@ const WorkSpaceHome = ({navigation}) => {
             });
           }}>
           <Image
-            source={require('../../assets/images/hamdark.png')}
+            source={require('../../Assets/images/hamdark.png')}
             alt="Back"
             style={styles.hamBtn}
           />
@@ -126,7 +126,7 @@ const WorkSpaceHome = ({navigation}) => {
                       <View style={styles.rowContainer}>
                         <Image
                           style={styles.membersIcon}
-                          source={require('../../assets/images/members.png')}
+                          source={require('../../Assets/images/members.png')}
                         />
                         <Text style={styles.members}>
                           {space.members.length}

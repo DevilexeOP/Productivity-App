@@ -18,7 +18,7 @@ import {
   updateTodoTitle,
   updateTodoStatus,
   updateTodoPriority,
-} from '../../redux/actioncreators';
+} from '../../Redux/actioncreators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,7 +29,7 @@ import {Picker} from '@react-native-picker/picker';
 import {bindActionCreators} from 'redux';
 import Snackbar from 'react-native-snackbar';
 import Config from "react-native-config";
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 
 const {width, height} = Dimensions.get('window');
 
@@ -123,7 +123,7 @@ const AddTodos = ({
             navigateToHome(jwtToken);
           }}>
           <Image
-            source={require('../../assets/images/backlight.png')}
+            source={require('../../Assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />

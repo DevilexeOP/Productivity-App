@@ -2,11 +2,11 @@ import {createStore, applyMiddleware} from 'redux';
 import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import thunk from 'redux-thunk';
-import reducers from './reducers';
+import reducers from './Reducers';
 
 // Persist Config
 const persistConfig = {
-  key: 'root',  
+  key: 'root',
   storage: AsyncStorage,
   blacklist: ['spaceData', 'channelData', 'addNote', 'addTodo', 'message'],
 };

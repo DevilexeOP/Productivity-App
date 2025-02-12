@@ -13,7 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
 import {showMessage} from 'react-native-flash-message';
-import {DARKMODE} from '../../../config/Colors';
+import {DARKMODE} from '../../../Config/Colors';
 import Config from "react-native-config";
 
 const QuickNoteModal = ({noteModal, closeNoteModal, token}) => {

@@ -1,11 +1,11 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from '../../components/productivity/Home';
-import NotesScreen from '../../components/productivity/Notes';
-import TodoScreen from '../../components/productivity/Todo';
-import AddNotes from '../../components/productivity/AddNotes';
-import AddTodos from '../../components/productivity/AddTodos';
-import UpdateTodos from '../../components/productivity/UpdateTodos';
-import UpdateNotes from '../../components/productivity/UpdateNotes';
+import HomeScreen from '../../Components/Productivity/Home';
+import NotesScreen from '../../Components/Productivity/Notes';
+import TodoScreen from '../../Components/Productivity/Todo';
+import AddNotes from '../../Components/Productivity/AddNotes';
+import AddTodos from '../../Components/Productivity/AddTodos';
+import UpdateTodos from '../../Components/Productivity/UpdateTodos';
+import UpdateNotes from '../../Components/Productivity/UpdateNotes';
 
 const ProductiveStack = createStackNavigator();
 

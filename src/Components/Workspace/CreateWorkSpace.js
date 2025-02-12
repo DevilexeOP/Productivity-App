@@ -13,10 +13,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {actionCreators} from '../../redux/index';
+import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Snackbar from 'react-native-snackbar';
@@ -119,7 +119,7 @@ const CreateWorkSpace = ({navigation, route}) => {
       <View style={styles.outContainer}>
         <TouchableOpacity onPress={navigateToWorkspaceHome}>
           <Image
-            source={require('../../assets/images/backlight.png')}
+            source={require('../../Assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />

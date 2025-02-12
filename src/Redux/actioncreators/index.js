@@ -1,5 +1,5 @@
 //  register action creators
-// import channel from '../../components/Workspace/Channel';
+// import channel from '../../Components/Workspace/Channel';
 
 export const updateName = name => {
   return dispatch => {

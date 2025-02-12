@@ -2,18 +2,18 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 // Splash Screen
-import SplashScreen from '../components/onboard/Splash';
+import SplashScreen from '../Components/OnBoard/Splash';
 // OnBoarding Screens
-import OnBoarding from '../components/onboard/OnBoarding';
-import Register from '../components/onboard/Register';
-import Login from '../components/onboard/Login';
+import OnBoarding from '../Components/OnBoard/OnBoarding';
+import Register from '../Components/OnBoard/Register';
+import Login from '../Components/OnBoard/Login';
 // Animation Screens
-import LoginSuccess from '../components/onboard/AnimatedScreens/LoginSuccess';
-import LoginFailed from '../components/onboard/AnimatedScreens/LoginFail';
-import RegisterSuccess from '../components/onboard/AnimatedScreens/RegisterSuccess';
-import RegisterFailed from '../components/onboard/AnimatedScreens/RegisterFailed';
-import BottomRoute from './bottomRouter/BottomRoute';
-import ProfileHome from '../components/profilespace/ProfileHome';
+import LoginSuccess from '../Components/OnBoard/AnimatedScreens/LoginSuccess';
+import LoginFailed from '../Components/OnBoard/AnimatedScreens/LoginFail';
+import RegisterSuccess from '../Components/OnBoard/AnimatedScreens/RegisterSuccess';
+import RegisterFailed from '../Components/OnBoard/AnimatedScreens/RegisterFailed';
+import BottomRoute from './BottomRouter/BottomRoute';
+import ProfileHome from '../Components/ProfileSpace/ProfileHome';
 
 const AuthStack = createStackNavigator();
 

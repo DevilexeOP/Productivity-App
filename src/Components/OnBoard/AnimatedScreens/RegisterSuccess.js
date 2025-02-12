@@ -20,7 +20,7 @@ const RegisterSuccess = ({navigation}) => {
       </View>
       <View style={styles.animationContainer}>
         <LottieView
-          source={require('../../../assets/animations/success.json')}
+          source={require('../../../Assets/animations/success.json')}
           style={styles.animation}
           autoPlay={true}
           loop={false}
@@ -32,7 +32,7 @@ const RegisterSuccess = ({navigation}) => {
           style={styles.animation2}
           autoPlay={true}
           loop={true}
-          source={require('../../../assets/animations/loading.json')}
+          source={require('../../../Assets/animations/loading.json')}
         />
       </View>
     </SafeAreaView>

@@ -1,13 +1,13 @@
 import {Image, View, Text, StyleSheet, Dimensions} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ProductiveRoute from '../productiveStack/ProductiveRoute';
-import WorkSpaceRoute from '../workspaceStack/WorkSpaceRoute';
+import ProductiveRoute from '../ProductiveStack/ProductiveRoute';
+import WorkSpaceRoute from '../WorkSpaceStack/WorkSpaceRoute';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {DARKMODE} from '../../config/Colors';
-import ProfileRoute from '../profileStack/ProfileRoute';
+import {DARKMODE} from '../../Config/Colors';
+import ProfileRoute from '../ProfileStack/ProfileRoute';
 
 const BottomRouter = createBottomTabNavigator();
 
@@ -41,7 +41,7 @@ const BottomRoute = () => {
                 marginLeft: wp('3%'),
               }}>
               <Image
-                source={require('../../assets/images/productive.png')}
+                source={require('../../Assets/images/productive.png')}
                 resizeMode="contain"
                 style={{
                   width: wp('5%'),
@@ -75,7 +75,7 @@ const BottomRoute = () => {
                 marginLeft: wp('5%'),
               }}>
               <Image
-                source={require('../../assets/images/workspace.png')}
+                source={require('../../Assets/images/workspace.png')}
                 resizeMode="contain"
                 style={{
                   width: wp('5%'),
@@ -104,7 +104,7 @@ const BottomRoute = () => {
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Image
-                source={require('../../assets/images/profile.png')}
+                source={require('../../Assets/images/profile.png')}
                 resizeMode="contain"
                 style={{
                   width: wp('5%'),

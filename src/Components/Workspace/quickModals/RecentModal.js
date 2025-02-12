@@ -12,7 +12,7 @@ import {
 } from 'react-native-responsive-screen';
 import Modal from 'react-native-modal';
 import Config from "react-native-config";
-import {DARKMODE} from '../../../config/Colors';
+import {DARKMODE} from '../../../Config/Colors';
 import {showMessage} from 'react-native-flash-message';
 
 const RecentModal = ({recentModal, closeRecentModal, token}) => {

@@ -50,7 +50,7 @@ const HomeScreen = ({navigation}) => {
           {/* TODO DISPLAYING RECENT ACTIVITY */}
           <View style={styles.animationContainer}>
             <LottieView
-              source={require('../../assets/animations/onBoardHome.json')}
+              source={require('../../Assets/animations/onBoardHome.json')}
               style={styles.animation}
               autoPlay={true}
               loop={true}

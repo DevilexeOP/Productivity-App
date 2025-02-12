@@ -16,18 +16,18 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {actionCreators} from '../../redux/index';
+import {actionCreators} from '../../Redux/index';
 import {bindActionCreators} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 import Config from "react-native-config";
 import Snackbar from 'react-native-snackbar';
 import {
   updateChannelData,
   updateAddMessage,
   updateAllMessages,
-} from '../../redux/actioncreators';
-import socket from '../../config/Socket';
+} from '../../Redux/actioncreators';
+import socket from '../../Config/Socket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 import ParentModal from './quickModals/ParentModal';
@@ -203,7 +203,7 @@ const Channel = ({navigation, route}) => {
         <View style={styles.outContainer}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image
-              source={require('../../assets/images/backlight.png')}
+              source={require('../../Assets/images/backlight.png')}
               style={styles.backBtn}
             />
           </TouchableOpacity>
@@ -214,7 +214,7 @@ const Channel = ({navigation, route}) => {
           ))}
           <TouchableOpacity onPress={handleOpenParentModal}>
             <Image
-              source={require('../../assets/images/quick.png')}
+              source={require('../../Assets/images/quick.png')}
               style={styles.quickBtn}
             />
           </TouchableOpacity>
@@ -262,7 +262,7 @@ const Channel = ({navigation, route}) => {
               onPress={sendMessageToSocket}>
               <Image
                 style={styles.sendIcon}
-                source={require('../../assets/images/send.png')}
+                source={require('../../Assets/images/send.png')}
               />
             </TouchableOpacity>
           </View>

@@ -27,7 +27,7 @@ const OnBoarding = ({navigation}) => {
       </View>
       <View style={styles.animationContainer}>
         <LottieView
-          source={require('../../assets/animations/onBoard3.json')}
+          source={require('../../Assets/animations/onBoard3.json')}
           style={styles.animation}
           autoPlay={true}
           loop={true}

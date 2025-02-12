@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 import React, {useEffect} from 'react';
-import {updateAllTodos} from '../../redux/actioncreators';
+import {updateAllTodos} from '../../Redux/actioncreators';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -18,7 +18,7 @@ import {
 import {connect, useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import Config from "react-native-config";
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 
 const TodoScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -135,7 +135,7 @@ const TodoScreen = ({navigation, route}) => {
             navigateToHome(jwtToken);
           }}>
           <Image
-            source={require('../../assets/images/backlight.png')}
+            source={require('../../Assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />
@@ -202,7 +202,7 @@ const TodoScreen = ({navigation, route}) => {
                         }>
                         <Image
                           style={styles.icon}
-                          source={require('../../assets/images/edit.png')}
+                          source={require('../../Assets/images/edit.png')}
                         />
                       </TouchableOpacity>
                     </View>
@@ -210,7 +210,7 @@ const TodoScreen = ({navigation, route}) => {
                       <TouchableOpacity onPress={() => deleteTodo(todo._id)}>
                         <Image
                           style={styles.icon2}
-                          source={require('../../assets/images/bin.png')}
+                          source={require('../../Assets/images/bin.png')}
                         />
                       </TouchableOpacity>
                     </View>

@@ -1,5 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import ProfileHome from '../../components/profilespace/ProfileHome';
+import ProfileHome from '../../Components/ProfileSpace/ProfileHome';
 
 const ProfileStack = createStackNavigator();
 

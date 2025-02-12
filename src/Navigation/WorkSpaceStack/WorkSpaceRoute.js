@@ -1,10 +1,10 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import WorkSpaceHome from '../../components/workspace/WorkSpaceHome';
-import CreateWorkSpace from '../../components/workspace/CreateWorkSpace';
-import AllWorkSpaces from '../../components/workspace/AllWorkSpaces';
-import WorkSpaceInfo from '../../components/workspace/WorkSpaceInfo';
-import CreateChannel from '../../components/workspace/CreateChannel';
-import Channel from '../../components/workspace/Channel';
+import WorkSpaceHome from '../../Components/Workspace/WorkSpaceHome';
+import CreateWorkSpace from '../../Components/Workspace/CreateWorkSpace';
+import AllWorkSpaces from '../../Components/Workspace/AllWorkSpaces';
+import WorkSpaceInfo from '../../Components/Workspace/WorkSpaceInfo';
+import CreateChannel from '../../Components/Workspace/CreateChannel';
+import Channel from '../../Components/Workspace/Channel';
 
 const WorkSpaceStack = createStackNavigator();
 

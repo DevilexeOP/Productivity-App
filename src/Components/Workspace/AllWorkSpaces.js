@@ -15,8 +15,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
-import {updateAllWorkSpaces, updateSpaceData} from '../../redux/actioncreators';
-import {DARKMODE} from '../../config/Colors';
+import {updateAllWorkSpaces, updateSpaceData} from '../../Redux/actioncreators';
+import {DARKMODE} from '../../Config/Colors';
 import Config from 'react-native-config';
 import Snackbar from 'react-native-snackbar';
 import {showMessage, hideMessage} from 'react-native-flash-message';
@@ -185,7 +185,7 @@ const AllWorkSpaces = ({navigation, route}) => {
       <View style={styles.outContainer}>
         <TouchableOpacity onPress={navigateToWorkspaceHome}>
           <Image
-            source={require('../../assets/images/backlight.png')}
+            source={require('../../Assets/images/backlight.png')}
             alt="Back"
             style={styles.hamBtn}
           />
@@ -197,7 +197,7 @@ const AllWorkSpaces = ({navigation, route}) => {
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={styles.workSpaceJoinIcon}
-              source={require('../../assets/images/adduserlight.png')}
+              source={require('../../Assets/images/adduserlight.png')}
             />
           </TouchableOpacity>
         </View>
@@ -224,7 +224,7 @@ const AllWorkSpaces = ({navigation, route}) => {
                     <View style={styles.rowContainer}>
                       <Image
                         style={styles.membersIcon}
-                        source={require('../../assets/images/members.png')}
+                        source={require('../../Assets/images/members.png')}
                       />
                       <Text style={styles.members}>
                         {workspace.members.length}

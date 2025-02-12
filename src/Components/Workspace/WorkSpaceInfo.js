@@ -11,7 +11,7 @@ import {
   Modal,
   Share,
 } from 'react-native';
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -22,7 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   updateSpaceData,
   updateResetSpaceData,
-} from '../../redux/actioncreators';
+} from '../../Redux/actioncreators';
 import Clipboard from '@react-native-clipboard/clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -265,7 +265,7 @@ const WorkSpaceInfo = ({navigation, route}) => {
         <View style={styles.outContainer}>
           <TouchableOpacity onPress={() => navigationToHome(jwtToken)}>
             <Image
-              source={require('../../assets/images/backlight.png')}
+              source={require('../../Assets/images/backlight.png')}
               alt="Back"
               style={styles.backBtn}
             />
@@ -279,7 +279,7 @@ const WorkSpaceInfo = ({navigation, route}) => {
           ))}
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
-              source={require('../../assets/images/settings.png')}
+              source={require('../../Assets/images/settings.png')}
               alt="Back"
               style={styles.settingBtn}
             />
@@ -305,7 +305,7 @@ const WorkSpaceInfo = ({navigation, route}) => {
                 navigateToCreateChannel(jwtToken, spaceId);
               }}>
               <Image
-                source={require('../../assets/images/add.png')}
+                source={require('../../Assets/images/add.png')}
                 alt="Back"
                 style={styles.addBtn}
               />
@@ -313,13 +313,13 @@ const WorkSpaceInfo = ({navigation, route}) => {
             <TouchableOpacity onPress={toggleDropdown}>
               {toggleDrop ? (
                 <Image
-                  source={require('../../assets/images/dropdownlight.png')}
+                  source={require('../../Assets/images/dropdownlight.png')}
                   alt="Close"
                   style={styles.dropwdownBtn}
                 />
               ) : (
                 <Image
-                  source={require('../../assets/images/dropdownlight.png')}
+                  source={require('../../Assets/images/dropdownlight.png')}
                   alt="Open"
                   style={styles.dropwdownBtnClose}
                 />
@@ -384,7 +384,7 @@ const WorkSpaceInfo = ({navigation, route}) => {
                     onPress={generateInviteLink}>
                     <View style={styles.inviteLinkContainer}>
                       <Image
-                        source={require('../../assets/images/link.png')}
+                        source={require('../../Assets/images/link.png')}
                         alt="Invite Link"
                         style={styles.modalLinkIcon}
                       />
@@ -399,7 +399,7 @@ const WorkSpaceInfo = ({navigation, route}) => {
                     onPress={shareInviteLink}>
                     <View style={styles.inviteLinkContainer}>
                       <Image
-                        source={require('../../assets/images/sharesocial.png')}
+                        source={require('../../Assets/images/sharesocial.png')}
                         alt="Share Invite Link"
                         style={styles.modalLinkIcon}
                       />

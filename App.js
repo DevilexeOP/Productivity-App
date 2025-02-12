@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
-import Router from './src/navigation/Router';
-import {store, persistor} from './src/redux/store';
+import Router from './src/Navigation/Router';
+import {store, persistor} from './src/Redux/store';
 import {Immersive} from 'react-native-immersive';
 import {PersistGate} from 'redux-persist/integration/react';
 import FlashMessage from 'react-native-flash-message';

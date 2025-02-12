@@ -16,7 +16,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {DARKMODE} from '../../config/Colors';
+import {DARKMODE} from '../../Config/Colors';
 import RNRestart from 'react-native-restart';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {showMessage} from 'react-native-flash-message';
@@ -168,7 +168,7 @@ const ProfileHome = () => {
       <View style={styles.imageContainer}>
         <Image
           style={styles.profileImage}
-          source={require('../../assets/images/profile.png')}
+          source={require('../../Assets/images/profile.png')}
           resizeMode="contain"
         />
       </View>
